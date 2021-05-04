@@ -1,22 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TGS;
 
-public class CellStateController : MonoBehaviour
+public class CellStateController : StateController
 {
     private TerrainGridSystem tgs;
     private Cell cell;
     public Color defaultColor;
-    public State currentState;
     public State idleState = new CellIdleState();
     public State activeState = new CellActiveState();
 
-    void Start()
+    public Cell GetCell()
     {
-        currentState = idleState;
+        return cell;
     }
 
+    public Color GetColor()
+    {
+        return tgs.CellGetColor(cell.index);
+    }
+
+    public TerrainGridSystem GetTerrainGridSystem()
+    {
+        return tgs;
+    }
+    
     public void HandleCellClick()
     {
         Debug.Log("Clicked cell " + cell.index);
@@ -28,21 +35,11 @@ public class CellStateController : MonoBehaviour
 
         TransitionToState(newState);
     }
-
-    public Cell GetCell()
-    {
-        return cell;
-    }
-
+    
     public void SetCell(Cell cell)
     {
         this.cell = cell;
         defaultColor = tgs.CellGetColor(cell.index);
-    }
-
-    public Color GetColor()
-    {
-        return tgs.CellGetColor(cell.index);
     }
 
     public void SetColor(Color color)
@@ -50,20 +47,13 @@ public class CellStateController : MonoBehaviour
         tgs.CellSetColor(cell.index, color);
     }
 
-    public TerrainGridSystem GetTerrainGridSystem()
-    {
-        return tgs;
-    }
-
     public void SetTerrainGridSystem(TerrainGridSystem tgs)
     {
         this.tgs = tgs;
     }
-
-    public void TransitionToState(State newState)
+    
+    void Start()
     {
-        currentState.ExitState(this);
-        currentState = newState;
-        currentState.EnterState(this);
+        currentState = idleState;
     }
 }
