@@ -463,7 +463,7 @@ MonoBehaviour:
   _cellSize: {x: 5, y: 5.0000014}
   _cellBorderColor: {r: 0.48659173, g: 0.49043074, b: 0.5294118, a: 1}
   _cellBorderThickness: 1
-  _cellHighlightColor: {r: 0, g: 0, b: 1, a: 0.7}
+  _cellHighlightColor: {r: 1, g: 1, b: 1, a: 1}
   _cellHighlightColor2: {r: 0, g: 1, b: 0, a: 0.8}
   _cellHighlightNonVisible: 1
   _cellsMaxSlope: 1

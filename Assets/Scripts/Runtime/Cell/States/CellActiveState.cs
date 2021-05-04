@@ -8,12 +8,7 @@ public class CellActiveState : State
     {
         Debug.Log("Entering Active state");
         CellStateController cell = (CellStateController) monoBehaviour;
-        cell.SetColor(Color.red);
-    }
-
-    public override bool EqualTo(State state)
-    {
-        return this.GetType() == state.GetType();
+        cell.SetColor(Color.green);
     }
 
     public override void ExitState(MonoBehaviour monoBehaviour)
