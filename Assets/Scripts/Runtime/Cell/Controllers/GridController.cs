@@ -14,8 +14,24 @@ public class GridController : MonoBehaviour
 
     private void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
     {
-        if(buttonIndex == 0)
-            sender.CellGetGameObject(cellIndex).GetComponent<CellStateController>().HandleCellClick();
+        if(buttonIndex != 0)
+            return;
+
+        /*
+         * Cast a ray to make sure user is clicking on a cell and
+         * not some object like a mech that's standing on that cell.
+         */
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        // Mask out everything on the terrain layer, we want to see if something else was clicked
+        int combatUnitLayerIndex = LayerMask.NameToLayer("Terrain");
+        int layerMask = 1 << combatUnitLayerIndex;
+        layerMask = ~layerMask;
+
+        if(Physics.Raycast(ray, Mathf.Infinity, layerMask))
+            return;
+
+        sender.CellGetGameObject(cellIndex).GetComponent<CellStateController>().HandleCellClick();
     }
     
     void OnDisable()

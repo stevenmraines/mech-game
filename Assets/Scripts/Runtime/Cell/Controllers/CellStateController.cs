@@ -27,8 +27,6 @@ public class CellStateController : StateController
     
     public void HandleCellClick()
     {
-        Debug.Log("Clicked cell " + cell.index);
-
         State newState = activeState;
 
         if(currentState == activeState)
