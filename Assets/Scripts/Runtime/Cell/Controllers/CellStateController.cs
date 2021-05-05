@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
 using TGS;
+using UnityEngine;
 
 public class CellStateController : StateController
 {
@@ -55,5 +56,15 @@ public class CellStateController : StateController
     void Start()
     {
         currentState = idleState;
+    }
+
+    public override void TransitionToState(State state)
+    {
+        if(!typeof(CellState).IsInstanceOfType(state))
+        {
+            throw new ArgumentException("New state is not an instance of CellState");
+        }
+
+        base.TransitionToState(state);
     }
 }

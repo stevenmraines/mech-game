@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombatStartState : State
+public class CombatStartState : CombatState
 {
     public override void EnterState(MonoBehaviour monoBehaviour)
     {

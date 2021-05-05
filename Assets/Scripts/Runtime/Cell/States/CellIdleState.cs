@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CellIdleState : State
+public class CellIdleState : CellState
 {
     public override void EnterState(MonoBehaviour monoBehaviour)
     {
