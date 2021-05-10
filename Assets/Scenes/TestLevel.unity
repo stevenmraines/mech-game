@@ -477,7 +477,7 @@ GameObject:
   - component: {fileID: 1055329392}
   - component: {fileID: 1055329391}
   - component: {fileID: 1055329394}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -767,7 +767,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95012373b916a94fb045a455c7b86bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &1667359998
 MonoBehaviour:
   m_ObjectHideFlags: 0

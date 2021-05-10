@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombatUnitIdleState : CombatUnitState
+public class UnitActiveState : UnitState
 {
     public override void EnterState(MonoBehaviour monoBehaviour)
     {
-        Debug.Log("Entering Idle state");
+        Debug.Log("Entering Active state");
     }
 
     public override void ExitState(MonoBehaviour monoBehaviour)
     {
-        Debug.Log("Exiting Idle state");
+        Debug.Log("Exiting Active state");
     }
 
     public override void Update(MonoBehaviour monoBehaviour)

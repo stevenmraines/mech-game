@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CombatUnitTargetedState : CombatUnitState
+public class UnitDestroyedState : UnitState
 {
     public override void EnterState(MonoBehaviour monoBehaviour)
     {
-        Debug.Log("Entering Targeted state");
-        CombatUnitStateController unit = (CombatUnitStateController) monoBehaviour;
+        Debug.Log("Entering Destroyed state");
+        UnitStateController unit = (UnitStateController) monoBehaviour;
     }
 
     public override void ExitState(MonoBehaviour monoBehaviour)
     {
-        Debug.Log("Exiting Targeted state");
+        Debug.Log("Exiting Destroyed state");
     }
 
     public override void Update(MonoBehaviour monoBehaviour)

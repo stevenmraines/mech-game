@@ -32,7 +32,7 @@ public class VisibleUnitsProvider : MonoBehaviour, ISelectablesProvider
 
         _visibleUnits = new List<GameObject>();
 
-        CombatUnitController[] units = FindObjectsOfType<CombatUnitController>();
+        UnitController[] units = FindObjectsOfType<UnitController>();
 
         for(int i = 0; i < units.Length; i++)
         {
