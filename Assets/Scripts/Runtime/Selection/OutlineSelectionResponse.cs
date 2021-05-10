@@ -2,19 +2,19 @@
 
 public class OutlineSelectionResponse : MonoBehaviour, ISelectionResponse
 {
-    public void OnDeselect(GameObject currentSelection)
+    public void OnDeselect(GameObject selection)
     {
-        Object.Destroy(currentSelection.GetComponent<Outline>());
+        Object.Destroy(selection.GetComponent<Outline>());
     }
 
-    public void OnSelect(GameObject currentSelection)
+    public void OnSelect(GameObject selection)
     {
-        Outline outline = currentSelection.AddComponent<Outline>() as Outline;
+        Outline outline = selection.AddComponent<Outline>() as Outline;
         outline.OutlineMode = UnitSelectionManager._outlineMode;
         outline.OutlineWidth = UnitSelectionManager._outlineWidth;
         outline.OutlineColor = UnitSelectionManager._enemyColor;
 
-        if(currentSelection.tag == "Player")
+        if(selection.tag == "Player")
             outline.OutlineColor = UnitSelectionManager._playerColor;
     }
 }
