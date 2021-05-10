@@ -12,6 +12,24 @@ public class GridController : MonoBehaviour
     private int rows;
     private int cellLastClickedIndex;
 
+    void Awake()
+    {
+        tgs = FindObjectOfType<TerrainGridSystem>();
+
+        cells = tgs.cells;
+        columns = tgs.columnCount;
+        rows = tgs.rowCount;
+
+        foreach(Cell cell in cells)
+        {
+            GameObject go = tgs.CellGetGameObject(cell.index);
+            go.AddComponent<CellStateController>();
+            CellStateController _controller = go.GetComponent<CellStateController>();
+            _controller.SetTerrainGridSystem(tgs);
+            _controller.SetCell(cell);
+        }
+    }
+
     private void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
     {
         if(buttonIndex != 0)
@@ -39,23 +57,9 @@ public class GridController : MonoBehaviour
         tgs.OnCellClick -= OnCellClick;
     }
 
-    void Start()
+    void OnEnable()
     {
-        tgs = FindObjectOfType<TerrainGridSystem>();
         tgs.OnCellClick += OnCellClick;
-
-        cells = tgs.cells;
-        columns = tgs.columnCount;
-        rows = tgs.rowCount;
-
-        foreach(Cell cell in cells)
-        {
-            GameObject go = tgs.CellGetGameObject(cell.index);
-            go.AddComponent<CellStateController>();
-            CellStateController _controller = go.GetComponent<CellStateController>();
-            _controller.SetTerrainGridSystem(tgs);
-            _controller.SetCell(cell);
-        }
     }
 
     void Update()

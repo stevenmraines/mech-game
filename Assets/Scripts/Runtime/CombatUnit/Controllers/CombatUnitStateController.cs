@@ -5,17 +5,14 @@ using UnityEngine;
 
 public class CombatUnitStateController : StateController
 {
-    // TODO Add reference to some central CombatUnitController which gives a reference to the actual GameObject, do same with CellController, move defaultColor to that
-    public Color defaultColor;
     public State idleState = new CombatUnitIdleState();
     public State activeState = new CombatUnitActiveState();
     public State destroyedState = new CombatUnitDestroyedState();
     public State targetedState = new CombatUnitTargetedState();
 
-    void Start()
+    void Awake()
     {
         currentState = idleState;
-        defaultColor = GetComponent<Renderer>().material.color;
     }
 
     public override void TransitionToState(State state)

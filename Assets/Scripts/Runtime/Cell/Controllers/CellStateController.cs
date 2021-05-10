@@ -10,6 +10,11 @@ public class CellStateController : StateController
     public State idleState = new CellIdleState();
     public State activeState = new CellActiveState();
 
+    void Awake()
+    {
+        currentState = idleState;
+    }
+
     public Cell GetCell()
     {
         return cell;
@@ -49,11 +54,6 @@ public class CellStateController : StateController
     public void SetTerrainGridSystem(TerrainGridSystem tgs)
     {
         this.tgs = tgs;
-    }
-    
-    void Start()
-    {
-        currentState = idleState;
     }
 
     public override void TransitionToState(State state)
