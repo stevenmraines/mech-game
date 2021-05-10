@@ -27,21 +27,4 @@ public class CombatUnitStateController : StateController
 
         base.TransitionToState(state);
     }
-
-    void OnMouseUp()
-    {
-        if(Input.GetMouseButtonUp(0))
-        {
-            CombatUnitState newState = (CombatUnitState) activeState;
-
-            if(currentState.EqualTo(activeState))
-            {
-                newState = (CombatUnitState) idleState;
-            }
-
-            Debug.Log("Cube clicked");
-
-            TransitionToState(newState);
-        }
-    }
 }
