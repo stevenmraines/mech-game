@@ -9,13 +9,15 @@ public class UnitSelectionManager : MonoBehaviour
     private ISelectionResponse _selectionResponse;
 
     private GameObject _currentSelection;
+    private GameObject _oldSelection;
+    private bool _differentSelection => _oldSelection != _currentSelection;
 
     public static Outline.Mode _outlineMode;
     public static float _outlineWidth;
     public static Color _playerColor;
     public static Color _enemyColor;
 
-    private void Awake()
+    void Awake()
     {
         _rayProvider = GetComponent<IRayProvider>();
         _selectablesProvider = GetComponent<ISelectablesProvider>();
@@ -28,22 +30,45 @@ public class UnitSelectionManager : MonoBehaviour
         _enemyColor = Color.red;
     }
 
-    private void Update()
+    private void DoSelectAndDeselect()
     {
-        GameObject oldSelection = _currentSelection;
+        if(!_differentSelection)
+            return;
+
+        if(_oldSelection != null)
+            _selectionResponse.OnDeselect(_oldSelection);
+
+        if(_currentSelection != null)
+            _selectionResponse.OnSelect(_currentSelection);
+    }
+
+    public GameObject GetCurrentSelection()
+    {
+        return _currentSelection;
+    }
+
+    private void HandleUnitClick()
+    {
+        if(_currentSelection == null)
+            return;
+
+        UnitStateController stateController = _currentSelection.GetComponent<UnitStateController>();
+        stateController.TransitionToState(stateController.activeState);
+    }
+
+    void Update()
+    {
+        _oldSelection = _currentSelection;
 
         _currentSelection = _selector.MakeSelection(
             _rayProvider.CreateRay(),
             _selectablesProvider.GetSelectables()
         );
 
-        if(oldSelection == _currentSelection)
-            return;
+        DoSelectAndDeselect();
 
-        if(oldSelection != null)
-            _selectionResponse.OnDeselect(oldSelection);
-
-        if(_currentSelection != null)
-            _selectionResponse.OnSelect(_currentSelection);
+        // TODO use new input system
+        if(Input.GetMouseButtonUp(0))
+            HandleUnitClick();
     }
 }

@@ -15,6 +15,23 @@ public class UnitStateController : StateController
         currentState = idleState;
     }
 
+    private void OnActiveStateEntered(MonoBehaviour stateController)
+    {
+        // Can only have one unit active at a time
+        if(stateController != this && currentState == activeState)
+            TransitionToState(idleState);
+    }
+
+    void OnDisable()
+    {
+        UnitActiveState.ActiveStateEntered -= OnActiveStateEntered;
+    }
+
+    void OnEnable()
+    {
+        UnitActiveState.ActiveStateEntered += OnActiveStateEntered;
+    }
+
     public override void TransitionToState(State state)
     {
         if(!typeof(UnitState).IsInstanceOfType(state))

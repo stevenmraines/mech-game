@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class UnitActiveState : UnitState
 {
+    public delegate void UnitActiveStateDelegate(MonoBehaviour monoBehaviour);
+    public static event UnitActiveStateDelegate ActiveStateEntered;
+
     public override void EnterState(MonoBehaviour monoBehaviour)
     {
-        Debug.Log("Entering Active state");
+        ActiveStateEntered(monoBehaviour);
+        Debug.Log(monoBehaviour.name + " Entering Active state");
     }
 
     public override void ExitState(MonoBehaviour monoBehaviour)
     {
-        Debug.Log("Exiting Active state");
+        Debug.Log(monoBehaviour.name + " Exiting Active state");
     }
 
     public override void Update(MonoBehaviour monoBehaviour)
