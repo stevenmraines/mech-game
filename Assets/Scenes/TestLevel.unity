@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: 281698831}
   - component: {fileID: 281698835}
   m_Layer: 0
-  m_Name: Unit Selection Manager
+  m_Name: Selection Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -330,6 +330,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1bcebda4d7777e48b183cfd6d6b5d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentSelection: {fileID: 0}
+  _oldSelection: {fileID: 0}
 --- !u!114 &281698834
 MonoBehaviour:
   m_ObjectHideFlags: 0

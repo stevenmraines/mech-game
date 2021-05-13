@@ -5,17 +5,17 @@ using UnityEngine;
 public class ActiveUnitOverlay : MonoBehaviour
 {
     private ISelectablesProvider _selectablesProvider;
-    private UnitSelectionManager _usm;
+    private SelectionManager _selectionManager;
 
     void Awake()
     {
         _selectablesProvider = GetComponent<ISelectablesProvider>();
-        _usm = FindObjectOfType<UnitSelectionManager>();
+        _selectionManager = FindObjectOfType<SelectionManager>();
     }
 
     void OnGUI()
     {
-        GameObject currentSelection = _usm.GetCurrentSelection();
+        GameObject currentSelection = _selectionManager.GetCurrentSelection();
 
         List<GameObject> selectables = _selectablesProvider.GetSelectables();
 
@@ -23,7 +23,7 @@ public class ActiveUnitOverlay : MonoBehaviour
         {
             string unitString = selectables[i].name;
 
-            if(_usm.GetCurrentSelection() == selectables[i])
+            if(_selectionManager.GetCurrentSelection() == selectables[i])
                 unitString += " - HOVERED";
 
             UnitStateController stateController = selectables[i].GetComponent<UnitStateController>();

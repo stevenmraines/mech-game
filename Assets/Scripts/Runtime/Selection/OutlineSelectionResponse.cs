@@ -10,11 +10,11 @@ public class OutlineSelectionResponse : MonoBehaviour, ISelectionResponse
     public void OnSelect(GameObject selection)
     {
         Outline outline = selection.AddComponent<Outline>() as Outline;
-        outline.OutlineMode = UnitSelectionManager._outlineMode;
-        outline.OutlineWidth = UnitSelectionManager._outlineWidth;
-        outline.OutlineColor = UnitSelectionManager._enemyColor;
+        outline.OutlineMode = SelectionManager._outlineMode;
+        outline.OutlineWidth = SelectionManager._outlineWidth;
+        outline.OutlineColor = SelectionManager._enemyColor;
 
         if(selection.tag == "Player")
-            outline.OutlineColor = UnitSelectionManager._playerColor;
+            outline.OutlineColor = SelectionManager._playerColor;
     }
 }
