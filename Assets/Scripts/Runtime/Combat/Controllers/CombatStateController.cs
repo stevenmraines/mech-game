@@ -2,7 +2,7 @@
 
 public class CombatStateController : StateController
 {
-    public State combatStartState = new CombatStartState();
+    public State startState = new CombatStartState();
     public State enemyTurnState = new CombatEnemyTurnState();
     public State placementState = new CombatUnitPlacementState();
     public State playerLostState = new CombatPlayerLostState();
@@ -11,7 +11,7 @@ public class CombatStateController : StateController
 
     void Awake()
     {
-        currentState = combatStartState;
+        _currentState = startState;
         TransitionToState(placementState);
     }
 

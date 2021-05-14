@@ -12,7 +12,7 @@ public class CellStateController : StateController
 
     void Awake()
     {
-        currentState = idleState;
+        _currentState = idleState;
     }
 
     public Cell GetCell()
@@ -34,7 +34,7 @@ public class CellStateController : StateController
     {
         State newState = activeState;
 
-        if(currentState == activeState)
+        if(_currentState == activeState)
             newState = idleState;
 
         TransitionToState(newState);

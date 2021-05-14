@@ -28,7 +28,7 @@ public class ActiveUnitOverlay : MonoBehaviour
 
             UnitStateController stateController = selectables[i].GetComponent<UnitStateController>();
 
-            if(stateController.currentState == stateController.activeState)
+            if(stateController._currentState == stateController.activeState)
                 unitString += " - ACTIVE";
 
             GUI.Label(new Rect(10, i * 20 + 10, 300, 20), unitString);

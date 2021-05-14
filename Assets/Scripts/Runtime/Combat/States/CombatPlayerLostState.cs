@@ -1,20 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CombatPlayerLostState : CombatState
 {
-    public override void EnterState(MonoBehaviour monoBehaviour)
+    public override void EnterState(StateController stateController)
     {
-        Debug.Log("Entering Player Lost state");
+
     }
 
-    public override void ExitState(MonoBehaviour monoBehaviour)
+    public override void ExitState(StateController stateController)
     {
-        Debug.Log("Exiting Player Lost state");
+
     }
 
-    public override void Update(MonoBehaviour monoBehaviour)
+    public override void Update(StateController stateController)
     {
 
     }

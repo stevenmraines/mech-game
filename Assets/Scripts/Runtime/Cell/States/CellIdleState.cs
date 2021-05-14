@@ -1,22 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CellIdleState : CellState
 {
-    public override void EnterState(MonoBehaviour monoBehaviour)
+    public override void EnterState(StateController stateController)
     {
-        Debug.Log("Entering Idle state");
-        CellStateController cell = (CellStateController) monoBehaviour;
+        CellStateController cell = (CellStateController) stateController;
         cell.SetColor(cell.defaultColor);
     }
 
-    public override void ExitState(MonoBehaviour monoBehaviour)
+    public override void ExitState(StateController stateController)
     {
-        Debug.Log("Exiting Idle state");
+
     }
 
-    public override void Update(MonoBehaviour monoBehaviour)
+    public override void Update(StateController stateController)
     {
         
     }

@@ -1,22 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CellAttackableState : CellState
 {
-    public override void EnterState(MonoBehaviour monoBehaviour)
+    public override void EnterState(StateController stateController)
     {
-        Debug.Log("Entering Attackable state");
-        CellStateController cell = (CellStateController) monoBehaviour;
+        CellStateController cell = (CellStateController) stateController;
         cell.SetColor(Color.red);
     }
 
-    public override void ExitState(MonoBehaviour monoBehaviour)
+    public override void ExitState(StateController stateController)
     {
-        Debug.Log("Exiting Attackable state");
+
     }
 
-    public override void Update(MonoBehaviour monoBehaviour)
+    public override void Update(StateController stateController)
     {
         
     }

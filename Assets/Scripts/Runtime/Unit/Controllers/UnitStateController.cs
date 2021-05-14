@@ -12,13 +12,13 @@ public class UnitStateController : StateController
 
     void Awake()
     {
-        currentState = idleState;
+        _currentState = idleState;
     }
 
-    private void OnActiveStateEntered(MonoBehaviour stateController)
+    private void OnActiveStateEntered(StateController stateController)
     {
         // Can only have one unit active at a time
-        if(stateController != this && currentState == activeState)
+        if(stateController != this && _currentState == activeState)
             TransitionToState(idleState);
     }
 

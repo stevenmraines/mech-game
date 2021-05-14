@@ -1,20 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CombatStartState : CombatState
 {
-    public override void EnterState(MonoBehaviour monoBehaviour)
+    public override void EnterState(StateController stateController)
     {
-        Debug.Log("Entering Combat Start state");
+        
     }
 
-    public override void ExitState(MonoBehaviour monoBehaviour)
+    public override void ExitState(StateController stateController)
     {
-        Debug.Log("Exiting Combat Start state");
+        
     }
 
-    public override void Update(MonoBehaviour monoBehaviour)
+    public override void Update(StateController stateController)
     {
 
     }

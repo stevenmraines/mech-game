@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public abstract class WeaponState : State
+﻿public abstract class WeaponState : State
 {
 
 }

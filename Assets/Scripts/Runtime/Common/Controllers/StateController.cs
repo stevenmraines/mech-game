@@ -1,15 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class StateController : MonoBehaviour
 {
-    public State currentState;
+    public State _currentState;
     
     public virtual void TransitionToState(State state)
     {
-        currentState.ExitState(this);
-        currentState = state;
-        currentState.EnterState(this);
+        _currentState.ExitState(this);
+        _currentState = state;
+        _currentState.EnterState(this);
+    }
+
+    void Update()
+    {
+        _currentState.Update(this);
     }
 }

@@ -1,24 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class UnitActiveState : UnitState
+﻿public class UnitActiveState : UnitState
 {
-    public delegate void UnitActiveStateDelegate(MonoBehaviour monoBehaviour);
+    public delegate void UnitActiveStateDelegate(StateController stateController);
     public static event UnitActiveStateDelegate ActiveStateEntered;
 
-    public override void EnterState(MonoBehaviour monoBehaviour)
+    public override void EnterState(StateController stateController)
     {
-        ActiveStateEntered(monoBehaviour);
-        Debug.Log(monoBehaviour.name + " Entering Active state");
+        ActiveStateEntered(stateController);
     }
 
-    public override void ExitState(MonoBehaviour monoBehaviour)
+    public override void ExitState(StateController stateController)
     {
-        Debug.Log(monoBehaviour.name + " Exiting Active state");
+
     }
 
-    public override void Update(MonoBehaviour monoBehaviour)
+    public override void Update(StateController stateController)
     {
         
     }

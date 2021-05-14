@@ -1,12 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public abstract class State
+﻿public abstract class State
 {
-    public abstract void EnterState(MonoBehaviour monoBehaviour);
-    public abstract void ExitState(MonoBehaviour monoBehaviour);
-    public abstract void Update(MonoBehaviour monoBehaviour);
+    public abstract void EnterState(StateController stateController);
+    public abstract void ExitState(StateController stateController);
+    public abstract void Update(StateController stateController);
 
     public bool EqualTo(State state)
     {

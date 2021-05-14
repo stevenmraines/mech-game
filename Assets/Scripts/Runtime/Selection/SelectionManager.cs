@@ -35,6 +35,22 @@ public class SelectionManager : MonoBehaviour
         _enemyColor = Color.red;
     }
 
+    public void SetSelection()
+    {
+        _oldSelection = _currentSelection;
+
+        _currentSelection = _selector.MakeSelection(
+            _rayProvider.CreateRay(),
+            _selectablesProvider.GetSelectables()
+        );
+
+        DoSelectAndDeselect();
+
+        // TODO use new input system
+        if (Input.GetMouseButtonUp(0))
+            HandleUnitClick();
+    }
+
     private void DoSelectAndDeselect()
     {
         if(!_differentSelection)
@@ -77,21 +93,5 @@ public class SelectionManager : MonoBehaviour
     void OnEnable()
     {
         _terrainGridSystem.OnCellClick += HandleCellClick;
-    }
-
-    void Update()
-    {
-        _oldSelection = _currentSelection;
-
-        _currentSelection = _selector.MakeSelection(
-            _rayProvider.CreateRay(),
-            _selectablesProvider.GetSelectables()
-        );
-
-        DoSelectAndDeselect();
-
-        // TODO use new input system
-        if(Input.GetMouseButtonUp(0))
-            HandleUnitClick();
     }
 }
