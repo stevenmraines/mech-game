@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using TGS;
 using UnityEngine;
-using TGS;
 
+// TODO make all this selection stuff specific to units or figure out how to handle any gameobject
 public class SelectionManager : MonoBehaviour
 {
     private IRayProvider _rayProvider;
@@ -9,16 +9,27 @@ public class SelectionManager : MonoBehaviour
     private ISelector _selector;
     private ISelectionResponse _selectionResponse;
 
-    private TerrainGridSystem _terrainGridSystem;
-
+    public GameObject CurrentSelection { get => _currentSelection; }
     private GameObject _currentSelection;
     private GameObject _oldSelection;
     private bool _differentSelection => _oldSelection != _currentSelection;
+    private bool _mouseEnter => _currentSelection != null && _differentSelection;
+    private bool _mouseExit => _currentSelection == null && _oldSelection != null;
 
-    public static Outline.Mode _outlineMode;
-    public static float _outlineWidth;
-    public static Color _playerColor;
-    public static Color _enemyColor;
+    public static Outline.Mode OutlineMode;
+    public static float OutlineWidth;
+    public static Color PlayerColor;
+    public static Color EnemyColor;
+
+    public delegate void CellClickDelegate(int cellIndex, int buttonIndex);
+    public static event CellClickDelegate OnCellClick;
+
+    public delegate void UnitClickDelegate(UnitController unit, int buttonIndex);
+    public static event UnitClickDelegate OnUnitClick;
+    
+    public delegate void UnitDelegate(UnitController unit);
+    public static event UnitDelegate OnUnitMouseEnter;
+    public static event UnitDelegate OnUnitMouseExit;
 
     void Awake()
     {
@@ -27,31 +38,33 @@ public class SelectionManager : MonoBehaviour
         _selector = GetComponent<ISelector>();
         _selectionResponse = GetComponent<ISelectionResponse>();
 
-        _terrainGridSystem = FindObjectOfType<TerrainGridSystem>();
-
-        _outlineMode = Outline.Mode.OutlineAll;
-        _outlineWidth = 7f;
-        _playerColor = Color.green;
-        _enemyColor = Color.red;
+        OutlineMode = Outline.Mode.OutlineAll;
+        OutlineWidth = 7f;
+        PlayerColor = Color.green;
+        EnemyColor = Color.red;
     }
 
-    public void SetSelection()
+    void CheckCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
     {
-        _oldSelection = _currentSelection;
+        /*
+         * TGS.OnCellClick is fired even if some object sitting on top of a cell is clicked,
+         * so catch it here first to make sure no units are selected. If not, then proceed.
+         */
+        if (buttonIndex != 0 || _currentSelection != null)
+            return;
 
-        _currentSelection = _selector.MakeSelection(
-            _rayProvider.CreateRay(),
-            _selectablesProvider.GetSelectables()
-        );
-
-        DoSelectAndDeselect();
-
-        // TODO use new input system
-        if (Input.GetMouseButtonUp(0))
-            HandleUnitClick();
+        OnCellClick(cellIndex, buttonIndex);
     }
 
-    private void DoSelectAndDeselect()
+    void CheckUnitClick()
+    {
+        if (_currentSelection == null)
+            return;
+
+        OnUnitClick(_currentSelection.GetComponent<UnitController>(), 0);
+    }
+
+    void DoSelectAndDeselect()
     {
         if(!_differentSelection)
             return;
@@ -63,35 +76,44 @@ public class SelectionManager : MonoBehaviour
             _selectionResponse.OnSelect(_currentSelection);
     }
 
-    public GameObject GetCurrentSelection()
-    {
-        return _currentSelection;
-    }
-
-    private void HandleCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
-    {
-        if (buttonIndex != 0 || _currentSelection != null)
-            return;
-
-        sender.CellGetGameObject(cellIndex).GetComponent<CellStateController>().HandleCellClick();
-    }
-
-    private void HandleUnitClick()
-    {
-        if(_currentSelection == null)
-            return;
-
-        UnitStateController stateController = _currentSelection.GetComponent<UnitStateController>();
-        stateController.TransitionToState(stateController.activeState);
-    }
-
     void OnDisable()
     {
-        _terrainGridSystem.OnCellClick -= HandleCellClick;
+        CombatPlayerTurnState.OnStateUpdate -= UpdateSelection;
+        CombatPlayerPlacementState.OnStateUpdate -= UpdateSelection;
+        GridManager.TerrainGridSystem.OnCellClick -= CheckCellClick;
     }
 
     void OnEnable()
     {
-        _terrainGridSystem.OnCellClick += HandleCellClick;
+        CombatPlayerTurnState.OnStateUpdate += UpdateSelection;
+        CombatPlayerPlacementState.OnStateUpdate += UpdateSelection;
+        GridManager.TerrainGridSystem.OnCellClick += CheckCellClick;
+    }
+
+    void TriggerUnitMouseEvents()
+    {
+        // TODO Implement null checks when triggering other events like this
+        if(OnUnitMouseEnter != null && _mouseEnter)
+            OnUnitMouseEnter(_currentSelection.GetComponent<UnitController>());
+
+        if(OnUnitMouseExit != null && _mouseExit)
+            OnUnitMouseExit(_oldSelection.GetComponent<UnitController>());
+    }
+
+    void UpdateSelection()
+    {
+        _oldSelection = _currentSelection;
+
+        _currentSelection = _selector.MakeSelection(
+            _rayProvider.CreateRay(),
+            _selectablesProvider.GetSelectables()
+        );
+
+        DoSelectAndDeselect();
+        TriggerUnitMouseEvents();
+
+        // TODO use new input system
+        if (Input.GetMouseButtonUp(0))
+            CheckUnitClick();
     }
 }

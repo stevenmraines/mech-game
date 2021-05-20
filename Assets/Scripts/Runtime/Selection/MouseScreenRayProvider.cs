@@ -2,12 +2,7 @@
 
 public class MouseScreenRayProvider : MonoBehaviour, IRayProvider
 {
-    private Camera _mainCamera;
-
-    void Awake()
-    {
-        _mainCamera = Camera.main;
-    }
+    [SerializeField] private Camera _mainCamera;
 
     public Ray CreateRay()
     {
