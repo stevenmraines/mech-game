@@ -4,38 +4,33 @@ using RainesGames.Units;
 
 namespace RainesGames.Combat.States
 {
-    public class UnitEventDispatcher : IStateEventDispatcher
+    public class UnitEventDispatcher : StateEventDispatcher<CombatState>, IUnitEvents
     {
-        private StateManager _manager;
+        public UnitEventDispatcher(CombatStateManager manager) : base(manager) {}
 
-        public UnitEventDispatcher(StateManager manager)
-        {
-            _manager = manager;
-        }
-
-        public void DeregisterEventHandlers()
+        public override void DeregisterEventHandlers()
         {
             SelectionManager.OnUnitClick -= OnUnitClick;
             SelectionManager.OnUnitMouseEnter -= OnUnitMouseEnter;
             SelectionManager.OnUnitMouseExit -= OnUnitMouseExit;
         }
 
-        void OnUnitClick(UnitController unit, int buttonIndex)
+        public void OnUnitClick(UnitController unit, int buttonIndex)
         {
-            ((State)_manager.CurrentState).OnUnitClick(unit, buttonIndex);
+            _manager.CurrentState.UnitEventHandler.OnUnitClick(unit, buttonIndex);
         }
 
-        void OnUnitMouseEnter(UnitController unit)
+        public void OnUnitMouseEnter(UnitController unit)
         {
-            ((State)_manager.CurrentState).OnUnitMouseEnter(unit);
+            _manager.CurrentState.UnitEventHandler.OnUnitMouseEnter(unit);
         }
 
-        void OnUnitMouseExit(UnitController unit)
+        public void OnUnitMouseExit(UnitController unit)
         {
-            ((State)_manager.CurrentState).OnUnitMouseExit(unit);
+            _manager.CurrentState.UnitEventHandler.OnUnitMouseExit(unit);
         }
 
-        public void RegisterEventHandlers()
+        public override void RegisterEventHandlers()
         {
             SelectionManager.OnUnitClick += OnUnitClick;
             SelectionManager.OnUnitMouseEnter += OnUnitMouseEnter;

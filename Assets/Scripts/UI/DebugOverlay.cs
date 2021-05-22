@@ -8,7 +8,7 @@ namespace RainesGames.UI
 {
     public class DebugOverlay : MonoBehaviour
     {
-        [SerializeField] private Combat.States.StateManager _combatStateManager;
+        [SerializeField] private Combat.States.CombatStateManager _combatStateManager;
         [SerializeField] private SelectionManager _selectionManager;
         [SerializeField] private GUISkin _centeredLabel;
 
@@ -45,7 +45,7 @@ namespace RainesGames.UI
                 if(_selectionManager.CurrentSelection == selectables[i])
                     unitString += " - HOVERED";
 
-                Units.States.StateManager stateManager = selectables[i].GetComponent<Units.States.StateManager>();
+                Units.States.UnitStateManager stateManager = selectables[i].GetComponent<Units.States.UnitStateManager>();
 
                 if(stateManager.CurrentState == stateManager.ActiveState)
                     unitString += " - ACTIVE";

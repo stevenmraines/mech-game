@@ -2,7 +2,7 @@
 
 namespace RainesGames.Common.States
 {
-    public abstract class State : MonoBehaviour, IState
+    public abstract class State : MonoBehaviour
     {
         public string StateName { get; set; }
 

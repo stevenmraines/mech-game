@@ -1,5 +1,4 @@
-﻿using RainesGames.Combat.States;
-using TGS;
+﻿using TGS;
 using UnityEngine;
 
 namespace RainesGames.Grid
@@ -42,20 +41,6 @@ namespace RainesGames.Grid
         static void HighlightCells(bool highlight)
         {
             _terrainGridSystem.highlightMode = highlight ? HIGHLIGHT_MODE.Cells : HIGHLIGHT_MODE.None;
-        }
-
-        void OnDisable()
-        {
-            PlayerTurnState.OnStateEnter -= EnableCellHighlight;
-            PlayerPlacementState.OnStateEnter -= EnableCellHighlight;
-            StartState.OnStateEnter -= DisableCellHighlight;
-        }
-
-        void OnEnable()
-        {
-            PlayerTurnState.OnStateEnter += EnableCellHighlight;
-            PlayerPlacementState.OnStateEnter += EnableCellHighlight;
-            StartState.OnStateEnter += DisableCellHighlight;
         }
     }
 }

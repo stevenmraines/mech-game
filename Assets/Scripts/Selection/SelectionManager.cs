@@ -1,5 +1,4 @@
-﻿using RainesGames.Combat.States;
-using RainesGames.Grid;
+﻿using RainesGames.Grid;
 using RainesGames.Units;
 using TGS;
 using UnityEngine;
@@ -58,7 +57,7 @@ namespace RainesGames.Selection
             if(buttonIndex != 0 || _currentSelection != null)
                 return;
 
-            OnCellClick(cellIndex, buttonIndex);
+            OnCellClick?.Invoke(cellIndex, buttonIndex);
         }
 
         void CheckUnitClick()
@@ -66,7 +65,7 @@ namespace RainesGames.Selection
             if(_currentSelection == null)
                 return;
 
-            OnUnitClick(_currentSelection.GetComponent<UnitController>(), 0);
+            OnUnitClick?.Invoke(_currentSelection.GetComponent<UnitController>(), 0);
         }
 
         void DoSelectAndDeselect()
@@ -83,26 +82,24 @@ namespace RainesGames.Selection
 
         void OnDisable()
         {
-            PlayerTurnState.OnStateUpdate -= UpdateSelection;
-            PlayerPlacementState.OnStateUpdate -= UpdateSelection;
+            Combat.States.PlayerPlacement.PlayerPlacementState.OnStateUpdate -= UpdateSelection;
             GridManager.TerrainGridSystem.OnCellClick -= CheckCellClick;
         }
 
         void OnEnable()
         {
-            PlayerTurnState.OnStateUpdate += UpdateSelection;
-            PlayerPlacementState.OnStateUpdate += UpdateSelection;
+            Combat.States.PlayerPlacement.PlayerPlacementState.OnStateUpdate += UpdateSelection;
             GridManager.TerrainGridSystem.OnCellClick += CheckCellClick;
         }
 
         void TriggerUnitMouseEvents()
         {
             // TODO Implement null checks when triggering other events like this
-            if(OnUnitMouseEnter != null && _mouseEnter)
-                OnUnitMouseEnter(_currentSelection.GetComponent<UnitController>());
+            if(_mouseEnter)
+                OnUnitMouseEnter?.Invoke(_currentSelection.GetComponent<UnitController>());
 
-            if(OnUnitMouseExit != null && _mouseExit)
-                OnUnitMouseExit(_oldSelection.GetComponent<UnitController>());
+            if(_mouseExit)
+                OnUnitMouseExit?.Invoke(_oldSelection.GetComponent<UnitController>());
         }
 
         void UpdateSelection()
