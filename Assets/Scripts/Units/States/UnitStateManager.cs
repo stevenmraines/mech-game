@@ -5,8 +5,8 @@ namespace RainesGames.Units.States
 {
     public class UnitStateManager : StateManager<UnitState>
     {
-        [SerializeField] public IdleState IdleState;
-        [SerializeField] public ActiveState ActiveState;
+        [SerializeField] public IdleState Idle;
+        [SerializeField] public ActiveState Active;
 
         private UnitController _controller;
         public UnitController Controller { get => _controller; }
@@ -19,23 +19,23 @@ namespace RainesGames.Units.States
         void OnActiveStateEnter(UnitController unit)
         {
             // Can only have one unit active at a time
-            if(unit.StateManager != this && _current == ActiveState)
-                TransitionToState(IdleState);
+            if(unit.StateManager != this && _current == Active)
+                TransitionToState(Idle);
         }
 
         void OnDisable()
         {
-            ActiveState.OnStateEnter -= OnActiveStateEnter;
+            ActiveState.OnEnterState -= OnActiveStateEnter;
         }
 
         void OnEnable()
         {
-            ActiveState.OnStateEnter += OnActiveStateEnter;
+            ActiveState.OnEnterState += OnActiveStateEnter;
         }
 
         void Start()
         {
-            TransitionToState(IdleState);
+            TransitionToState(Idle);
         }
     }
 }

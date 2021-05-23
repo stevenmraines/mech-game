@@ -1,21 +1,19 @@
 ﻿using RainesGames.Grid;
 using RainesGames.Units;
 
-namespace RainesGames.Combat.States.PlayerPlacement
+namespace RainesGames.Combat.States.PlayerTurn
 {
     public class UnitEventHandler : States.UnitEventHandler
     {
-        public UnitEventHandler(PlayerPlacementState playerPlacementState) : base(playerPlacementState) {}
+        public UnitEventHandler(PlayerTurnState playerTurnState) : base(playerTurnState) {}
 
         public override void OnUnitClick(UnitController unit, int buttonIndex)
         {
-            if(unit.IsPlayer())
-                unit.StateManager.TransitionToState(unit.StateManager.Active);
+            
         }
 
         public override void OnUnitMouseEnter(UnitController unit)
         {
-            // TODO Figure out how to use lambda expressions for these one line event handlers
             GridManager.DisableCellHighlight();
         }
 

@@ -3,7 +3,7 @@
     public class ActiveState : UnitState
     {
         public delegate void StateTransitionDelegate(UnitController unit);
-        public static event StateTransitionDelegate OnStateEnter;
+        public static event StateTransitionDelegate OnEnterState;
 
         public override void Awake()
         {
@@ -13,7 +13,7 @@
 
         public override void EnterState()
         {
-            OnStateEnter(_manager.Controller);
+            OnEnterState?.Invoke(Manager.Controller);
         }
 
         public override void ExitState()

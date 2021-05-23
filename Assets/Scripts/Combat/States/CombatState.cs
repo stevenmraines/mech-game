@@ -1,17 +1,18 @@
 ﻿using RainesGames.Common.States;
+using UnityEngine;
 
 namespace RainesGames.Combat.States
 {
     public abstract class CombatState : State
     {
-        protected CombatStateManager _manager;
+        [HideInInspector] public CombatStateManager Manager;
 
         public CellEventHandler CellEventHandler;
         public UnitEventHandler UnitEventHandler;
 
-        public virtual void Awake()
+        protected virtual void Awake()
         {
-            _manager = GetComponent<CombatStateManager>();
+            Manager = GetComponent<CombatStateManager>();
         }
     }
 }

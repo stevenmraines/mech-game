@@ -1,9 +1,9 @@
 ﻿using RainesGames.Grid;
 using RainesGames.Units.Selection;
 
-namespace RainesGames.Combat.States.PlayerPlacement
+namespace RainesGames.Combat.States.EnemyPlacement
 {
-    public class PlayerPlacementState : CombatState
+    public class EnemyPlacementState : CombatState
     {
         public delegate void StateTransitionDelegate();
         public static event StateTransitionDelegate OnExitState;
@@ -13,7 +13,7 @@ namespace RainesGames.Combat.States.PlayerPlacement
             base.Awake();
             CellEventHandler = new CellEventHandler(this);
             UnitEventHandler = new UnitEventHandler(this);
-            StateName = "Player Unit Placement";
+            StateName = "Enemy Unit Placement";
         }
 
         public override void EnterState()

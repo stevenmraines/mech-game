@@ -1,4 +1,6 @@
-﻿using RainesGames.Units.States;
+﻿using RainesGames.Combat.States.EnemyPlacement;
+using RainesGames.Combat.States.PlayerPlacement;
+using RainesGames.Units.States;
 using UnityEngine;
 
 namespace RainesGames.Units
@@ -21,17 +23,32 @@ namespace RainesGames.Units
 
         void OnDisable()
         {
-            ActiveState.OnStateEnter -= SetActiveUnit;
+            ActiveState.OnEnterState -= SetActiveUnit;
+            EnemyPlacementState.OnExitState -= SetAllUnitsToIdle;
+            PlayerPlacementState.OnExitState -= SetAllUnitsToIdle;
         }
 
         void OnEnable()
         {
-            ActiveState.OnStateEnter += SetActiveUnit;
+            ActiveState.OnEnterState += SetActiveUnit;
+            EnemyPlacementState.OnExitState += SetAllUnitsToIdle;
+            PlayerPlacementState.OnExitState += SetAllUnitsToIdle;
         }
 
         void SetActiveUnit(UnitController unit)
         {
             _activeUnit = unit;
+        }
+
+        // TODO There may be a better way to do this, with events or something, and Unit states may not be needed at all
+        void SetAllUnitsToIdle()
+        {
+            foreach(UnitController unit in _units)
+            {
+                unit.StateManager.TransitionToState(unit.StateManager.Idle);
+            }
+
+            SetActiveUnit(null);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace RainesGames.Combat.States.BattleStart
 {
     public class BattleStartState : CombatState
     {
-        public override void Awake()
+        protected override void Awake()
         {
             base.Awake();
             CellEventHandler = new CellEventHandler(this);
@@ -35,7 +35,7 @@ namespace RainesGames.Combat.States.BattleStart
 
             hud.DisableBattleStartMessage();
 
-            _manager.TransitionToState(_manager.PlayerPlacementState);
+            Manager.TransitionToState(Manager.PlayerPlacement);
         }
 
         public override void UpdateState()

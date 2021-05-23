@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
-namespace RainesGames.Selection
+namespace RainesGames.Units.Selection
 {
+    // TODO Refactor this so that it's functionality is part of the current CombatState
     public class OutlineSelectionResponse : MonoBehaviour, ISelectionResponse
     {
         public void OnDeselect(GameObject selection)
@@ -12,12 +13,12 @@ namespace RainesGames.Selection
         public void OnSelect(GameObject selection)
         {
             Outline outline = selection.AddComponent<Outline>() as Outline;
-            outline.OutlineMode = SelectionManager.OutlineMode;
-            outline.OutlineWidth = SelectionManager.OutlineWidth;
-            outline.OutlineColor = SelectionManager.EnemyColor;
+            outline.OutlineMode = UnitSelectionManager.OutlineMode;
+            outline.OutlineWidth = UnitSelectionManager.OutlineWidth;
+            outline.OutlineColor = UnitSelectionManager.EnemyColor;
 
             if(selection.tag.ToLower() == "player")
-                outline.OutlineColor = SelectionManager.PlayerColor;
+                outline.OutlineColor = UnitSelectionManager.PlayerColor;
         }
     }
 }

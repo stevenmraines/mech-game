@@ -1,6 +1,6 @@
 ﻿using RainesGames.Common.States;
-using RainesGames.Selection;
 using RainesGames.Units;
+using RainesGames.Units.Selection;
 
 namespace RainesGames.Combat.States
 {
@@ -10,9 +10,9 @@ namespace RainesGames.Combat.States
 
         public override void DeregisterEventHandlers()
         {
-            SelectionManager.OnUnitClick -= OnUnitClick;
-            SelectionManager.OnUnitMouseEnter -= OnUnitMouseEnter;
-            SelectionManager.OnUnitMouseExit -= OnUnitMouseExit;
+            UnitSelectionManager.OnUnitClick -= OnUnitClick;
+            UnitSelectionManager.OnUnitMouseEnter -= OnUnitMouseEnter;
+            UnitSelectionManager.OnUnitMouseExit -= OnUnitMouseExit;
         }
 
         public void OnUnitClick(UnitController unit, int buttonIndex)
@@ -32,9 +32,9 @@ namespace RainesGames.Combat.States
 
         public override void RegisterEventHandlers()
         {
-            SelectionManager.OnUnitClick += OnUnitClick;
-            SelectionManager.OnUnitMouseEnter += OnUnitMouseEnter;
-            SelectionManager.OnUnitMouseExit += OnUnitMouseExit;
+            UnitSelectionManager.OnUnitClick += OnUnitClick;
+            UnitSelectionManager.OnUnitMouseEnter += OnUnitMouseEnter;
+            UnitSelectionManager.OnUnitMouseExit += OnUnitMouseExit;
         }
     }
 }

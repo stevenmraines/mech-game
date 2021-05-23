@@ -1,8 +1,7 @@
-﻿using RainesGames.Units;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace RainesGames.Selection
+namespace RainesGames.Units.Selection
 {
     public class VisibleUnitsProvider : MonoBehaviour, ISelectablesProvider
     {

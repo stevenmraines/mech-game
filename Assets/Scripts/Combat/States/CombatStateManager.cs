@@ -1,5 +1,7 @@
 ﻿using RainesGames.Combat.States.BattleStart;
+using RainesGames.Combat.States.EnemyPlacement;
 using RainesGames.Combat.States.PlayerPlacement;
+using RainesGames.Combat.States.PlayerTurn;
 using RainesGames.Common.States;
 using UnityEngine;
 
@@ -7,8 +9,10 @@ namespace RainesGames.Combat.States
 {
     public class CombatStateManager : StateManager<CombatState>
     {
-        [SerializeField] public PlayerPlacementState PlayerPlacementState;
-        [SerializeField] public BattleStartState BattleStartState;
+        [SerializeField] public BattleStartState BattleStart;
+        [SerializeField] public PlayerPlacementState PlayerPlacement;
+        [SerializeField] public EnemyPlacementState EnemyPlacement;
+        [SerializeField] public PlayerTurnState PlayerTurn;
 
         private CellEventDispatcher _cellEventDispatcher;
         private UnitEventDispatcher _unitEventDispatcher;
@@ -37,7 +41,7 @@ namespace RainesGames.Combat.States
              * Move this to Start instead of Awake because there's a race condition
              * happening when CombatStartState Awake is called after EnterState.
              */
-            TransitionToState(BattleStartState);
+            TransitionToState(BattleStart);
         }
     }
 }

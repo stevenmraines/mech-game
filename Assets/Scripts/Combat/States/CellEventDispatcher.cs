@@ -1,5 +1,5 @@
 ﻿using RainesGames.Common.States;
-using RainesGames.Selection;
+using RainesGames.Grid.Selection;
 
 namespace RainesGames.Combat.States
 {
@@ -9,7 +9,7 @@ namespace RainesGames.Combat.States
 
         public override void DeregisterEventHandlers()
         {
-            SelectionManager.OnCellClick -= OnCellClick;
+            GridSelectionManager.OnCellClick -= OnCellClick;
         }
 
         public void OnCellClick(int cellIndex, int buttonIndex)
@@ -19,7 +19,7 @@ namespace RainesGames.Combat.States
 
         public override void RegisterEventHandlers()
         {
-            SelectionManager.OnCellClick += OnCellClick;
+            GridSelectionManager.OnCellClick += OnCellClick;
         }
     }
 }
