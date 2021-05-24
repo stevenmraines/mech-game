@@ -35,7 +35,8 @@ namespace RainesGames.Combat.States.BattleStart
 
             hud.DisableBattleStartMessage();
 
-            Manager.TransitionToState(Manager.PlayerPlacement);
+            Manager.AttemptTransition();
+            //Manager.TransitionToState(Manager.PlayerPlacement);
         }
 
         public override void UpdateState()

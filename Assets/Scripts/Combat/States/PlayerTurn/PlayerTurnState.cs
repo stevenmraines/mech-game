@@ -19,6 +19,7 @@ namespace RainesGames.Combat.States.PlayerTurn
         public override void EnterState()
         {
             GridManager.EnableCellHighlight();
+            GridManager.DisableTerritories();
         }
 
         public override void ExitState()

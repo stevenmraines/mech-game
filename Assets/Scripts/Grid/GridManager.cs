@@ -15,12 +15,22 @@ namespace RainesGames.Grid
 
         public static void DisableCellHighlight()
         {
-            HighlightCells(false);
+            ShowCellHighlight(false);
+        }
+        
+        public static void DisableTerritories()
+        {
+            ShowTerritories(false);
         }
 
         public static void EnableCellHighlight()
         {
-            HighlightCells(true);
+            ShowCellHighlight(true);
+        }
+        
+        public static void EnableTerritories()
+        {
+            ShowTerritories(true);
         }
 
         public static Cell GetCell(int index)
@@ -38,9 +48,15 @@ namespace RainesGames.Grid
             return _terrainGridSystem.CellGetPosition(_terrainGridSystem.cells.IndexOf(cell));
         }
 
-        static void HighlightCells(bool highlight)
+        static void ShowCellHighlight(bool showCellHighlight)
         {
-            _terrainGridSystem.highlightMode = highlight ? HIGHLIGHT_MODE.Cells : HIGHLIGHT_MODE.None;
+            _terrainGridSystem.highlightMode = showCellHighlight ? HIGHLIGHT_MODE.Cells : HIGHLIGHT_MODE.None;
+        }
+        
+        static void ShowTerritories(bool showTerritories)
+        {
+            _terrainGridSystem.showTerritories = showTerritories;
+            _terrainGridSystem.colorizeTerritories = showTerritories;
         }
     }
 }

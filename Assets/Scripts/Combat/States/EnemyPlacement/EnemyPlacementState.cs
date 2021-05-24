@@ -19,6 +19,7 @@ namespace RainesGames.Combat.States.EnemyPlacement
         public override void EnterState()
         {
             GridManager.EnableCellHighlight();
+            GridManager.EnableTerritories();
         }
 
         public override void ExitState()
