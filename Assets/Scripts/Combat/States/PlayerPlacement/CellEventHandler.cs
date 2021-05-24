@@ -14,7 +14,7 @@ namespace RainesGames.Combat.States.PlayerPlacement
 
             UnitManager.ActiveUnit.PositionManager.SetCell(GridManager.GetCell(cellIndex));
 
-            _state.Manager.TransitionToState(_state.Manager.EnemyPlacement);
+            _state.Manager.AttemptTransition();
         }
     }
 }

@@ -12,6 +12,8 @@ namespace RainesGames.Units
         private Cell _cell;
         public Cell Cell { get => _cell; }
 
+        public bool IsPlaced => _cell != null;
+
         void Awake()
         {
             _controller = GetComponent<UnitController>();

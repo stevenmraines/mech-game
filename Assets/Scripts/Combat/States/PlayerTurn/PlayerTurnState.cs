@@ -1,5 +1,8 @@
 ﻿using RainesGames.Grid;
+using RainesGames.UI;
 using RainesGames.Units.Selection;
+using System.Collections;
+using UnityEngine;
 
 namespace RainesGames.Combat.States.PlayerTurn
 {
@@ -20,11 +23,23 @@ namespace RainesGames.Combat.States.PlayerTurn
         {
             GridManager.EnableCellHighlight();
             GridManager.DisableTerritories();
+            StartCoroutine(TestThing());
         }
 
         public override void ExitState()
         {
             OnExitState?.Invoke();
+        }
+
+        IEnumerator TestThing()
+        {
+            HudUiController hud = FindObjectOfType<HudUiController>();
+
+            hud.EnablePlayerWonMessage();
+
+            yield return new WaitForSecondsRealtime(3);
+
+            hud.DisablePlayerWonMessage();
         }
 
         public override void UpdateState()

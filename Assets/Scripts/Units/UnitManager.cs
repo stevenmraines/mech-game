@@ -1,6 +1,7 @@
 ﻿using RainesGames.Combat.States.EnemyPlacement;
 using RainesGames.Combat.States.PlayerPlacement;
 using RainesGames.Units.States;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RainesGames.Units
@@ -16,9 +17,53 @@ namespace RainesGames.Units
         public const string PLAYER_TAG = "Player";
         public const string ENEMY_TAG = "Enemy";
 
+        public static bool AllEnemyUnitsPlaced()
+        {
+            return AllUnitsPlaced(GetEnemyUnits());
+        }
+
+        public static bool AllPlayerUnitsPlaced()
+        {
+            return AllUnitsPlaced(GetPlayerUnits());
+        }
+
+        static bool AllUnitsPlaced(List<UnitController> units)
+        {
+            foreach(UnitController unit in units)
+            {
+                if(!unit.PositionManager.IsPlaced)
+                    return false;
+            }
+
+            return true;
+        }
+
         void Awake()
         {
             _units = FindObjectsOfType<UnitController>();
+        }
+
+        public static List<UnitController> GetEnemyUnits()
+        {
+            return GetUnitsWithTag(ENEMY_TAG);
+        }
+        
+        public static List<UnitController> GetPlayerUnits()
+        {
+            return GetUnitsWithTag(PLAYER_TAG);
+        }
+
+        static List<UnitController> GetUnitsWithTag(string tag)
+        {
+            List<UnitController> playerUnits = new List<UnitController>();
+
+            foreach(UnitController unit in _units)
+            {
+                if(unit.gameObject.CompareTag(tag))
+                    playerUnits.Add(unit);
+            }
+
+            return playerUnits;
         }
 
         void OnDisable()
@@ -40,7 +85,7 @@ namespace RainesGames.Units
             _activeUnit = unit;
         }
 
-        // TODO There may be a better way to do this, with events or something, and Unit states may not be needed at all
+        // TODO Handle setting all units to idle with an event or something
         void SetAllUnitsToIdle()
         {
             foreach(UnitController unit in _units)

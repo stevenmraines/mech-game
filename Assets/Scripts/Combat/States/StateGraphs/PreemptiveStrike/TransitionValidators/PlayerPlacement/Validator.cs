@@ -1,7 +1,6 @@
 ﻿using RainesGames.Combat.States.EnemyPlacement;
 using RainesGames.Common.States;
-using System;
-using UnityEngine;
+using RainesGames.Units;
 
 namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike.TransitionValidators.PlayerPlacement
 {
@@ -9,11 +8,7 @@ namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike.TransitionValid
     {
         public override bool ValidateTransition(CombatState state)
         {
-            Type stateType = state.GetType();
-
-            Debug.Log("Boo!");
-
-            if(stateType == typeof(EnemyPlacementState))
+            if(state.GetType() == typeof(EnemyPlacementState))
                 return EnemyPlacement();
 
             return false;
@@ -21,9 +16,7 @@ namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike.TransitionValid
 
         bool EnemyPlacement()
         {
-            Debug.Log("Yay!");
-            // TODO check if all player units have been placed
-            return true;
+            return UnitManager.AllPlayerUnitsPlaced();
         }
     }
 }

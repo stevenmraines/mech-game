@@ -21,7 +21,8 @@ namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike
             {
                 { _manager.BattleStart, new CombatState[] { _manager.PlayerPlacement } },
                 { _manager.PlayerPlacement, new CombatState[] { _manager.EnemyPlacement } },
-                { _manager.EnemyPlacement, new CombatState[] { _manager.PlayerTurn } }
+                { _manager.EnemyPlacement, new CombatState[] { _manager.PlayerTurn } },
+                { _manager.PlayerTurn, new CombatState[] { } }
             };
         }
 
@@ -35,6 +36,7 @@ namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike
 
             int numberOfNextStates = _stateGraph[_manager.CurrentState].Length;
 
+            // Return value of null indicates a "dead end" state like Player Won or Player Lost
             if(numberOfNextStates == 0)
                 return null;
 

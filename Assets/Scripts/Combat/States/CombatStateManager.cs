@@ -23,7 +23,6 @@ namespace RainesGames.Combat.States
         public void AttemptTransition()
         {
             CombatState nextState = _stateGraph.GetNextState();
-            Debug.Log(nextState);
 
             if(nextState == null)
                 return;
