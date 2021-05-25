@@ -23,23 +23,11 @@ namespace RainesGames.Combat.States.PlayerTurn
         {
             GridManager.EnableCellHighlight();
             GridManager.DisableTerritories();
-            StartCoroutine(TestThing());
         }
 
         public override void ExitState()
         {
             OnExitState?.Invoke();
-        }
-
-        IEnumerator TestThing()
-        {
-            HudUiController hud = FindObjectOfType<HudUiController>();
-
-            hud.EnablePlayerWonMessage();
-
-            yield return new WaitForSecondsRealtime(3);
-
-            hud.DisablePlayerWonMessage();
         }
 
         public override void UpdateState()

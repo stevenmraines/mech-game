@@ -1,0 +1,12 @@
+namespace RainesGames.Combat.States.###STATE_NAME###
+{
+    public class CellEventHandler : States.CellEventHandler
+    {
+        public CellEventHandler(###STATE_NAME###State ###STATE_NAME_CAMEL###State) : base(###STATE_NAME_CAMEL###State) {}
+
+        public override void OnCellClick(int cellIndex, int buttonIndex)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+}

@@ -1,0 +1,30 @@
+using UnityEngine;
+
+namespace RainesGames.Combat.States.###STATE_NAME###
+{
+    public class ###STATE_NAME###State : CombatState
+    {
+        protected override void Awake()
+        {
+            base.Awake();
+            ###CELL_EVENT_HANDLER_INIT###
+            ###UNIT_EVENT_HANDLER_INIT###
+            StateName = "###STATE_NAME_STRING###";
+        }
+
+        public override void EnterState()
+        {
+            
+        }
+
+        public override void ExitState()
+        {
+
+        }
+
+        public override void UpdateState()
+        {
+
+        }
+    }
+}
