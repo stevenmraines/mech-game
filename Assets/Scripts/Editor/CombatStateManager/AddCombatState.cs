@@ -247,8 +247,9 @@ public class AddCombatState : Editor
 
         string templatePath = TEMPLATE_BASE_PATH + "ValidatorTemplate.txt";
         string scriptPath = _scriptBasePath + "/StateGraphs/" + SubStringMinusFive(_stateGraph.Name) + "/TransitionValidators/" + _stateName + "/Validator.cs";
-        string transitionStateUsingPartial = "using RainesGames.Combat.States.###TRANSITION_STATE_NAME###;";
-        string transitionStateValidateCheckPartial = "if(state.GetType() == typeof(###TRANSITION_STATE_NAME###))\n\treturn ###TRANSITION_STATE_NAME_SUB###();";
+        string nl = Environment.NewLine;
+        string transitionStateUsingPartial = "using RainesGames.Combat.States.###TRANSITION_STATE_NAME_SUB###;";
+        string transitionStateValidateCheckPartial = "if(state.GetType() == typeof(###TRANSITION_STATE_NAME###))" + nl + "\t\t\t\treturn ###TRANSITION_STATE_NAME_SUB###();";
         string transitionStateValidatePartial = "bool ###TRANSITION_STATE_NAME_SUB###() { return true; }";
         Dictionary<string, Dictionary<string, string>> transitionStates = GetTransitionStateStrings();
 
@@ -287,7 +288,7 @@ public class AddCombatState : Editor
                 multiReplacement = multiReplacement.Replace(flagReplacementPair.Key, flagReplacementPair.Value);
 
             if(i < replacementData.Count - 1)
-                multiReplacement += "\n" + partial;
+                multiReplacement += Environment.NewLine + partial;
 
             i++;
         }
