@@ -184,7 +184,9 @@ public class AddCombatState : Editor
 
         StreamWriter writer = new StreamWriter(scriptPath);
         writer.Write(contents);
+        writer.Close();
 
+        AssetDatabase.ImportAsset(scriptPath);
         AssetDatabase.Refresh();
     }
 
@@ -238,13 +240,13 @@ public class AddCombatState : Editor
         if(!_createValidators)
             return;
 
-        string validatorPath = _scriptBasePath + "/StateGraphs/" + _stateGraph.Name + "/TransitionValidators";
+        string validatorPath = _scriptBasePath + "/StateGraphs/" + SubStringMinusFive(_stateGraph.Name) + "/TransitionValidators";
 
         if(AssetDatabase.CreateFolder(validatorPath, _stateName) == "")
-            throw new DirectoryNotFoundException("Could not create directory " + validatorPath + _stateName);
+            throw new DirectoryNotFoundException("Could not create directory " + validatorPath + "/" + _stateName);
 
         string templatePath = TEMPLATE_BASE_PATH + "ValidatorTemplate.txt";
-        string scriptPath = _scriptBasePath + "StateGraphs/" + _stateGraph.Name + "/TransitionValidators/" + _stateName + "/Validator.cs";
+        string scriptPath = _scriptBasePath + "/StateGraphs/" + SubStringMinusFive(_stateGraph.Name) + "/TransitionValidators/" + _stateName + "/Validator.cs";
         string transitionStateUsingPartial = "using RainesGames.Combat.States.###TRANSITION_STATE_NAME###;";
         string transitionStateValidateCheckPartial = "if(state.GetType() == typeof(###TRANSITION_STATE_NAME###))\n\treturn ###TRANSITION_STATE_NAME_SUB###();";
         string transitionStateValidatePartial = "bool ###TRANSITION_STATE_NAME_SUB###() { return true; }";
@@ -259,7 +261,7 @@ public class AddCombatState : Editor
         foreach(KeyValuePair<string, Dictionary<string, string>> transitionState in transitionStates)
         {
             transitionState.Value.Add(TRANSITION_STATE_NAME_FLAG, transitionState.Key);
-            transitionState.Value.Add(TRANSITION_STATE_NAME_SUB_FLAG, GetStateNameSubString(transitionState.Key));
+            transitionState.Value.Add(TRANSITION_STATE_NAME_SUB_FLAG, SubStringMinusFive(transitionState.Key));
         }
 
         string replacement = GetMultiReplacement(transitionStateUsingPartial, transitionStates);
@@ -293,7 +295,7 @@ public class AddCombatState : Editor
         return multiReplacement;
     }
 
-    string GetStateNameSubString(string stateName)
+    string SubStringMinusFive(string stateName)
     {
         return stateName.Substring(0, stateName.Length - 5);
     }
