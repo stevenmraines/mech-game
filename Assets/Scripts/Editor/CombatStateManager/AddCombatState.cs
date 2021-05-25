@@ -53,7 +53,7 @@ public class AddCombatState : Editor
             { manager.PlayerTurn.GetType(), false }
         };
 
-        _scriptBasePath = Application.dataPath + "/Scripts/Combat/States/";
+        _scriptBasePath = "Assets/Scripts/Combat/States";
     }
 
     public override void OnInspectorGUI()
@@ -190,11 +190,11 @@ public class AddCombatState : Editor
 
     void WriteState()
     {
-        if(AssetDatabase.CreateFolder(_scriptBasePath, GetStateNameSubString(_stateName)) == "")
-            throw new DirectoryNotFoundException("Could not create state directory");
+        if(AssetDatabase.CreateFolder(_scriptBasePath, _stateName) == "")
+            throw new DirectoryNotFoundException("Could not create directory " + _scriptBasePath + _stateName);
 
         string templatePath = TEMPLATE_BASE_PATH + "StateTemplate.txt";
-        string scriptPath = _scriptBasePath + _stateName + "/" + _stateName + "State.cs";
+        string scriptPath = _scriptBasePath + "/" + _stateName + "/" + _stateName + "State.cs";
         
         Dictionary<string, string> replacements = new Dictionary<string, string>()
         {
@@ -210,7 +210,7 @@ public class AddCombatState : Editor
     void WriteEventHandler(string filename)
     {
         string templatePath = TEMPLATE_BASE_PATH + filename + "Template.txt";
-        string scriptPath = _scriptBasePath + _stateName + "/" + filename + ".cs";
+        string scriptPath = _scriptBasePath + "/" + _stateName + "/" + filename + ".cs";
 
         Dictionary<string, string> replacements = new Dictionary<string, string>()
         {
@@ -238,10 +238,10 @@ public class AddCombatState : Editor
         if(!_createValidators)
             return;
 
-        string validatorPath = _scriptBasePath +"StateGraphs/" + _stateGraph.Name + "/TransitionValidators/";
+        string validatorPath = _scriptBasePath + "/StateGraphs/" + _stateGraph.Name + "/TransitionValidators";
 
-        if(AssetDatabase.CreateFolder(validatorPath, GetStateNameSubString(_stateName)) == "")
-            throw new DirectoryNotFoundException("Could not create validator directory");
+        if(AssetDatabase.CreateFolder(validatorPath, _stateName) == "")
+            throw new DirectoryNotFoundException("Could not create directory " + validatorPath + _stateName);
 
         string templatePath = TEMPLATE_BASE_PATH + "ValidatorTemplate.txt";
         string scriptPath = _scriptBasePath + "StateGraphs/" + _stateGraph.Name + "/TransitionValidators/" + _stateName + "/Validator.cs";
