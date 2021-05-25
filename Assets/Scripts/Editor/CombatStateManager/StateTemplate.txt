@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace RainesGames.Combat.States.###STATE_NAME###
 {
     public class ###STATE_NAME###State : CombatState

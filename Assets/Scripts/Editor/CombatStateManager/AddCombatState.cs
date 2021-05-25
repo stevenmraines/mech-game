@@ -120,18 +120,12 @@ public class AddCombatState : Editor
 
     void OnSubmit()
     {
-        Debug.Log(_stateName);
-        Debug.Log("Cell events: " + _createCellEventHandlers);
-        Debug.Log("Unit events: " + _createUnitEventHandlers);
-        Debug.Log("Validators: " + _createValidators);
-
-        foreach(KeyValuePair<Type, bool> keyValuePair in _validatorStateToggles)
-            Debug.Log(keyValuePair.Key + ": " + keyValuePair.Value);
-
         WriteState();
         WriteCellEventHandler();
         WriteUnitEventHandler();
         WriteValidator();
+
+        Debug.Log("Created state " + _stateName);
     }
 
     string ToCamel(string s)
@@ -249,8 +243,8 @@ public class AddCombatState : Editor
         string scriptPath = _scriptBasePath + "/StateGraphs/" + SubStringMinusFive(_stateGraph.Name) + "/TransitionValidators/" + _stateName + "/Validator.cs";
         string nl = Environment.NewLine;
         string transitionStateUsingPartial = "using RainesGames.Combat.States.###TRANSITION_STATE_NAME_SUB###;";
-        string transitionStateValidateCheckPartial = "if(state.GetType() == typeof(###TRANSITION_STATE_NAME###))" + nl + "\t\t\t\treturn ###TRANSITION_STATE_NAME_SUB###();";
-        string transitionStateValidatePartial = "bool ###TRANSITION_STATE_NAME_SUB###() { return true; }";
+        string transitionStateValidateCheckPartial = "\t\t\tif(state.GetType() == typeof(###TRANSITION_STATE_NAME###))" + nl + "\t\t\t\treturn ###TRANSITION_STATE_NAME_SUB###();" + nl;
+        string transitionStateValidatePartial = "\t\tbool ###TRANSITION_STATE_NAME_SUB###() { return true; }";
         Dictionary<string, Dictionary<string, string>> transitionStates = GetTransitionStateStrings();
 
         Dictionary<string, string> replacements = new Dictionary<string, string>()

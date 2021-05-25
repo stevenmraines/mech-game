@@ -1,6 +1,5 @@
 ###TRANSITION_STATE_USING###
 using RainesGames.Common.States;
-using RainesGames.Units;
 
 namespace RainesGames.Combat.States.StateGraphs.###STATE_GRAPH_NAME###.TransitionValidators.###STATE_NAME###
 {
@@ -8,11 +7,10 @@ namespace RainesGames.Combat.States.StateGraphs.###STATE_GRAPH_NAME###.Transitio
     {
         public override bool ValidateTransition(CombatState state)
         {
-            ###TRANSITION_STATE_VALIDATE_CHECK###
-
+###TRANSITION_STATE_VALIDATE_CHECK###
             return false;
         }
 
-        ###TRANSITION_STATE_VALIDATE###
+###TRANSITION_STATE_VALIDATE###
     }
 }
