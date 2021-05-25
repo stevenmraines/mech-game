@@ -17,7 +17,7 @@ public class AddCombatState : Editor
     Type _stateGraph = typeof(PreemptiveStrikeGraph);  // Hardcoded for now, until new graphs are added
     Type[] _validatorStates;
     Dictionary<Type, bool> _validatorStateToggles;
-    string _scriptBasePath = Application.dataPath + "/Scripts/Combat/States/";
+    string _scriptBasePath;
 
     const string TEMPLATE_BASE_PATH = "Assets/Scripts/Editor/CombatStateManager/";
 
@@ -52,6 +52,8 @@ public class AddCombatState : Editor
             { manager.EnemyPlacement.GetType(), false },
             { manager.PlayerTurn.GetType(), false }
         };
+
+        _scriptBasePath = Application.dataPath + "/Scripts/Combat/States/";
     }
 
     public override void OnInspectorGUI()
@@ -124,9 +126,7 @@ public class AddCombatState : Editor
         Debug.Log("Validators: " + _createValidators);
 
         foreach(KeyValuePair<Type, bool> keyValuePair in _validatorStateToggles)
-        {
             Debug.Log(keyValuePair.Key + ": " + keyValuePair.Value);
-        }
 
         WriteState();
         WriteCellEventHandler();
@@ -146,31 +146,25 @@ public class AddCombatState : Editor
         foreach(char c in s)
         {
             if(Char.IsUpper(c))
-            {
                 stringBuilder.Append(" ");
-            }
 
             stringBuilder.Append(c);
         }
 
         if(s != null && s.Length > 0 && Char.IsUpper(s[0]))
-        {
             stringBuilder.Remove(0, 1);
-        }
 
         return stringBuilder.ToString();
     }
 
-    List<string> GetTransitionStateStrings()
+    Dictionary<string, Dictionary<string, string>> GetTransitionStateStrings()
     {
-        List<string> transitionStates = new List<string>();
+        Dictionary<string, Dictionary<string, string>> transitionStates = new Dictionary<string, Dictionary<string, string>>();
 
-        foreach(KeyValuePair<Type, bool> keyValuePair in _validatorStateToggles)
+        foreach(KeyValuePair<Type, bool> transitionStateBool in _validatorStateToggles)
         {
-            if(keyValuePair.Value)
-            {
-                transitionStates.Add(keyValuePair.Key.Name);
-            }
+            if(transitionStateBool.Value)
+                transitionStates.Add(transitionStateBool.Key.Name, new Dictionary<string, string>());
         }
 
         return transitionStates;
@@ -186,9 +180,7 @@ public class AddCombatState : Editor
         string contents = template.text;
 
         foreach(KeyValuePair<string, string> replacement in replacements)
-        {
             contents = contents.Replace(replacement.Key, replacement.Value);
-        }
 
         StreamWriter writer = new StreamWriter(scriptPath);
         writer.Write(contents);
@@ -198,6 +190,9 @@ public class AddCombatState : Editor
 
     void WriteState()
     {
+        if(AssetDatabase.CreateFolder(_scriptBasePath, GetStateNameSubString(_stateName)) == "")
+            throw new DirectoryNotFoundException("Could not create state directory");
+
         string templatePath = TEMPLATE_BASE_PATH + "StateTemplate.txt";
         string scriptPath = _scriptBasePath + _stateName + "/" + _stateName + "State.cs";
         
@@ -243,12 +238,17 @@ public class AddCombatState : Editor
         if(!_createValidators)
             return;
 
+        string validatorPath = _scriptBasePath +"StateGraphs/" + _stateGraph.Name + "/TransitionValidators/";
+
+        if(AssetDatabase.CreateFolder(validatorPath, GetStateNameSubString(_stateName)) == "")
+            throw new DirectoryNotFoundException("Could not create validator directory");
+
         string templatePath = TEMPLATE_BASE_PATH + "ValidatorTemplate.txt";
         string scriptPath = _scriptBasePath + "StateGraphs/" + _stateGraph.Name + "/TransitionValidators/" + _stateName + "/Validator.cs";
         string transitionStateUsingPartial = "using RainesGames.Combat.States.###TRANSITION_STATE_NAME###;";
         string transitionStateValidateCheckPartial = "if(state.GetType() == typeof(###TRANSITION_STATE_NAME###))\n\treturn ###TRANSITION_STATE_NAME_SUB###();";
         string transitionStateValidatePartial = "bool ###TRANSITION_STATE_NAME_SUB###() { return true; }";
-        List<string> transitionStates = GetTransitionStateStrings();
+        Dictionary<string, Dictionary<string, string>> transitionStates = GetTransitionStateStrings();
 
         Dictionary<string, string> replacements = new Dictionary<string, string>()
         {
@@ -256,51 +256,45 @@ public class AddCombatState : Editor
             { STATE_NAME_FLAG, _stateName }
         };
 
-        string replacement = GetMultiReplace(
-            transitionStateUsingPartial,
-            new List<string>() { TRANSITION_STATE_NAME_FLAG },
-            transitionStates
-        );
+        foreach(KeyValuePair<string, Dictionary<string, string>> transitionState in transitionStates)
+        {
+            transitionState.Value.Add(TRANSITION_STATE_NAME_FLAG, transitionState.Key);
+            transitionState.Value.Add(TRANSITION_STATE_NAME_SUB_FLAG, GetStateNameSubString(transitionState.Key));
+        }
 
+        string replacement = GetMultiReplacement(transitionStateUsingPartial, transitionStates);
         replacements.Add(TRANSITION_STATE_USING_FLAG, replacement);
 
-        replacement = GetMultiReplace(
-            transitionStateValidateCheckPartial,
-            new List<string>() { TRANSITION_STATE_NAME_FLAG, TRANSITION_STATE_NAME_SUB_FLAG },
-            transitionStates
-        );
-
+        replacement = GetMultiReplacement(transitionStateValidateCheckPartial, transitionStates);
         replacements.Add(TRANSITION_STATE_VALIDATE_CHECK_FLAG, replacement);
 
-        replacement = GetMultiReplace(
-            transitionStateValidatePartial,
-            new List<string>() { TRANSITION_STATE_NAME_SUB_FLAG },
-            transitionStates
-        );
-
+        replacement = GetMultiReplacement(transitionStateValidatePartial, transitionStates);
         replacements.Add(TRANSITION_STATE_VALIDATE_FLAG, replacement);
-
-        //string transitionStateNameSubReplace = transitionStates[i].Substring(0, transitionStates[i].Length - 5);
 
         WriteFile(templatePath, scriptPath, replacements);
     }
 
-    string GetMultiReplace(string partial, List<string> flags, List<string> replacements)
+    string GetMultiReplacement(string partial, Dictionary<string, Dictionary<string, string>> replacementData)
     {
-        string replacement = partial;
+        string multiReplacement = partial;
+        int i = 0;
 
-        for(int i = 0; i < replacements.Count; i++)
+        foreach(KeyValuePair<string, Dictionary<string, string>> stateFlagAndReplacement in replacementData)
         {
-            // TODO replacements may need to be a dictionary mapping each flag to it's corresponding replacement
-            foreach(string flag in flags)
-                replacement = replacement.Replace(flag, replacements[i]);
+            foreach(KeyValuePair<string, string> flagReplacementPair in stateFlagAndReplacement.Value)
+                multiReplacement = multiReplacement.Replace(flagReplacementPair.Key, flagReplacementPair.Value);
 
-            if(i < replacements.Count - 1)
-            {
-                replacement += "\n" + partial;
-            }
+            if(i < replacementData.Count - 1)
+                multiReplacement += "\n" + partial;
+
+            i++;
         }
 
-        return replacement;
+        return multiReplacement;
+    }
+
+    string GetStateNameSubString(string stateName)
+    {
+        return stateName.Substring(0, stateName.Length - 5);
     }
 }
