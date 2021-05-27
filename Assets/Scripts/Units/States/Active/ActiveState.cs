@@ -8,22 +8,24 @@
         public override void Awake()
         {
             base.Awake();
-            StateName = "Active";
+            _stateName = "Active";
         }
 
         public override void EnterState()
         {
+            base.EnterState();
             OnEnterState?.Invoke(Manager.Controller);
         }
 
         public override void ExitState()
         {
-
+            base.ExitState();
         }
 
         public override void UpdateState()
         {
-
+            if(!_entered)
+                return;
         }
     }
 }

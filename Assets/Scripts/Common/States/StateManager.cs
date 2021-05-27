@@ -5,7 +5,7 @@ namespace RainesGames.Common.States
     public abstract class StateManager<TState> : MonoBehaviour where TState : State
     {
         protected TState _current;
-        public TState CurrentState { get => _current; }
+        public TState CurrentState => _current;
 
         public virtual void TransitionToState(TState state)
         {
@@ -18,6 +18,9 @@ namespace RainesGames.Common.States
 
         protected virtual void Update()
         {
+            if(!_current.Entered)
+                return;
+
             _current.UpdateState();
         }
     }

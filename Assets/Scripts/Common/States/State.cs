@@ -4,10 +4,22 @@ namespace RainesGames.Common.States
 {
     public abstract class State : MonoBehaviour
     {
-        public string StateName { get; set; }
+        protected bool _entered = false;
+        public bool Entered => _entered;
 
-        public abstract void EnterState();
-        public abstract void ExitState();
+        protected string _stateName;
+        public string StateName => _stateName;
+
+        public virtual void EnterState()
+        {
+            _entered = true;
+        }
+
+        public virtual void ExitState()
+        {
+            _entered = false;
+        }
+
         public abstract void UpdateState();
     }
 }

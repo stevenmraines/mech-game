@@ -8,22 +8,24 @@ namespace RainesGames.Combat.States.EnemyTurn
         protected override void Awake()
         {
             base.Awake();
-            StateName = "Enemy Turn";
+            _stateName = "Enemy Turn";
         }
 
         public override void EnterState()
         {
+            base.EnterState();
             OnEnterState?.Invoke();
         }
 
         public override void ExitState()
         {
-
+            base.ExitState();
         }
 
         public override void UpdateState()
         {
-
+            if(!_entered)
+                return;
         }
     }
 }

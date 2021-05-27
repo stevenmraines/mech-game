@@ -13,22 +13,27 @@ namespace RainesGames.Combat.States.EnemyPlacement
             base.Awake();
             CellEventHandler = new CellEventHandler(this);
             UnitEventHandler = new UnitEventHandler(this);
-            StateName = "Enemy Unit Placement";
+            _stateName = "Enemy Unit Placement";
         }
 
         public override void EnterState()
         {
+            base.EnterState();
             GridManager.EnableCellHighlight();
             GridManager.EnableTerritories();
         }
 
         public override void ExitState()
         {
+            base.ExitState();
             OnExitState?.Invoke();
         }
 
         public override void UpdateState()
         {
+            if(!_entered)
+                return;
+
             UnitSelectionManager.UpdateSelection();
         }
     }

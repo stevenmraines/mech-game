@@ -14,11 +14,12 @@ namespace RainesGames.Combat.States.PlayerTurn
             base.Awake();
             CellEventHandler = new CellEventHandler(this);
             UnitEventHandler = new UnitEventHandler(this);
-            StateName = "Player Turn";
+            _stateName = "Player Turn";
         }
 
         public override void EnterState()
         {
+            base.EnterState();
             OnEnterState?.Invoke();
             GridManager.EnableCellHighlight();
             GridManager.DisableTerritories();
@@ -26,11 +27,15 @@ namespace RainesGames.Combat.States.PlayerTurn
 
         public override void ExitState()
         {
+            base.ExitState();
             OnExitState?.Invoke();
         }
 
         public override void UpdateState()
         {
+            if(!_entered)
+                return;
+
             UnitSelectionManager.UpdateSelection();
         }
     }

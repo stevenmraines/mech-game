@@ -5,22 +5,23 @@
         public override void Awake()
         {
             base.Awake();
-            StateName = "Idle";
+            _stateName = "Idle";
         }
 
         public override void EnterState()
         {
-
+            base.EnterState();
         }
 
         public override void ExitState()
         {
-
+            base.ExitState();
         }
 
         public override void UpdateState()
         {
-
+            if(!_entered)
+                return;
         }
     }
 }

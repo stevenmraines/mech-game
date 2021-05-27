@@ -5,22 +5,23 @@ namespace RainesGames.Combat.States.PlayerLost
         protected override void Awake()
         {
             base.Awake();
-            StateName = "Player Lost";
+            _stateName = "Player Lost";
         }
 
         public override void EnterState()
         {
-            
+            base.EnterState();
         }
 
         public override void ExitState()
         {
-
+            base.ExitState();
         }
 
         public override void UpdateState()
         {
-
+            if(!_entered)
+                return;
         }
     }
 }

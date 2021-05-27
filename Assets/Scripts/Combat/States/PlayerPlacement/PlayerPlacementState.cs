@@ -13,22 +13,27 @@ namespace RainesGames.Combat.States.PlayerPlacement
             base.Awake();
             CellEventHandler = new CellEventHandler(this);
             UnitEventHandler = new UnitEventHandler(this);
-            StateName = "Player Unit Placement";
+            _stateName = "Player Unit Placement";
         }
 
         public override void EnterState()
         {
+            base.EnterState();
             GridManager.EnableCellHighlight();
             GridManager.EnableTerritories();
         }
 
         public override void ExitState()
         {
+            base.ExitState();
             OnExitState?.Invoke();
         }
 
         public override void UpdateState()
         {
+            if(!_entered)
+                return;
+
             UnitSelectionManager.UpdateSelection();
         }
     }

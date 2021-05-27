@@ -12,18 +12,19 @@ namespace RainesGames.Combat.States.BattleStart
             base.Awake();
             CellEventHandler = new CellEventHandler(this);
             UnitEventHandler = new UnitEventHandler(this);
-            StateName = "Battle Start";
+            _stateName = "Battle Start";
         }
 
         public override void EnterState()
         {
+            base.EnterState();
             GridManager.DisableCellHighlight();
             StartCoroutine(ShowBattleStartMessage());
         }
 
         public override void ExitState()
         {
-
+            base.ExitState();
         }
 
         IEnumerator ShowBattleStartMessage()
@@ -40,7 +41,8 @@ namespace RainesGames.Combat.States.BattleStart
 
         public override void UpdateState()
         {
-
+            if(!_entered)
+                return;
         }
     }
 }
