@@ -7,17 +7,17 @@ namespace RainesGames.Combat.States.###STATE_NAME###
             base.Awake();
             ###CELL_EVENT_HANDLER_INIT###
             ###UNIT_EVENT_HANDLER_INIT###
-            StateName = "###STATE_NAME_STRING###";
+            _stateName = "###STATE_NAME_STRING###";
         }
 
         public override void EnterState()
         {
-            
+            base.EnterState();
         }
 
         public override void ExitState()
         {
-
+            base.ExitState();
         }
 
         public override void UpdateState()

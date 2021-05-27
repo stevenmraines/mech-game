@@ -20,8 +20,7 @@ namespace RainesGames.Combat.States.PlayerLost
 
         public override void UpdateState()
         {
-            if(!_entered)
-                return;
+            
         }
     }
 }

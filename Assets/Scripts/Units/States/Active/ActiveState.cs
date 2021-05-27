@@ -24,8 +24,7 @@
 
         public override void UpdateState()
         {
-            if(!_entered)
-                return;
+            
         }
     }
 }

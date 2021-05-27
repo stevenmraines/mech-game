@@ -33,9 +33,6 @@ namespace RainesGames.Combat.States.PlayerTurn
 
         public override void UpdateState()
         {
-            if(!_entered)
-                return;
-
             UnitSelectionManager.UpdateSelection();
         }
     }

@@ -24,8 +24,7 @@ namespace RainesGames.Combat.States.EnemyTurn
 
         public override void UpdateState()
         {
-            if(!_entered)
-                return;
+            
         }
     }
 }

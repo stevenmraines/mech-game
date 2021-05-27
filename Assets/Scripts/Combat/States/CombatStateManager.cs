@@ -86,7 +86,7 @@ namespace RainesGames.Combat.States
 
             // TODO this will likely need to be triggered by an event once the game is more built out, leave here for now
             if(_current != BattleStart && _current != EnemyPlacement && _current != PlayerPlacement)
-                AttemptTransition();  // Is this making the state's Update method get called BEFORE EnterState is called, causing ActionPoints to not be reset in time?
+                AttemptTransition();
         }
     }
 }
