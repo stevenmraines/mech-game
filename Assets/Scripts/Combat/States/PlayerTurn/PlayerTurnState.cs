@@ -1,14 +1,12 @@
 ﻿using RainesGames.Grid;
-using RainesGames.UI;
 using RainesGames.Units.Selection;
-using System.Collections;
-using UnityEngine;
 
 namespace RainesGames.Combat.States.PlayerTurn
 {
     public class PlayerTurnState : CombatState
     {
         public delegate void StateTransitionDelegate();
+        public static event StateTransitionDelegate OnEnterState;
         public static event StateTransitionDelegate OnExitState;
 
         protected override void Awake()
@@ -21,6 +19,7 @@ namespace RainesGames.Combat.States.PlayerTurn
 
         public override void EnterState()
         {
+            OnEnterState?.Invoke();
             GridManager.EnableCellHighlight();
             GridManager.DisableTerritories();
         }

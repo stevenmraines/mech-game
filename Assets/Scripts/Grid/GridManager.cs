@@ -3,10 +3,12 @@ using UnityEngine;
 
 namespace RainesGames.Grid
 {
+    [RequireComponent(typeof(TerrainGridSystem))]
+    // TODO RequireComponent GridSelectionManager?
     public class GridManager : MonoBehaviour
     {
         private static TerrainGridSystem _terrainGridSystem;
-        public static TerrainGridSystem TerrainGridSystem { get => _terrainGridSystem; }
+        public static TerrainGridSystem TerrainGridSystem => _terrainGridSystem;
 
         void Awake()
         {

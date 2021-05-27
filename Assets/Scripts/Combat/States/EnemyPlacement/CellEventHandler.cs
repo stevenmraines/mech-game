@@ -12,7 +12,7 @@ namespace RainesGames.Combat.States.EnemyPlacement
             if(UnitManager.ActiveUnit == null)
                 return;
 
-            UnitManager.ActiveUnit.PositionManager.SetCell(GridManager.GetCell(cellIndex));
+            UnitManager.ActiveUnit.PositionManager.PlaceUnit(GridManager.GetCell(cellIndex));
 
             _state.Manager.AttemptTransition();
         }

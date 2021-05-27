@@ -1,19 +1,32 @@
 ﻿using RainesGames.Combat.States.BattleStart;
 using RainesGames.Combat.States.EnemyPlacement;
+using RainesGames.Combat.States.EnemyTurn;
+using RainesGames.Combat.States.PlayerLost;
 using RainesGames.Combat.States.PlayerPlacement;
 using RainesGames.Combat.States.PlayerTurn;
+using RainesGames.Combat.States.PlayerWon;
 using RainesGames.Combat.States.StateGraphs.PreemptiveStrike;
 using RainesGames.Common.States;
 using UnityEngine;
 
 namespace RainesGames.Combat.States
 {
+    [RequireComponent(typeof(BattleStartState))]
+    [RequireComponent(typeof(EnemyPlacementState))]
+    [RequireComponent(typeof(EnemyTurnState))]
+    [RequireComponent(typeof(PlayerLostState))]
+    [RequireComponent(typeof(PlayerPlacementState))]
+    [RequireComponent(typeof(PlayerTurnState))]
+    [RequireComponent(typeof(PlayerWonState))]
     public class CombatStateManager : StateManager<CombatState>
     {
-        [SerializeField] public BattleStartState BattleStart;
-        [SerializeField] public PlayerPlacementState PlayerPlacement;
-        [SerializeField] public EnemyPlacementState EnemyPlacement;
-        [SerializeField] public PlayerTurnState PlayerTurn;
+        [HideInInspector] public BattleStartState BattleStart;
+        [HideInInspector] public EnemyPlacementState EnemyPlacement;
+        [HideInInspector] public EnemyTurnState EnemyTurn;
+        [HideInInspector] public PlayerLostState PlayerLost;
+        [HideInInspector] public PlayerPlacementState PlayerPlacement;
+        [HideInInspector] public PlayerTurnState PlayerTurn;
+        [HideInInspector] public PlayerWonState PlayerWon;
 
         private PreemptiveStrikeGraph _stateGraph;
 
@@ -24,6 +37,7 @@ namespace RainesGames.Combat.States
         {
             CombatState nextState = _stateGraph.GetNextState();
 
+            // Game over state
             if(nextState == null)
                 return;
 
@@ -32,6 +46,14 @@ namespace RainesGames.Combat.States
 
         void Awake()
         {
+            BattleStart = GetComponent<BattleStartState>();
+            EnemyPlacement = GetComponent<EnemyPlacementState>();
+            EnemyTurn = GetComponent<EnemyTurnState>();
+            PlayerLost = GetComponent<PlayerLostState>();
+            PlayerPlacement = GetComponent<PlayerPlacementState>();
+            PlayerTurn = GetComponent<PlayerTurnState>();
+            PlayerWon = GetComponent<PlayerWonState>();
+
             _stateGraph = new PreemptiveStrikeGraph(this);
             _cellEventDispatcher = new CellEventDispatcher(this);
             _unitEventDispatcher = new UnitEventDispatcher(this);
@@ -53,10 +75,18 @@ namespace RainesGames.Combat.States
         {
             /*
              * Move this to Start instead of Awake because there's a race condition
-             * happening when CombatStartState Awake is called after EnterState.
+             * happening when CombatStartState Awake is called after its EnterState.
              */
-            //TransitionToState(BattleStart);
             AttemptTransition();
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+
+            // TODO this will likely need to be triggered by an event once the game is more built out, leave here for now
+            if(_current != BattleStart && _current != EnemyPlacement && _current != PlayerPlacement)
+                AttemptTransition();  // Is this making the state's Update method get called BEFORE EnterState is called, causing ActionPoints to not be reset in time?
         }
     }
 }

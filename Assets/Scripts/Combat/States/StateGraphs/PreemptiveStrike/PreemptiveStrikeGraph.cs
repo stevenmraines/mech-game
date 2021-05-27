@@ -22,7 +22,8 @@ namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike
                 { _manager.BattleStart, new CombatState[] { _manager.PlayerPlacement } },
                 { _manager.PlayerPlacement, new CombatState[] { _manager.EnemyPlacement } },
                 { _manager.EnemyPlacement, new CombatState[] { _manager.PlayerTurn } },
-                { _manager.PlayerTurn, new CombatState[] { } }
+                { _manager.PlayerTurn, new CombatState[] { _manager.EnemyTurn } },
+                { _manager.EnemyTurn, new CombatState[] { _manager.PlayerTurn } }
             };
         }
 

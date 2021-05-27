@@ -4,19 +4,19 @@ using UnityEngine;
 
 namespace RainesGames.Units
 {
-    public class UnitPositionManager : MonoBehaviour
+    public class UnitPositionManager
     {
-        private UnitController _controller;
-        public UnitController Controller { get => _controller; }
-
         private Cell _cell;
-        public Cell Cell { get => _cell; }
+        public Cell Cell => _cell;
+
+        private UnitController _controller;
+        public UnitController Controller => _controller;
 
         public bool IsPlaced => _cell != null;
 
-        void Awake()
+        public UnitPositionManager(UnitController controller)
         {
-            _controller = GetComponent<UnitController>();
+            _controller = controller;
         }
 
         void MoveUnitToCellCenter()
@@ -30,10 +30,15 @@ namespace RainesGames.Units
             );
         }
 
+        public void PlaceUnit(Cell cell)
+        {
+            SetCell(cell);
+            MoveUnitToCellCenter();
+        }
+
         public void SetCell(Cell cell)
         {
             _cell = cell;
-            MoveUnitToCellCenter();
         }
     }
 }

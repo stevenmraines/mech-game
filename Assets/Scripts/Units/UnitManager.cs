@@ -1,21 +1,45 @@
 ﻿using RainesGames.Combat.States.EnemyPlacement;
+using RainesGames.Combat.States.EnemyTurn;
 using RainesGames.Combat.States.PlayerPlacement;
+using RainesGames.Combat.States.PlayerTurn;
 using RainesGames.Units.States;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace RainesGames.Units
 {
+    // TODO RequireComponent UnitSelectionManager?
     public class UnitManager : MonoBehaviour
     {
-        private static UnitController[] _units;
-        public static UnitController[] Units { get => _units; }
-
         private static UnitController _activeUnit;
-        public static UnitController ActiveUnit { get => _activeUnit; }
+        public static UnitController ActiveUnit => _activeUnit;
 
-        public const string PLAYER_TAG = "Player";
+        private static UnitController[] _units;
+        public static UnitController[] Units => _units;
+
         public const string ENEMY_TAG = "Enemy";
+        public const string PLAYER_TAG = "Player";
+
+        static bool AllActionPointsSpent(List<UnitController> units)
+        {
+            foreach(UnitController unit in units)
+            {
+                if(unit.ActionPointsManager.ActionPoints > 0)
+                    return false;
+            }
+
+            return true;
+        }
+
+        public static bool AllEnemyActionPointsSpent()
+        {
+            return AllActionPointsSpent(GetEnemyUnits());
+        }
+        
+        public static bool AllPlayerActionPointsSpent()
+        {
+            return AllActionPointsSpent(GetPlayerUnits());
+        }
 
         public static bool AllEnemyUnitsPlaced()
         {
@@ -69,31 +93,45 @@ namespace RainesGames.Units
         void OnDisable()
         {
             ActiveState.OnEnterState -= SetActiveUnit;
-            EnemyPlacementState.OnExitState -= SetAllUnitsToIdle;
-            PlayerPlacementState.OnExitState -= SetAllUnitsToIdle;
+            EnemyTurnState.OnEnterState -= ResetAllEnemyActionPoints;
+            PlayerTurnState.OnEnterState -= ResetAllPlayerActionPoints;
+            EnemyPlacementState.OnExitState -= ResetActiveUnit;
+            PlayerPlacementState.OnExitState -= ResetActiveUnit;
         }
 
         void OnEnable()
         {
             ActiveState.OnEnterState += SetActiveUnit;
-            EnemyPlacementState.OnExitState += SetAllUnitsToIdle;
-            PlayerPlacementState.OnExitState += SetAllUnitsToIdle;
+            EnemyTurnState.OnEnterState += ResetAllEnemyActionPoints;
+            PlayerTurnState.OnEnterState += ResetAllPlayerActionPoints;
+            EnemyPlacementState.OnExitState += ResetActiveUnit;
+            PlayerPlacementState.OnExitState += ResetActiveUnit;
+        }
+
+        void ResetActiveUnit()
+        {
+            SetActiveUnit(null);
+        }
+
+        public static void ResetAllEnemyActionPoints()
+        {
+            ResetAllUnitActionPoints(GetEnemyUnits());
+        }
+
+        public static void ResetAllPlayerActionPoints()
+        {
+            ResetAllUnitActionPoints(GetPlayerUnits());
+        }
+
+        static void ResetAllUnitActionPoints(List<UnitController> units)
+        {
+            foreach(UnitController unit in units)
+                unit.ActionPointsManager.ResetActionPoints();
         }
 
         void SetActiveUnit(UnitController unit)
         {
             _activeUnit = unit;
-        }
-
-        // TODO Handle setting all units to idle with an event or something
-        void SetAllUnitsToIdle()
-        {
-            foreach(UnitController unit in _units)
-            {
-                unit.StateManager.TransitionToState(unit.StateManager.Idle);
-            }
-
-            SetActiveUnit(null);
         }
     }
 }

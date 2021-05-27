@@ -1,5 +1,7 @@
 ﻿using RainesGames.Combat.States;
+using RainesGames.Units;
 using RainesGames.Units.Selection;
+using RainesGames.Units.States;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -43,15 +45,15 @@ namespace RainesGames.UI
 
             for(int i = 0; i < selectables.Count; i++)
             {
-                string unitString = selectables[i].name;
+                string unitString = selectables[i].name;  // + " (" + unit.ActionPointsManager.ActionPoints + ")";
 
-                if(UnitSelectionManager.CurrentSelection == selectables[i])
-                    unitString += " - HOVERED";
-
-                Units.States.UnitStateManager stateManager = selectables[i].GetComponent<Units.States.UnitStateManager>();
+                UnitStateManager stateManager = selectables[i].GetComponent<UnitStateManager>();
 
                 if(stateManager.CurrentState == stateManager.Active)
                     unitString += " - ACTIVE";
+
+                if(UnitSelectionManager.CurrentSelection == selectables[i])
+                    unitString += " - HOVERED";
 
                 GUI.Label(new Rect(10, i * 20 + 50, 300, 20), unitString);
             }

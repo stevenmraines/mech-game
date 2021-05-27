@@ -126,6 +126,7 @@ public class AddCombatState : Editor
         WriteValidator();
 
         Debug.Log("Created state " + _stateName);
+        Debug.Log("Remember to add the new state to the StateManager/StateGraph!");
     }
 
     string ToCamel(string s)

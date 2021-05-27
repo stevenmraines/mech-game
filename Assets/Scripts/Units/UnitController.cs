@@ -1,22 +1,42 @@
-﻿using RainesGames.Units.States;
+﻿using RainesGames.Units.Actions;
+using RainesGames.Units.States;
 using UnityEngine;
 
 namespace RainesGames.Units
 {
+    [RequireComponent(typeof(BoxCollider))]
+    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(UnitStateManager))]
     public class UnitController : MonoBehaviour
     {
-        [SerializeField] private UnitPositionManager _positionManager;
-        [SerializeField] private UnitStateManager _stateManager;
+        private ActionPointsManager _actionPointsManager;
+        public ActionPointsManager ActionPointsManager => _actionPointsManager;
 
         private Renderer _renderer;
-
-        public UnitPositionManager PositionManager { get => _positionManager; }
-        public Renderer Renderer { get => _renderer; }
-        public UnitStateManager StateManager { get => _stateManager; }
+        public Renderer Renderer => _renderer;
+        
+        private UnitPositionManager _positionManager;
+        public UnitPositionManager PositionManager => _positionManager;
+        
+        private UnitStateManager _stateManager;
+        public UnitStateManager StateManager => _stateManager;
 
         void Awake()
         {
+            _actionPointsManager = new ActionPointsManager(this);
+            _positionManager = new UnitPositionManager(this);
             _renderer = GetComponent<Renderer>();
+            _stateManager = GetComponent<UnitStateManager>();
+        }
+
+        public T GetAction<T>() where T : Action
+        {
+            return GetComponent<T>();
+        }
+
+        public bool HasAction<T>() where T : Action
+        {
+            return GetAction<T>() != null;
         }
 
         public bool IsEnemy()

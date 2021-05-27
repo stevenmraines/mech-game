@@ -9,7 +9,8 @@ namespace RainesGames.Combat.States.PlayerTurn
 
         public override void OnUnitClick(UnitController unit, int buttonIndex)
         {
-            
+            if(unit != UnitManager.ActiveUnit)
+                unit.StateManager.TransitionToState(unit.StateManager.Active);
         }
 
         public override void OnUnitMouseEnter(UnitController unit)

@@ -11,7 +11,7 @@ namespace RainesGames.Units.Selection
         private static ISelectionResponse _selectionResponse;
 
         private static GameObject _currentSelection;
-        public static GameObject CurrentSelection { get => _currentSelection; }
+        public static GameObject CurrentSelection => _currentSelection;
 
         private static GameObject _oldSelection;
         private static bool _differentSelection => _oldSelection != _currentSelection;
