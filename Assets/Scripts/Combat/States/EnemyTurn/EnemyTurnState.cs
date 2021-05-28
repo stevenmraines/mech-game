@@ -1,3 +1,6 @@
+using RainesGames.Grid;
+using RainesGames.Units.Selection;
+
 namespace RainesGames.Combat.States.EnemyTurn
 {
     public class EnemyTurnState : CombatState
@@ -8,6 +11,8 @@ namespace RainesGames.Combat.States.EnemyTurn
         protected override void Awake()
         {
             base.Awake();
+            CellEventHandler = new CellEventHandler(this);
+            UnitEventHandler = new UnitEventHandler(this);
             _stateName = "Enemy Turn";
         }
 
@@ -15,6 +20,7 @@ namespace RainesGames.Combat.States.EnemyTurn
         {
             base.EnterState();
             OnEnterState?.Invoke();
+            GridManager.EnableCellHighlight();
         }
 
         public override void ExitState()
@@ -24,7 +30,7 @@ namespace RainesGames.Combat.States.EnemyTurn
 
         public override void UpdateState()
         {
-            
+            UnitSelectionManager.UpdateSelection();
         }
     }
 }

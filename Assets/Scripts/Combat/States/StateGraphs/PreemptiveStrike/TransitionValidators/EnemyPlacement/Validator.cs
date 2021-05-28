@@ -6,9 +6,9 @@ namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike.TransitionValid
 {
     public class Validator : TransitionValidator<CombatState>
     {
-        public override bool ValidateTransition(CombatState state)
+        public override bool ValidateTransition(CombatState nextState)
         {
-            if(state.GetType() == typeof(PlayerTurnState))
+            if(nextState.GetType() == typeof(PlayerTurnState))
                 return PlayerTurn();
 
             return false;
