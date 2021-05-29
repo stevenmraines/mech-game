@@ -7,21 +7,21 @@ namespace RainesGames.Units.Selection
     {
         [SerializeField] private float _threshold = 0.99f;
 
-        public GameObject MakeSelection(Ray ray, List<GameObject> selectables)
+        public UnitController MakeSelection(Ray ray, List<UnitController> selectables)
         {
-            GameObject selection = null;
+            UnitController selection = null;
             float closest = 0;
 
-            for(int i = 0; i < selectables.Count; i++)
+            foreach(UnitController unit in selectables)
             {
                 Vector3 viewportDirection = ray.direction;
-                Vector3 directionToSelectable = selectables[i].transform.position - ray.origin;
+                Vector3 directionToSelectable = unit.transform.position - ray.origin;
                 float lookPercentage = Vector3.Dot(viewportDirection.normalized, directionToSelectable.normalized);
 
                 if(lookPercentage > _threshold && lookPercentage > closest)
                 {
                     closest = lookPercentage;
-                    selection = selectables[i];
+                    selection = unit;
                 }
             }
 

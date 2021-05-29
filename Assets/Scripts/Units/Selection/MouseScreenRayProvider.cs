@@ -4,7 +4,12 @@ namespace RainesGames.Units.Selection
 {
     public class MouseScreenRayProvider : MonoBehaviour, IRayProvider
     {
-        [SerializeField] private UnityEngine.Camera _mainCamera;
+        private UnityEngine.Camera _mainCamera;
+
+        void Awake()
+        {
+            _mainCamera = UnityEngine.Camera.main;
+        }
 
         public Ray CreateRay()
         {

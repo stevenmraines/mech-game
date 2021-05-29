@@ -94,18 +94,22 @@ namespace RainesGames.Units
         {
             ActiveState.OnEnterState -= SetActiveUnit;
             EnemyTurnState.OnEnterState -= ResetAllEnemyActionPoints;
-            PlayerTurnState.OnEnterState -= ResetAllPlayerActionPoints;
+            EnemyTurnState.OnExitState -= ResetActiveUnit;
             EnemyPlacementState.OnExitState -= ResetActiveUnit;
             PlayerPlacementState.OnExitState -= ResetActiveUnit;
+            PlayerTurnState.OnEnterState -= ResetAllPlayerActionPoints;
+            PlayerTurnState.OnExitState -= ResetActiveUnit;
         }
 
         void OnEnable()
         {
             ActiveState.OnEnterState += SetActiveUnit;
             EnemyTurnState.OnEnterState += ResetAllEnemyActionPoints;
-            PlayerTurnState.OnEnterState += ResetAllPlayerActionPoints;
+            EnemyTurnState.OnExitState += ResetActiveUnit;
             EnemyPlacementState.OnExitState += ResetActiveUnit;
             PlayerPlacementState.OnExitState += ResetActiveUnit;
+            PlayerTurnState.OnEnterState += ResetAllPlayerActionPoints;
+            PlayerTurnState.OnExitState += ResetActiveUnit;
         }
 
         void ResetActiveUnit()

@@ -7,6 +7,7 @@ namespace RainesGames.Combat.States.EnemyTurn
     {
         public delegate void StateTransitionDelegate();
         public static event StateTransitionDelegate OnEnterState;
+        public static event StateTransitionDelegate OnExitState;
 
         protected override void Awake()
         {
@@ -26,6 +27,7 @@ namespace RainesGames.Combat.States.EnemyTurn
         public override void ExitState()
         {
             base.ExitState();
+            OnExitState?.Invoke();
         }
 
         public override void UpdateState()

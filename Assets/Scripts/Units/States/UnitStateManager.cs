@@ -1,5 +1,7 @@
 ﻿using RainesGames.Combat.States.EnemyPlacement;
+using RainesGames.Combat.States.EnemyTurn;
 using RainesGames.Combat.States.PlayerPlacement;
+using RainesGames.Combat.States.PlayerTurn;
 using RainesGames.Common.States;
 using UnityEngine;
 
@@ -47,6 +49,8 @@ namespace RainesGames.Units.States
              */
             EnemyPlacementState.OnExitState -= OnCombatStateChange;
             PlayerPlacementState.OnExitState -= OnCombatStateChange;
+            EnemyTurnState.OnExitState -= OnCombatStateChange;
+            PlayerTurnState.OnExitState -= OnCombatStateChange;
         }
 
         void OnEnable()
@@ -54,6 +58,8 @@ namespace RainesGames.Units.States
             ActiveState.OnEnterState += OnActiveStateEnter;
             EnemyPlacementState.OnExitState += OnCombatStateChange;
             PlayerPlacementState.OnExitState += OnCombatStateChange;
+            EnemyTurnState.OnExitState += OnCombatStateChange;
+            PlayerTurnState.OnExitState += OnCombatStateChange;
         }
 
         void Start()

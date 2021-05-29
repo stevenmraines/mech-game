@@ -1,7 +1,6 @@
 ﻿using RainesGames.Combat.States;
 using RainesGames.Units;
 using RainesGames.Units.Selection;
-using RainesGames.Units.States;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,15 +40,13 @@ namespace RainesGames.UI
         {
             GUI.skin = null;
 
-            List<GameObject> selectables = _selectablesProvider.GetSelectables();
+            List<UnitController> selectables = _selectablesProvider.GetSelectables();
 
             for(int i = 0; i < selectables.Count; i++)
             {
-                string unitString = selectables[i].name;  // + " (" + unit.ActionPointsManager.ActionPoints + ")";
+                string unitString = selectables[i].name + " (" + selectables[i].ActionPointsManager.ActionPoints + ")";
 
-                UnitStateManager stateManager = selectables[i].GetComponent<UnitStateManager>();
-
-                if(stateManager.CurrentState == stateManager.Active)
+                if(selectables[i].StateManager.CurrentState == selectables[i].StateManager.Active)
                     unitString += " - ACTIVE";
 
                 if(UnitSelectionManager.CurrentSelection == selectables[i])

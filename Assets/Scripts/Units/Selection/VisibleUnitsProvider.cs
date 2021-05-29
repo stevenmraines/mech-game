@@ -5,16 +5,16 @@ namespace RainesGames.Units.Selection
 {
     public class VisibleUnitsProvider : MonoBehaviour, ISelectablesProvider
     {
-        [SerializeField] private UnityEngine.Camera _mainCamera;
-
+        private UnityEngine.Camera _mainCamera;
         private Vector3 _oldCameraPosition;
         private Quaternion _oldCameraRotation;
-        private List<GameObject> _visibleUnits;
+        private List<UnitController> _visibleUnits;
         private bool _firstCheck => _oldCameraPosition == null || _oldCameraRotation == null;
 
         void Awake()
         {
-            _visibleUnits = new List<GameObject>();
+            _mainCamera = UnityEngine.Camera.main;
+            _visibleUnits = new List<UnitController>();
         }
 
         private bool CameraMoved()
@@ -23,7 +23,7 @@ namespace RainesGames.Units.Selection
                 || _oldCameraRotation != _mainCamera.transform.rotation;
         }
 
-        public List<GameObject> GetSelectables()
+        public List<UnitController> GetSelectables()
         {
             bool updateNotNeeded = !_firstCheck && !CameraMoved();
 
@@ -32,12 +32,12 @@ namespace RainesGames.Units.Selection
             if(updateNotNeeded)
                 return _visibleUnits;
 
-            _visibleUnits = new List<GameObject>();
+            _visibleUnits = new List<UnitController>();
 
-            for(int i = 0; i < UnitManager.Units.Length; i++)
+            foreach(UnitController unit in UnitManager.Units)
             {
-                if(IsVisible(UnitManager.Units[i].Renderer))
-                    _visibleUnits.Add(UnitManager.Units[i].gameObject);
+                if(IsVisible(unit.Renderer))
+                    _visibleUnits.Add(unit);
             }
 
             return _visibleUnits;

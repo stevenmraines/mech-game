@@ -2,18 +2,21 @@
 
 namespace RainesGames.Units.Selection
 {
-    // TODO make all this selection stuff specific to units or figure out how to handle any gameobject
+    [RequireComponent(typeof(IRayProvider))]
+    [RequireComponent(typeof(ISelectablesProvider))]
+    [RequireComponent(typeof(ISelectionResponse))]
+    [RequireComponent(typeof(ISelector))]
     public class UnitSelectionManager : MonoBehaviour
     {
         private static IRayProvider _rayProvider;
         private static ISelectablesProvider _selectablesProvider;
-        private static ISelector _selector;
         private static ISelectionResponse _selectionResponse;
+        private static ISelector _selector;
 
-        private static GameObject _currentSelection;
-        public static GameObject CurrentSelection => _currentSelection;
+        private static UnitController _currentSelection;
+        public static UnitController CurrentSelection => _currentSelection;
 
-        private static GameObject _oldSelection;
+        private static UnitController _oldSelection;
         private static bool _differentSelection => _oldSelection != _currentSelection;
         private static bool _mouseEnter => _currentSelection != null && _differentSelection;
         private static bool _mouseExit => _currentSelection == null && _oldSelection != null;
@@ -34,8 +37,8 @@ namespace RainesGames.Units.Selection
         {
             _rayProvider = GetComponent<IRayProvider>();
             _selectablesProvider = GetComponent<ISelectablesProvider>();
-            _selector = GetComponent<ISelector>();
             _selectionResponse = GetComponent<ISelectionResponse>();
+            _selector = GetComponent<ISelector>();
 
             OutlineMode = Outline.Mode.OutlineAll;
             OutlineWidth = 7f;
@@ -58,14 +61,14 @@ namespace RainesGames.Units.Selection
         static void TriggerMouseEvents()
         {
             if(_mouseEnter)
-                OnUnitMouseEnter?.Invoke(_currentSelection.GetComponent<UnitController>());
+                OnUnitMouseEnter?.Invoke(_currentSelection);
 
             if(_mouseExit)
-                OnUnitMouseExit?.Invoke(_oldSelection.GetComponent<UnitController>());
+                OnUnitMouseExit?.Invoke(_oldSelection);
 
             // TODO use new input system
             if(_currentSelection != null && Input.GetMouseButtonUp(0))
-                OnUnitClick?.Invoke(_currentSelection.GetComponent<UnitController>(), 0);
+                OnUnitClick?.Invoke(_currentSelection, 0);
         }
 
         public static void UpdateSelection()

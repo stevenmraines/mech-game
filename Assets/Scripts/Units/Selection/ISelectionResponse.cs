@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-
-namespace RainesGames.Units.Selection
+﻿namespace RainesGames.Units.Selection
 {
     public interface ISelectionResponse
     {
-        void OnDeselect(GameObject selection);
-        void OnSelect(GameObject selection);
+        void OnDeselect(UnitController selection);
+        void OnSelect(UnitController selection);
     }
 }
