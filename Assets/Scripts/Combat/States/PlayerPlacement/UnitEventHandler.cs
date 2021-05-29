@@ -10,7 +10,7 @@ namespace RainesGames.Combat.States.PlayerPlacement
         public override void OnUnitClick(UnitController unit, int buttonIndex)
         {
             if(unit.IsPlayer())
-                unit.StateManager.TransitionToState(unit.StateManager.Active);
+                UnitManager.SetActiveUnit(unit);
         }
 
         public override void OnUnitMouseEnter(UnitController unit)

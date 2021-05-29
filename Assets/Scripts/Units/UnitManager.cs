@@ -2,7 +2,6 @@
 using RainesGames.Combat.States.EnemyTurn;
 using RainesGames.Combat.States.PlayerPlacement;
 using RainesGames.Combat.States.PlayerTurn;
-using RainesGames.Units.States;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +10,7 @@ namespace RainesGames.Units
     // TODO RequireComponent UnitSelectionManager?
     public class UnitManager : MonoBehaviour
     {
+        // TODO this should go on UnitSelectionManager
         private static UnitController _activeUnit;
         public static UnitController ActiveUnit => _activeUnit;
 
@@ -92,7 +92,6 @@ namespace RainesGames.Units
 
         void OnDisable()
         {
-            ActiveState.OnEnterState -= SetActiveUnit;
             EnemyTurnState.OnEnterState -= ResetAllEnemyActionPoints;
             EnemyTurnState.OnExitState -= ResetActiveUnit;
             EnemyPlacementState.OnExitState -= ResetActiveUnit;
@@ -103,7 +102,6 @@ namespace RainesGames.Units
 
         void OnEnable()
         {
-            ActiveState.OnEnterState += SetActiveUnit;
             EnemyTurnState.OnEnterState += ResetAllEnemyActionPoints;
             EnemyTurnState.OnExitState += ResetActiveUnit;
             EnemyPlacementState.OnExitState += ResetActiveUnit;
@@ -133,7 +131,7 @@ namespace RainesGames.Units
                 unit.ActionPointsManager.ResetActionPoints();
         }
 
-        void SetActiveUnit(UnitController unit)
+        public static void SetActiveUnit(UnitController unit)
         {
             _activeUnit = unit;
         }

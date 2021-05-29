@@ -10,8 +10,6 @@ namespace RainesGames.Combat.States.BattleStart
         protected override void Awake()
         {
             base.Awake();
-            CellEventHandler = new CellEventHandler(this);
-            UnitEventHandler = new UnitEventHandler(this);
             _stateName = "Battle Start";
         }
 

@@ -1,12 +1,10 @@
 ﻿using RainesGames.Units.Actions;
-using RainesGames.Units.States;
 using UnityEngine;
 
 namespace RainesGames.Units
 {
     [RequireComponent(typeof(BoxCollider))]
     [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(UnitStateManager))]
     public class UnitController : MonoBehaviour
     {
         private ActionPointsManager _actionPointsManager;
@@ -17,16 +15,12 @@ namespace RainesGames.Units
         
         private UnitPositionManager _positionManager;
         public UnitPositionManager PositionManager => _positionManager;
-        
-        private UnitStateManager _stateManager;
-        public UnitStateManager StateManager => _stateManager;
 
         void Awake()
         {
             _actionPointsManager = new ActionPointsManager(this);
             _positionManager = new UnitPositionManager(this);
             _renderer = GetComponent<Renderer>();
-            _stateManager = GetComponent<UnitStateManager>();
         }
 
         public T GetAction<T>() where T : Action
