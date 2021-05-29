@@ -1,5 +1,6 @@
 ﻿using RainesGames.Grid;
 using RainesGames.Units;
+using RainesGames.Units.Selection;
 
 namespace RainesGames.Combat.States.EnemyTurn
 {
@@ -9,8 +10,8 @@ namespace RainesGames.Combat.States.EnemyTurn
 
         public override void OnUnitClick(UnitController unit, int buttonIndex)
         {
-            if(unit != UnitManager.ActiveUnit)
-                UnitManager.SetActiveUnit(unit);
+            if(unit != UnitSelectionManager.ActiveUnit)
+                UnitSelectionManager.SetActiveUnit(unit);
         }
 
         public override void OnUnitMouseEnter(UnitController unit)

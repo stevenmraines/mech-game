@@ -46,7 +46,7 @@ namespace RainesGames.UI
             {
                 string unitString = selectables[i].name + " (" + selectables[i].ActionPointsManager.ActionPoints + ")";
 
-                if(selectables[i] == UnitManager.ActiveUnit)
+                if(selectables[i] == UnitSelectionManager.ActiveUnit)
                     unitString += " - ACTIVE";
 
                 if(UnitSelectionManager.CurrentSelection == selectables[i])

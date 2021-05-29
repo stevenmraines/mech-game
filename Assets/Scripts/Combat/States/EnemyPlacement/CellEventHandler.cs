@@ -1,5 +1,5 @@
 ﻿using RainesGames.Grid;
-using RainesGames.Units;
+using RainesGames.Units.Selection;
 
 namespace RainesGames.Combat.States.EnemyPlacement
 {
@@ -9,10 +9,10 @@ namespace RainesGames.Combat.States.EnemyPlacement
 
         public override void OnCellClick(int cellIndex, int buttonIndex)
         {
-            if(UnitManager.ActiveUnit == null)
+            if(UnitSelectionManager.ActiveUnit == null)
                 return;
 
-            UnitManager.ActiveUnit.PositionManager.PlaceUnit(GridManager.GetCell(cellIndex));
+            UnitSelectionManager.ActiveUnit.PositionManager.PlaceUnit(GridManager.GetCell(cellIndex));
 
             _state.Manager.AttemptTransition();
         }

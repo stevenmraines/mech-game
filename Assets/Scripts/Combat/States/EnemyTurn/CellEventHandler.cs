@@ -1,6 +1,7 @@
 ﻿using RainesGames.Grid;
 using RainesGames.Units;
 using RainesGames.Units.Actions;
+using RainesGames.Units.Selection;
 
 namespace RainesGames.Combat.States.EnemyTurn
 {
@@ -10,10 +11,10 @@ namespace RainesGames.Combat.States.EnemyTurn
 
         public override void OnCellClick(int cellIndex, int buttonIndex)
         {
-            if(UnitManager.ActiveUnit == null || UnitManager.ActiveUnit.IsPlayer())
+            if(UnitSelectionManager.ActiveUnit == null || UnitSelectionManager.ActiveUnit.IsPlayer())
                 return;
 
-            UnitController activeUnit = UnitManager.ActiveUnit;
+            UnitController activeUnit = UnitSelectionManager.ActiveUnit;
 
             if(activeUnit.HasAction<MoveAction>())
                 activeUnit.GetAction<MoveAction>().Move(GridManager.GetCell(cellIndex));

@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using RainesGames.Combat.States.EnemyPlacement;
+using RainesGames.Combat.States.EnemyTurn;
+using RainesGames.Combat.States.PlayerPlacement;
+using RainesGames.Combat.States.PlayerTurn;
+using UnityEngine;
 
 namespace RainesGames.Units.Selection
 {
@@ -12,6 +16,9 @@ namespace RainesGames.Units.Selection
         private static ISelectablesProvider _selectablesProvider;
         private static ISelectionResponse _selectionResponse;
         private static ISelector _selector;
+
+        private static UnitController _activeUnit;
+        public static UnitController ActiveUnit => _activeUnit;
 
         private static UnitController _currentSelection;
         public static UnitController CurrentSelection => _currentSelection;
@@ -56,6 +63,32 @@ namespace RainesGames.Units.Selection
 
             if(_currentSelection != null)
                 _selectionResponse.OnSelect(_currentSelection);
+        }
+
+        void OnDisable()
+        {
+            EnemyTurnState.OnExitState -= ResetActiveUnit;
+            EnemyPlacementState.OnExitState -= ResetActiveUnit;
+            PlayerPlacementState.OnExitState -= ResetActiveUnit;
+            PlayerTurnState.OnExitState -= ResetActiveUnit;
+        }
+
+        void OnEnable()
+        {
+            EnemyTurnState.OnExitState += ResetActiveUnit;
+            EnemyPlacementState.OnExitState += ResetActiveUnit;
+            PlayerPlacementState.OnExitState += ResetActiveUnit;
+            PlayerTurnState.OnExitState += ResetActiveUnit;
+        }
+
+        void ResetActiveUnit()
+        {
+            SetActiveUnit(null);
+        }
+
+        public static void SetActiveUnit(UnitController unit)
+        {
+            _activeUnit = unit;
         }
 
         static void TriggerMouseEvents()

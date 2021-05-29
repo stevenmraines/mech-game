@@ -1,5 +1,6 @@
 ﻿using RainesGames.Grid;
 using RainesGames.Units;
+using RainesGames.Units.Selection;
 
 namespace RainesGames.Combat.States.EnemyPlacement
 {
@@ -10,7 +11,7 @@ namespace RainesGames.Combat.States.EnemyPlacement
         public override void OnUnitClick(UnitController unit, int buttonIndex)
         {
             if(unit.IsEnemy())
-                UnitManager.SetActiveUnit(unit);
+                UnitSelectionManager.SetActiveUnit(unit);
         }
 
         public override void OnUnitMouseEnter(UnitController unit)

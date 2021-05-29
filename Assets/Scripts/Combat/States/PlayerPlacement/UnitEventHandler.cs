@@ -1,5 +1,6 @@
 ﻿using RainesGames.Grid;
 using RainesGames.Units;
+using RainesGames.Units.Selection;
 
 namespace RainesGames.Combat.States.PlayerPlacement
 {
@@ -10,7 +11,7 @@ namespace RainesGames.Combat.States.PlayerPlacement
         public override void OnUnitClick(UnitController unit, int buttonIndex)
         {
             if(unit.IsPlayer())
-                UnitManager.SetActiveUnit(unit);
+                UnitSelectionManager.SetActiveUnit(unit);
         }
 
         public override void OnUnitMouseEnter(UnitController unit)

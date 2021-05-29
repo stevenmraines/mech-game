@@ -1,6 +1,4 @@
-﻿using RainesGames.Combat.States.EnemyPlacement;
-using RainesGames.Combat.States.EnemyTurn;
-using RainesGames.Combat.States.PlayerPlacement;
+﻿using RainesGames.Combat.States.EnemyTurn;
 using RainesGames.Combat.States.PlayerTurn;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,10 +8,6 @@ namespace RainesGames.Units
     // TODO RequireComponent UnitSelectionManager?
     public class UnitManager : MonoBehaviour
     {
-        // TODO this should go on UnitSelectionManager
-        private static UnitController _activeUnit;
-        public static UnitController ActiveUnit => _activeUnit;
-
         private static UnitController[] _units;
         public static UnitController[] Units => _units;
 
@@ -92,27 +86,15 @@ namespace RainesGames.Units
 
         void OnDisable()
         {
+            // TODO Should this be handled on each unit individually on ActionPointsManager?
             EnemyTurnState.OnEnterState -= ResetAllEnemyActionPoints;
-            EnemyTurnState.OnExitState -= ResetActiveUnit;
-            EnemyPlacementState.OnExitState -= ResetActiveUnit;
-            PlayerPlacementState.OnExitState -= ResetActiveUnit;
             PlayerTurnState.OnEnterState -= ResetAllPlayerActionPoints;
-            PlayerTurnState.OnExitState -= ResetActiveUnit;
         }
 
         void OnEnable()
         {
             EnemyTurnState.OnEnterState += ResetAllEnemyActionPoints;
-            EnemyTurnState.OnExitState += ResetActiveUnit;
-            EnemyPlacementState.OnExitState += ResetActiveUnit;
-            PlayerPlacementState.OnExitState += ResetActiveUnit;
             PlayerTurnState.OnEnterState += ResetAllPlayerActionPoints;
-            PlayerTurnState.OnExitState += ResetActiveUnit;
-        }
-
-        void ResetActiveUnit()
-        {
-            SetActiveUnit(null);
         }
 
         public static void ResetAllEnemyActionPoints()
@@ -129,11 +111,6 @@ namespace RainesGames.Units
         {
             foreach(UnitController unit in units)
                 unit.ActionPointsManager.ResetActionPoints();
-        }
-
-        public static void SetActiveUnit(UnitController unit)
-        {
-            _activeUnit = unit;
         }
     }
 }
