@@ -6,8 +6,20 @@ namespace RainesGames.Grid.Selection
 {
     public class GridSelectionManager : MonoBehaviour
     {
+        private static Color _defaultCellColor;
+        public static Color DefaultCellColor => _defaultCellColor;
+
+        private static Color _moveCellColor;
+        public static Color MoveCellColor => _moveCellColor;
+
         public delegate void CellEventDelegate(int cellIndex, int buttonIndex);
         public static event CellEventDelegate OnCellClick;
+
+        void Awake()
+        {
+            _defaultCellColor = new Color(0, 0, 0, 0);
+            _moveCellColor = Color.blue;
+        }
 
         void CheckCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
         {

@@ -19,6 +19,17 @@ namespace RainesGames.Units
             _controller = controller;
         }
 
+        public static bool CellIsOccupied(Cell cell)
+        {
+            foreach(UnitController unit in UnitManager.Units)
+            {
+                if(unit.PositionManager.Cell == cell)
+                    return true;
+            }
+
+            return false;
+        }
+
         void MoveUnitToCellCenter()
         {
             Vector3 cellPosition = GridManager.GetCellPosition(_cell);

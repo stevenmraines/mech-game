@@ -1,5 +1,6 @@
 ﻿using RainesGames.Grid;
 using RainesGames.Units.Selection;
+using TGS;
 
 namespace RainesGames.Combat.States.EnemyPlacement
 {
@@ -15,6 +16,16 @@ namespace RainesGames.Combat.States.EnemyPlacement
             UnitSelectionManager.ActiveUnit.PositionManager.PlaceUnit(GridManager.GetCell(cellIndex));
 
             _state.Manager.AttemptTransition();
+        }
+
+        public override void OnCellEnter(TerrainGridSystem sender, int cellIndex)
+        {
+
+        }
+
+        public override void OnCellExit(TerrainGridSystem sender, int cellIndex)
+        {
+
         }
     }
 }
