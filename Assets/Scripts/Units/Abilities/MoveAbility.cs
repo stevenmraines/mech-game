@@ -1,22 +1,15 @@
-﻿using RainesGames.Units;
-using TGS;
+﻿using TGS;
 using UnityEngine;
 
-namespace RainesGames.Units.Actions
+namespace RainesGames.Units.Abilities
 {
-    public class MoveAction : Action
+    public class MoveAbility : Ability
     {
         protected override void Awake()
         {
             base.Awake();
             _firstActionCost = 1;
             _secondActionCost = 1;
-        }
-
-        protected override void DecrementActionPoints()
-        {
-            int actionPointCost = _controller.ActionPointsManager.FirstActionSpent ? _secondActionCost : _firstActionCost;
-            _controller.ActionPointsManager.Decrement(actionPointCost);
         }
 
         public void Move(Cell cell)

@@ -1,7 +1,7 @@
 ﻿using RainesGames.Grid;
 using RainesGames.Grid.Selection;
 using RainesGames.Units;
-using RainesGames.Units.Actions;
+using RainesGames.Units.Abilities;
 using RainesGames.Units.Selection;
 using System.Collections.Generic;
 using TGS;
@@ -29,9 +29,9 @@ namespace RainesGames.Combat.States.PlayerTurn
 
             UnitController activeUnit = UnitSelectionManager.ActiveUnit;
 
-            if(activeUnit.HasAction<MoveAction>())
+            if(activeUnit.HasAbility<MoveAbility>())
             {
-                activeUnit.GetAction<MoveAction>().Move(GridManager.GetCell(cellIndex));
+                activeUnit.GetAbility<MoveAbility>().Move(GridManager.GetCell(cellIndex));
                 ColorizePath(_movePath, GridSelectionManager.DefaultCellColor);
             }
         }

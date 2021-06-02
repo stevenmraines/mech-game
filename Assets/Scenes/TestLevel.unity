@@ -633,15 +633,27 @@ GameObject:
   - component: {fileID: 1055329387}
   - component: {fileID: 1055329392}
   - component: {fileID: 1055329391}
-  - component: {fileID: 1055329394}
-  - component: {fileID: 1055329393}
+  - component: {fileID: 1055329395}
+  - component: {fileID: 1055329386}
   m_Layer: 9
-  m_Name: Cylinder
+  m_Name: Enemy Mech
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1055329386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055329385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8746a93176e7a3d43aa3cc93e6737b98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &1055329387
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -746,7 +758,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 2, z: 1.0000002}
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &1055329393
+--- !u!114 &1055329395
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -755,19 +767,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1055329385}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8746a93176e7a3d43aa3cc93e6737b98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1055329394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1055329385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f46dec69ad559ff48b4479d3552ecd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c1533e0d2484434bba2e02dac7a71c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1149135749
@@ -1467,10 +1467,10 @@ GameObject:
   - component: {fileID: 1667359992}
   - component: {fileID: 1667359990}
   - component: {fileID: 1667359991}
-  - component: {fileID: 1667359998}
   - component: {fileID: 1667359996}
+  - component: {fileID: 1667359995}
   m_Layer: 9
-  m_Name: Cube
+  m_Name: Player Mech
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1566,7 +1566,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1667359996
+--- !u!114 &1667359995
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1578,7 +1578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8746a93176e7a3d43aa3cc93e6737b98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1667359998
+--- !u!114 &1667359996
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1587,7 +1587,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1667359989}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f46dec69ad559ff48b4479d3552ecd9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c1533e0d2484434bba2e02dac7a71c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1667964168

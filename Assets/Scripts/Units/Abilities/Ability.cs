@@ -1,10 +1,10 @@
 ﻿using RainesGames.Common.Actions;
 using UnityEngine;
 
-namespace RainesGames.Units.Actions
+namespace RainesGames.Units.Abilities
 {
     [RequireComponent(typeof(UnitController))]
-    public abstract class Action : MonoBehaviour, IActionCost
+    public abstract class Ability : MonoBehaviour, IActionCost
     {
         protected UnitController _controller;
 
@@ -19,6 +19,10 @@ namespace RainesGames.Units.Actions
             _controller = GetComponent<UnitController>();
         }
 
-        protected abstract void DecrementActionPoints();
+        protected virtual void DecrementActionPoints()
+        {
+            int actionPointCost = _controller.ActionPointsManager.FirstActionSpent ? _secondActionCost : _firstActionCost;
+            _controller.ActionPointsManager.Decrement(actionPointCost);
+        }
     }
 }

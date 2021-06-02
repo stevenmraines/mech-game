@@ -1,4 +1,4 @@
-﻿using RainesGames.Units.Actions;
+﻿using RainesGames.Units.Abilities;
 using UnityEngine;
 
 namespace RainesGames.Units
@@ -7,30 +7,30 @@ namespace RainesGames.Units
     [RequireComponent(typeof(Rigidbody))]
     public class UnitController : MonoBehaviour
     {
-        private ActionPointsManager _actionPointsManager;
+        protected ActionPointsManager _actionPointsManager;
         public ActionPointsManager ActionPointsManager => _actionPointsManager;
 
-        private Renderer _renderer;
+        protected Renderer _renderer;
         public Renderer Renderer => _renderer;
         
-        private UnitPositionManager _positionManager;
+        protected UnitPositionManager _positionManager;
         public UnitPositionManager PositionManager => _positionManager;
 
-        void Awake()
+        protected void Awake()
         {
             _actionPointsManager = new ActionPointsManager(this);
             _positionManager = new UnitPositionManager(this);
             _renderer = GetComponent<Renderer>();
         }
 
-        public T GetAction<T>() where T : Action
+        public T GetAbility<T>() where T : Ability
         {
             return GetComponent<T>();
         }
 
-        public bool HasAction<T>() where T : Action
+        public bool HasAbility<T>() where T : Ability
         {
-            return GetAction<T>() != null;
+            return GetAbility<T>() != null;
         }
 
         public bool IsEnemy()

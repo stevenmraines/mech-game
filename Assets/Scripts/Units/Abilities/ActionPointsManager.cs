@@ -1,4 +1,4 @@
-﻿namespace RainesGames.Units.Actions
+﻿namespace RainesGames.Units.Abilities
 {
     public class ActionPointsManager : IActionPoints, IActionPointsDynamic
     {
