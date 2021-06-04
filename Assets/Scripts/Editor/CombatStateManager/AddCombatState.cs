@@ -1,4 +1,8 @@
 ﻿using RainesGames.Combat.States;
+using RainesGames.Combat.States.BattleStart;
+using RainesGames.Combat.States.EnemyPlacement;
+using RainesGames.Combat.States.PlayerPlacement;
+using RainesGames.Combat.States.PlayerTurn;
 using RainesGames.Combat.States.StateGraphs.PreemptiveStrike;
 using System;
 using System.Collections.Generic;
@@ -40,18 +44,18 @@ public class AddCombatState : Editor
 
         _validatorStates = new Type[]
         {
-            manager.BattleStart.GetType(),
-            manager.PlayerPlacement.GetType(),
-            manager.EnemyPlacement.GetType(),
-            manager.PlayerTurn.GetType()
+            manager.GetComponent<BattleStartState>().GetType(),
+            manager.GetComponent<PlayerPlacementState>().GetType(),
+            manager.GetComponent<EnemyPlacementState>().GetType(),
+            manager.GetComponent<PlayerTurnState>().GetType()
         };
 
         _validatorStateToggles = new Dictionary<Type, bool>
         {
-            { manager.BattleStart.GetType(), false },
-            { manager.PlayerPlacement.GetType(), false },
-            { manager.EnemyPlacement.GetType(), false },
-            { manager.PlayerTurn.GetType(), false }
+            { manager.GetComponent<BattleStartState>().GetType(), false },
+            { manager.GetComponent<PlayerPlacementState>().GetType(), false },
+            { manager.GetComponent<EnemyPlacementState>().GetType(), false },
+            { manager.GetComponent<PlayerTurnState>().GetType(), false }
         };
 
         _scriptBasePath = "Assets/Scripts/Combat/States";
