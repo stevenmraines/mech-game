@@ -1,10 +1,27 @@
+using RainesGames.Common;
+
 namespace RainesGames.Combat.States.###STATE_NAME###
 {
-    public class CellEventHandler : States.CellEventHandler
+    public class CellEventHandler : ICellEvents
     {
-        public CellEventHandler(###STATE_NAME###State ###STATE_NAME_CAMEL###State) : base(###STATE_NAME_CAMEL###State) {}
+        private ###STATE_NAME###State _state;
 
-        public override void OnCellClick(int cellIndex, int buttonIndex)
+        public CellEventHandler(###STATE_NAME###State ###STATE_NAME_CAMEL###State)
+        {
+            _state = ###STATE_NAME_CAMEL###State;
+        }
+
+        public void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void OnCellEnter(TerrainGridSystem sender, int cellIndex)
+        {
+            throw new System.NotImplementedException();
+        }
+        
+        public void OnCellExit(TerrainGridSystem sender, int cellIndex)
         {
             throw new System.NotImplementedException();
         }

@@ -29,7 +29,7 @@ namespace RainesGames.Combat.States.PlayerTurn
                 GridManager.TerrainGridSystem.CellSetColor(cellIndex, color);
         }
 
-        public void OnCellClick(int cellIndex, int buttonIndex)
+        public void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
         {
             if(UnitSelectionManager.ActiveUnit == null || UnitSelectionManager.ActiveUnit.IsEnemy())
                 return;

@@ -3,9 +3,9 @@ using RainesGames.Common.States;
 
 namespace RainesGames.Combat.States.StateGraphs.###STATE_GRAPH_NAME_SUB###.TransitionValidators.###STATE_NAME###
 {
-    public class Validator : TransitionValidator<CombatState>
+    public class Validator : ITransitionValidator
     {
-        public override bool ValidateTransition(CombatState nextState)
+        public bool IsValid(IState nextState)
         {
 ###TRANSITION_STATE_VALIDATE_CHECK###
             return false;

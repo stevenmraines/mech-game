@@ -22,9 +22,9 @@ namespace RainesGames.Combat.States
             GridManager.TerrainGridSystem.OnCellExit -= OnCellExit;
         }
 
-        public void OnCellClick(int cellIndex, int buttonIndex)
+        public void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
         {
-            _manager.CurrentState.CellEventHandler.OnCellClick(cellIndex, buttonIndex);
+            _manager.CurrentState.CellEventHandler.OnCellClick(sender, cellIndex, buttonIndex);
         }
 
         public void OnCellEnter(TerrainGridSystem sender, int cellIndex)

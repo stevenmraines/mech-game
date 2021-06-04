@@ -12,7 +12,7 @@ namespace RainesGames.Grid.Selection
         private static Color _moveCellColor;
         public static Color MoveCellColor => _moveCellColor;
 
-        public delegate void CellEventDelegate(int cellIndex, int buttonIndex);
+        public delegate void CellEventDelegate(TerrainGridSystem sender, int cellIndex, int buttonIndex);
         public static event CellEventDelegate OnCellClick;
 
         void Awake()
@@ -30,7 +30,7 @@ namespace RainesGames.Grid.Selection
             if(buttonIndex != 0 || UnitSelectionManager.CurrentSelection != null)
                 return;
 
-            OnCellClick?.Invoke(cellIndex, buttonIndex);
+            OnCellClick?.Invoke(sender, cellIndex, buttonIndex);
         }
 
         void OnDisable()

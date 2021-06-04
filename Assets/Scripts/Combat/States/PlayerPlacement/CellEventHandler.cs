@@ -14,7 +14,7 @@ namespace RainesGames.Combat.States.PlayerPlacement
             _state = playerPlacementState;
         }
 
-        public void OnCellClick(int cellIndex, int buttonIndex)
+        public void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
         {
             if(UnitSelectionManager.ActiveUnit == null)
                 return;

@@ -196,10 +196,10 @@ public class AddCombatState : Editor
         
         Dictionary<string, string> replacements = new Dictionary<string, string>()
         {
-            { CELL_EVENT_HANDLER_INIT_FLAG, _createCellEventHandlers ? "CellEventHandler = new CellEventHandler(this);" : "" },
+            { CELL_EVENT_HANDLER_INIT_FLAG, _createCellEventHandlers ? "_cellEventHandler = new CellEventHandler(this);" : "" },
             { STATE_NAME_FLAG, _stateName },
             { STATE_NAME_STRING_FLAG, SplitOnCaps(_stateName) },
-            { UNIT_EVENT_HANDLER_INIT_FLAG, _createUnitEventHandlers ? "UnitEventHandler = new UnitEventHandler(this);" : "" }
+            { UNIT_EVENT_HANDLER_INIT_FLAG, _createUnitEventHandlers ? "_unitEventHandler = new UnitEventHandler(this);" : "" }
         };
 
         WriteFile(templatePath, scriptPath, replacements);

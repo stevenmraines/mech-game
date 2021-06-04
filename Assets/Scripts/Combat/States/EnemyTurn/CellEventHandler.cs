@@ -16,7 +16,7 @@ namespace RainesGames.Combat.States.EnemyTurn
             _state = enemyTurnState;
         }
 
-        public void OnCellClick(int cellIndex, int buttonIndex)
+        public void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
         {
             if(UnitSelectionManager.ActiveUnit == null || UnitSelectionManager.ActiveUnit.IsPlayer())
                 return;

@@ -1,6 +1,6 @@
 namespace RainesGames.Combat.States.###STATE_NAME###
 {
-    public class ###STATE_NAME###State : CombatState
+    public class ###STATE_NAME###State : ACombatState
     {
         protected override void Awake()
         {
@@ -20,9 +20,6 @@ namespace RainesGames.Combat.States.###STATE_NAME###
             base.ExitState();
         }
 
-        public override void UpdateState()
-        {
-
-        }
+        public override void UpdateState() { }
     }
 }
