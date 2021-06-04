@@ -23,12 +23,12 @@ namespace RainesGames.Units
             _renderer = GetComponent<Renderer>();
         }
 
-        public T GetAbility<T>() where T : Ability
+        public T GetAbility<T>() where T : AAbility
         {
             return GetComponent<T>();
         }
 
-        public bool HasAbility<T>() where T : Ability
+        public bool HasAbility<T>() where T : AAbility
         {
             return GetAbility<T>() != null;
         }

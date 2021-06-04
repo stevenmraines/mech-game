@@ -1,15 +1,21 @@
-﻿using RainesGames.Common.States;
+﻿using RainesGames.Common;
+using RainesGames.Common.States;
 using RainesGames.Grid;
 using RainesGames.Grid.Selection;
 using TGS;
 
 namespace RainesGames.Combat.States
 {
-    public class CellEventDispatcher : StateEventDispatcher<CombatState>, ICellEvents
+    public class CellEventDispatcher : IStateEventDispatcher, ICellEvents
     {
-        public CellEventDispatcher(CombatStateManager manager) : base(manager) {}
+        private CombatStateManager _manager;
 
-        public override void DeregisterEventHandlers()
+        public CellEventDispatcher(CombatStateManager manager)
+        {
+            _manager = manager;
+        }
+
+        public void DeregisterEventHandlers()
         {
             GridSelectionManager.OnCellClick -= OnCellClick;
             GridManager.TerrainGridSystem.OnCellEnter -= OnCellEnter;
@@ -31,7 +37,7 @@ namespace RainesGames.Combat.States
             _manager.CurrentState.CellEventHandler.OnCellExit(sender, cellIndex);
         }
 
-        public override void RegisterEventHandlers()
+        public void RegisterEventHandlers()
         {
             GridSelectionManager.OnCellClick += OnCellClick;
             GridManager.TerrainGridSystem.OnCellEnter += OnCellEnter;

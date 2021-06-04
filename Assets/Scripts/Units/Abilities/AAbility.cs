@@ -4,7 +4,7 @@ using UnityEngine;
 namespace RainesGames.Units.Abilities
 {
     [RequireComponent(typeof(UnitController))]
-    public abstract class Ability : MonoBehaviour, IActionCost
+    public abstract class AAbility : MonoBehaviour, IActionCost
     {
         protected UnitController _controller;
 

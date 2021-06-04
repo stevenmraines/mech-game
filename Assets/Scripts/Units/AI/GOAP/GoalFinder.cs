@@ -5,7 +5,7 @@ namespace RainesGames.Units.AI.GOAP
 {
     public class GoalFinder
     {
-        public Goal DetermineGoal(List<Goal> goals)
+        public AGoal DetermineGoal(List<AGoal> goals)
         {
             return goals[0];
         }

@@ -1,4 +1,5 @@
-﻿using RainesGames.Grid;
+﻿using RainesGames.Common;
+using RainesGames.Grid;
 using RainesGames.Units;
 using RainesGames.Units.Abilities;
 using RainesGames.Units.Selection;
@@ -6,11 +7,16 @@ using TGS;
 
 namespace RainesGames.Combat.States.EnemyTurn
 {
-    public class CellEventHandler : States.CellEventHandler
+    public class CellEventHandler : ICellEvents
     {
-        public CellEventHandler(EnemyTurnState enemyTurnState) : base(enemyTurnState) { }
+        private EnemyTurnState _state;
 
-        public override void OnCellClick(int cellIndex, int buttonIndex)
+        public CellEventHandler(EnemyTurnState enemyTurnState)
+        {
+            _state = enemyTurnState;
+        }
+
+        public void OnCellClick(int cellIndex, int buttonIndex)
         {
             if(UnitSelectionManager.ActiveUnit == null || UnitSelectionManager.ActiveUnit.IsPlayer())
                 return;
@@ -21,14 +27,8 @@ namespace RainesGames.Combat.States.EnemyTurn
                 activeUnit.GetAbility<MoveAbility>().Move(GridManager.GetCell(cellIndex));
         }
 
-        public override void OnCellEnter(TerrainGridSystem sender, int cellIndex)
-        {
+        public void OnCellEnter(TerrainGridSystem sender, int cellIndex) { }
 
-        }
-
-        public override void OnCellExit(TerrainGridSystem sender, int cellIndex)
-        {
-
-        }
+        public void OnCellExit(TerrainGridSystem sender, int cellIndex) { }
     }
 }

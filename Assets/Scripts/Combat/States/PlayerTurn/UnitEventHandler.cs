@@ -1,25 +1,30 @@
-﻿using RainesGames.Grid;
+﻿using RainesGames.Common;
+using RainesGames.Grid;
 using RainesGames.Units;
 using RainesGames.Units.Selection;
 
 namespace RainesGames.Combat.States.PlayerTurn
 {
-    public class UnitEventHandler : States.UnitEventHandler
+    public class UnitEventHandler : IUnitEvents
     {
-        public UnitEventHandler(PlayerTurnState playerTurnState) : base(playerTurnState) {}
+        private PlayerTurnState _state;
 
-        public override void OnUnitClick(UnitController unit, int buttonIndex)
+        public UnitEventHandler(PlayerTurnState playerTurnState)
         {
-            if(unit != UnitSelectionManager.ActiveUnit)
-                UnitSelectionManager.SetActiveUnit(unit);
+            _state = playerTurnState;
         }
 
-        public override void OnUnitMouseEnter(UnitController unit)
+        public void OnUnitClick(UnitController unit, int buttonIndex)
+        {
+            UnitSelectionManager.SetActiveUnit(unit);
+        }
+
+        public void OnUnitMouseEnter(UnitController unit)
         {
             GridManager.DisableCellHighlight();
         }
 
-        public override void OnUnitMouseExit(UnitController unit)
+        public void OnUnitMouseExit(UnitController unit)
         {
             GridManager.EnableCellHighlight();
         }

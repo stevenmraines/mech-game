@@ -3,7 +3,7 @@ using RainesGames.Units.Selection;
 
 namespace RainesGames.Combat.States.EnemyPlacement
 {
-    public class EnemyPlacementState : CombatState
+    public class EnemyPlacementState : ACombatState
     {
         public delegate void StateTransitionDelegate();
         public static event StateTransitionDelegate OnExitState;
@@ -11,8 +11,8 @@ namespace RainesGames.Combat.States.EnemyPlacement
         protected override void Awake()
         {
             base.Awake();
-            CellEventHandler = new CellEventHandler(this);
-            UnitEventHandler = new UnitEventHandler(this);
+            _cellEventHandler = new CellEventHandler(this);
+            _unitEventHandler = new UnitEventHandler(this);
             _stateName = "Enemy Unit Placement";
         }
 
@@ -31,6 +31,9 @@ namespace RainesGames.Combat.States.EnemyPlacement
 
         public override void UpdateState()
         {
+            if(!_entered)
+                return;
+
             UnitSelectionManager.UpdateSelection();
         }
     }

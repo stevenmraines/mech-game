@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike
 {
-    public class PreemptiveStrikeGraph
+    public class PreemptiveStrikeGraph : IStateGraph
     {
-        private CombatState _initialState;
+        private ACombatState _initialState;
         private CombatStateManager _manager;
-        private Dictionary<CombatState, CombatState[]> _stateGraph;
-        private Dictionary<CombatState, TransitionValidator<CombatState>> _validators;
+        private Dictionary<ACombatState, ACombatState[]> _stateGraph;
+        private Dictionary<ACombatState, ITransitionValidator> _validators;
 
         public PreemptiveStrikeGraph(CombatStateManager manager)
         {
@@ -17,16 +17,16 @@ namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike
 
             _initialState = _manager.BattleStart;
 
-            _stateGraph = new Dictionary<CombatState, CombatState[]>()
+            _stateGraph = new Dictionary<ACombatState, ACombatState[]>()
             {
-                { _manager.BattleStart, new CombatState[] { _manager.PlayerPlacement } },
-                { _manager.PlayerPlacement, new CombatState[] { _manager.EnemyPlacement } },
-                { _manager.EnemyPlacement, new CombatState[] { _manager.PlayerTurn } },
-                { _manager.PlayerTurn, new CombatState[] { _manager.EnemyTurn } },
-                { _manager.EnemyTurn, new CombatState[] { _manager.PlayerTurn } }
+                { _manager.BattleStart, new ACombatState[] { _manager.PlayerPlacement } },
+                { _manager.PlayerPlacement, new ACombatState[] { _manager.EnemyPlacement } },
+                { _manager.EnemyPlacement, new ACombatState[] { _manager.PlayerTurn } },
+                { _manager.PlayerTurn, new ACombatState[] { _manager.EnemyTurn } },
+                { _manager.EnemyTurn, new ACombatState[] { _manager.PlayerTurn } }
             };
 
-            _validators = new Dictionary<CombatState, TransitionValidator<CombatState>>()
+            _validators = new Dictionary<ACombatState, ITransitionValidator>()
             {
                 { _manager.BattleStart, new TransitionValidators.BattleStart.Validator() },
                 { _manager.PlayerPlacement, new TransitionValidators.PlayerPlacement.Validator() },
@@ -36,7 +36,7 @@ namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike
             };
         }
 
-        public CombatState GetNextState()
+        public IState GetNextState()
         {
             if(_manager.CurrentState == null)
                 return _initialState;
@@ -48,21 +48,21 @@ namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike
             if(_stateGraph[_manager.CurrentState].Length == 0)
                 return null;
 
-            foreach(CombatState nextState in _stateGraph[_manager.CurrentState])
+            foreach(ACombatState nextState in _stateGraph[_manager.CurrentState])
             {
-                TransitionValidator<CombatState> validator = GetValidator();
+                ITransitionValidator validator = GetValidator();
 
                 if(validator == null)
                     continue;
 
-                if(validator.ValidateTransition(nextState))
+                if(validator.IsValid(nextState))
                     return nextState;
             }
 
             return null;
         }
         
-        TransitionValidator<CombatState> GetValidator()
+        ITransitionValidator GetValidator()
         {
             if(_validators.ContainsKey(_manager.CurrentState))
                 return _validators[_manager.CurrentState];

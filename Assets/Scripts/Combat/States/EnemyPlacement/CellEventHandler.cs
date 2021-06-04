@@ -1,14 +1,20 @@
-﻿using RainesGames.Grid;
+﻿using RainesGames.Common;
+using RainesGames.Grid;
 using RainesGames.Units.Selection;
 using TGS;
 
 namespace RainesGames.Combat.States.EnemyPlacement
 {
-    public class CellEventHandler : States.CellEventHandler
+    public class CellEventHandler : ICellEvents
     {
-        public CellEventHandler(EnemyPlacementState enemyPlacementState) : base(enemyPlacementState) {}
+        private EnemyPlacementState _state;
 
-        public override void OnCellClick(int cellIndex, int buttonIndex)
+        public CellEventHandler(EnemyPlacementState enemyPlacementState)
+        {
+            _state = enemyPlacementState;
+        }
+
+        public void OnCellClick(int cellIndex, int buttonIndex)
         {
             if(UnitSelectionManager.ActiveUnit == null)
                 return;
@@ -18,14 +24,8 @@ namespace RainesGames.Combat.States.EnemyPlacement
             _state.Manager.AttemptTransition();
         }
 
-        public override void OnCellEnter(TerrainGridSystem sender, int cellIndex)
-        {
+        public void OnCellEnter(TerrainGridSystem sender, int cellIndex) { }
 
-        }
-
-        public override void OnCellExit(TerrainGridSystem sender, int cellIndex)
-        {
-
-        }
+        public void OnCellExit(TerrainGridSystem sender, int cellIndex) { }
     }
 }

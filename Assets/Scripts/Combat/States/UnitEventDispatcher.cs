@@ -1,14 +1,20 @@
-﻿using RainesGames.Common.States;
+﻿using RainesGames.Common;
+using RainesGames.Common.States;
 using RainesGames.Units;
 using RainesGames.Units.Selection;
 
 namespace RainesGames.Combat.States
 {
-    public class UnitEventDispatcher : StateEventDispatcher<CombatState>, IUnitEvents
+    public class UnitEventDispatcher : IStateEventDispatcher, IUnitEvents
     {
-        public UnitEventDispatcher(CombatStateManager manager) : base(manager) {}
+        private CombatStateManager _manager;
 
-        public override void DeregisterEventHandlers()
+        public UnitEventDispatcher(CombatStateManager manager)
+        {
+            _manager = manager;
+        }
+
+        public void DeregisterEventHandlers()
         {
             UnitSelectionManager.OnUnitClick -= OnUnitClick;
             UnitSelectionManager.OnUnitMouseEnter -= OnUnitMouseEnter;
@@ -30,7 +36,7 @@ namespace RainesGames.Combat.States
             _manager.CurrentState.UnitEventHandler.OnUnitMouseExit(unit);
         }
 
-        public override void RegisterEventHandlers()
+        public void RegisterEventHandlers()
         {
             UnitSelectionManager.OnUnitClick += OnUnitClick;
             UnitSelectionManager.OnUnitMouseEnter += OnUnitMouseEnter;

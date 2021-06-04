@@ -1658,13 +1658,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caea33f6fd7aa504fa640dfe0d0c3276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BattleStart: {fileID: 1818430145}
-  EnemyPlacement: {fileID: 1818430140}
-  EnemyTurn: {fileID: 0}
-  PlayerLost: {fileID: 1818430143}
-  PlayerPlacement: {fileID: 1818430144}
-  PlayerTurn: {fileID: 1818430141}
-  PlayerWon: {fileID: 1818430142}
 --- !u!4 &1818430139
 Transform:
   m_ObjectHideFlags: 0
@@ -1691,7 +1684,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 658e540d75c6e4040b205f760843e1f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Manager: {fileID: 0}
 --- !u!114 &1818430141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1704,7 +1696,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3738d96b857408743bb2e4a75cde01f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Manager: {fileID: 0}
 --- !u!114 &1818430142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1717,7 +1708,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 805edc3f076bb284a95564660545f20e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Manager: {fileID: 0}
 --- !u!114 &1818430143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1730,7 +1720,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38145fcd96ad09b49bae74ec457a1244, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Manager: {fileID: 0}
 --- !u!114 &1818430144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1743,7 +1732,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69d65eed2b129c54985d5b327a0db771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Manager: {fileID: 0}
 --- !u!114 &1818430145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1756,7 +1744,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d05567fb8a21f3428229fdaed9bf850, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Manager: {fileID: 0}
 --- !u!114 &1818430146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1769,7 +1756,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe044f17d374dec448b8096ebec188a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Manager: {fileID: 0}
 --- !u!1 &1857756617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1895,7 +1881,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2020093387
 GameObject:
@@ -1987,5 +1973,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}

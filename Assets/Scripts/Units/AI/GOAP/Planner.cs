@@ -6,11 +6,11 @@ namespace RainesGames.Units.AI.GOAP
 {
     public class Planner
     {
-        public Queue<Action> GetCheapestPlanForGoal(Goal goal, List<Action> actions)
+        public Queue<AAction> GetCheapestPlanForGoal(AGoal goal, List<AAction> actions)
         {
-            Queue<Action> plan = new Queue<Action>();
+            Queue<AAction> plan = new Queue<AAction>();
 
-            foreach(Action action in actions)
+            foreach(AAction action in actions)
             {
                 foreach(KeyValuePair<string, object> effectBool in action.Effects)
                 {

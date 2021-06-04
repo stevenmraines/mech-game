@@ -3,9 +3,9 @@ using RainesGames.Common.States;
 
 namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike.TransitionValidators.BattleStart
 {
-    public class Validator : TransitionValidator<CombatState>
+    public class Validator : ITransitionValidator
     {
-        public override bool ValidateTransition(CombatState nextState)
+        public bool IsValid(IState nextState)
         {
             if(nextState.GetType() == typeof(PlayerPlacementState))
                 return PlayerPlacement();

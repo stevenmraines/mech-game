@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RainesGames.Units.AI.GOAP.Actions
 {
-    public abstract class Action : MonoBehaviour, IActionCost
+    public abstract class AAction : MonoBehaviour, IActionCost
     {
         protected ActionPointsManager _actionPointsManager;
         protected UnitController _controller;

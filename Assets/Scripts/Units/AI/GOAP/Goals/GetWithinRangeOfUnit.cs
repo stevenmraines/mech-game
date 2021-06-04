@@ -1,6 +1,6 @@
 ﻿namespace RainesGames.Units.AI.GOAP.Goals
 {
-    public class GetWithinRangeOfUnit : Goal
+    public class GetWithinRangeOfUnit : AGoal
     {
         void Awake()
         {

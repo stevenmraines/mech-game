@@ -1,25 +1,31 @@
-﻿using RainesGames.Grid;
+﻿using RainesGames.Common;
+using RainesGames.Grid;
 using RainesGames.Units;
 using RainesGames.Units.Selection;
 
 namespace RainesGames.Combat.States.EnemyPlacement
 {
-    public class UnitEventHandler : States.UnitEventHandler
+    public class UnitEventHandler : IUnitEvents
     {
-        public UnitEventHandler(EnemyPlacementState enemyPlacementState) : base(enemyPlacementState) {}
+        private EnemyPlacementState _state;
 
-        public override void OnUnitClick(UnitController unit, int buttonIndex)
+        public UnitEventHandler(EnemyPlacementState enemyPlacementState)
+        {
+            _state = enemyPlacementState;
+        }
+
+        public void OnUnitClick(UnitController unit, int buttonIndex)
         {
             if(unit.IsEnemy())
                 UnitSelectionManager.SetActiveUnit(unit);
         }
 
-        public override void OnUnitMouseEnter(UnitController unit)
+        public void OnUnitMouseEnter(UnitController unit)
         {
             GridManager.DisableCellHighlight();
         }
 
-        public override void OnUnitMouseExit(UnitController unit)
+        public void OnUnitMouseExit(UnitController unit)
         {
             GridManager.EnableCellHighlight();
         }

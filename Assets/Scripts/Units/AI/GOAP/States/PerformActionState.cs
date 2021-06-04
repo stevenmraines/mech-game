@@ -1,10 +1,11 @@
 ﻿namespace RainesGames.Units.AI.GOAP.States
 {
-    public class PerformActionState : GoapState
+    public class PerformActionState : AGoapState
     {
-        public override void UpdateState()
-        {
-            
-        }
+        public override void EnterState() { }
+
+        public override void ExitState() { }
+
+        public override void UpdateState() { }
     }
 }

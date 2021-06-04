@@ -18,15 +18,31 @@ namespace RainesGames.Combat.States
     [RequireComponent(typeof(PlayerPlacementState))]
     [RequireComponent(typeof(PlayerTurnState))]
     [RequireComponent(typeof(PlayerWonState))]
-    public class CombatStateManager : StateManager<CombatState>
+    public class CombatStateManager : MonoBehaviour, IGraphStateManager
     {
-        [HideInInspector] public BattleStartState BattleStart;
-        [HideInInspector] public EnemyPlacementState EnemyPlacement;
-        [HideInInspector] public EnemyTurnState EnemyTurn;
-        [HideInInspector] public PlayerLostState PlayerLost;
-        [HideInInspector] public PlayerPlacementState PlayerPlacement;
-        [HideInInspector] public PlayerTurnState PlayerTurn;
-        [HideInInspector] public PlayerWonState PlayerWon;
+        private BattleStartState _battleStart;
+        public BattleStartState BattleStart => _battleStart;
+
+        private EnemyPlacementState _enemyPlacement;
+        public EnemyPlacementState EnemyPlacement => _enemyPlacement;
+
+        private EnemyTurnState _enemyTurn;
+        public EnemyTurnState EnemyTurn => _enemyTurn;
+
+        private PlayerLostState _playerLost;
+        public PlayerLostState PlayerLost => _playerLost;
+
+        private PlayerPlacementState _playerPlacement;
+        public PlayerPlacementState PlayerPlacement => _playerPlacement;
+
+        private PlayerTurnState _playerTurn;
+        public PlayerTurnState PlayerTurn => _playerTurn;
+
+        private PlayerWonState _playerWon;
+        public PlayerWonState PlayerWon => _playerWon;
+
+        private ACombatState _currentState;
+        public ACombatState CurrentState => _currentState;
 
         private PreemptiveStrikeGraph _stateGraph;
 
@@ -35,24 +51,24 @@ namespace RainesGames.Combat.States
 
         public void AttemptTransition()
         {
-            CombatState nextState = _stateGraph.GetNextState();
+            IState nextState = _stateGraph.GetNextState();
 
             // Game over state
             if(nextState == null)
                 return;
 
-            TransitionToState(nextState);
+            TransitionToState((ACombatState)nextState);
         }
 
         void Awake()
         {
-            BattleStart = GetComponent<BattleStartState>();
-            EnemyPlacement = GetComponent<EnemyPlacementState>();
-            EnemyTurn = GetComponent<EnemyTurnState>();
-            PlayerLost = GetComponent<PlayerLostState>();
-            PlayerPlacement = GetComponent<PlayerPlacementState>();
-            PlayerTurn = GetComponent<PlayerTurnState>();
-            PlayerWon = GetComponent<PlayerWonState>();
+            _battleStart = GetComponent<BattleStartState>();
+            _enemyPlacement = GetComponent<EnemyPlacementState>();
+            _enemyTurn = GetComponent<EnemyTurnState>();
+            _playerLost = GetComponent<PlayerLostState>();
+            _playerPlacement = GetComponent<PlayerPlacementState>();
+            _playerTurn = GetComponent<PlayerTurnState>();
+            _playerWon = GetComponent<PlayerWonState>();
 
             _stateGraph = new PreemptiveStrikeGraph(this);
             _cellEventDispatcher = new CellEventDispatcher(this);
@@ -80,12 +96,24 @@ namespace RainesGames.Combat.States
             AttemptTransition();
         }
 
-        protected override void Update()
+        void TransitionToState(ACombatState state)
         {
-            base.Update();
+            if(_currentState != null)
+                _currentState.ExitState();
+
+            _currentState = state;
+            _currentState.EnterState();
+        }
+
+        void Update()
+        {
+            if(!_currentState.Entered)
+                return;
+
+            _currentState.UpdateState();
 
             // TODO this will likely need to be triggered by an event once the game is more built out, leave here for now
-            if(_current != BattleStart && _current != EnemyPlacement && _current != PlayerPlacement)
+            if(_currentState != BattleStart && _currentState != EnemyPlacement && _currentState != PlayerPlacement)
                 AttemptTransition();
         }
     }

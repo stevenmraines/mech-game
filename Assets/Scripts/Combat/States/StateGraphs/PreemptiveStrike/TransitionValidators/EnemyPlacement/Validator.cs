@@ -4,9 +4,9 @@ using RainesGames.Units;
 
 namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike.TransitionValidators.EnemyPlacement
 {
-    public class Validator : TransitionValidator<CombatState>
+    public class Validator : ITransitionValidator
     {
-        public override bool ValidateTransition(CombatState nextState)
+        public bool IsValid(IState nextState)
         {
             if(nextState.GetType() == typeof(PlayerTurnState))
                 return PlayerTurn();

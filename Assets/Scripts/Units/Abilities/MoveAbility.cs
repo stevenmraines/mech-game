@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RainesGames.Units.Abilities
 {
-    public class MoveAbility : Ability
+    public class MoveAbility : AAbility
     {
         protected override void Awake()
         {

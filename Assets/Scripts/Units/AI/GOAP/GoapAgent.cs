@@ -9,12 +9,12 @@ namespace RainesGames.Units.AI.GOAP
     [RequireComponent(typeof(GoapStateManager))]
     public class GoapAgent : MonoBehaviour
     {
-        private List<Action> _actions;
-        private Goal _currentGoal;
+        private List<AAction> _actions;
+        private AGoal _currentGoal;
         private GoalFinder _goalFinder;
-        private List<Goal> _goals;
+        private List<AGoal> _goals;
         private GoapStateManager _manager;
-        private Queue<Action> _plan;
+        private Queue<AAction> _plan;
         private Planner _planner;
 
         void Awake()
@@ -50,15 +50,15 @@ namespace RainesGames.Units.AI.GOAP
 
         void LoadActions()
         {
-            _actions = new List<Action>(GetComponents<Action>());
+            _actions = new List<AAction>(GetComponents<AAction>());
         }
 
         void LoadGoals()
         {
-            _goals = new List<Goal>(GetComponents<Goal>());
+            _goals = new List<AGoal>(GetComponents<AGoal>());
         }
 
-        public void SetCurrentGoal(Goal goal)
+        public void SetCurrentGoal(AGoal goal)
         {
             _currentGoal = goal;
         }

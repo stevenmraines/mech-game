@@ -1,6 +1,6 @@
 ﻿using RainesGames.Units;
 
-namespace RainesGames.Combat.States
+namespace RainesGames.Common
 {
     public interface IUnitEvents
     {

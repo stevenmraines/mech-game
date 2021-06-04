@@ -88,7 +88,7 @@ namespace RainesGames.Units.Selection
 
         public static void SetActiveUnit(UnitController unit)
         {
-            _activeUnit = unit;
+            _activeUnit = _activeUnit == unit ? null : unit;
         }
 
         static void TriggerMouseEvents()

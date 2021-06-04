@@ -2,7 +2,7 @@
 
 namespace RainesGames.Units.AI.GOAP.Actions
 {
-    public class MoveWithinRangeOfUnit : Action
+    public class MoveWithinRangeOfUnit : AAction
     {
         const string WITHIN_RANGE_OF_UNIT = "withinRangeOfUnit";
 

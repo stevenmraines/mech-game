@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RainesGames.Combat.States.BattleStart
 {
-    public class BattleStartState : CombatState
+    public class BattleStartState : ACombatState
     {
         protected override void Awake()
         {
@@ -37,9 +37,6 @@ namespace RainesGames.Combat.States.BattleStart
             Manager.AttemptTransition();
         }
 
-        public override void UpdateState()
-        {
-            
-        }
+        public override void UpdateState() { }
     }
 }

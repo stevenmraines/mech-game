@@ -1,4 +1,5 @@
-﻿using RainesGames.Grid;
+﻿using RainesGames.Common;
+using RainesGames.Grid;
 using RainesGames.Grid.Selection;
 using RainesGames.Units;
 using RainesGames.Units.Abilities;
@@ -9,12 +10,18 @@ using UnityEngine;
 
 namespace RainesGames.Combat.States.PlayerTurn
 {
-    public class CellEventHandler : States.CellEventHandler
+    public class CellEventHandler : ICellEvents
     {
+        // TODO Should probably remove these references to the state because I don't seem to be using them
+        private PlayerTurnState _state;
+
         // TODO if this is going to be persisted here, then we probs don't need to pass it to ColorizePath
         private List<int> _movePath;
 
-        public CellEventHandler(PlayerTurnState playerTurnState) : base(playerTurnState) {}
+        public CellEventHandler(PlayerTurnState playerTurnState)
+        {
+            _state = playerTurnState;
+        }
 
         void ColorizePath(List<int> pathIndices, Color color)
         {
@@ -22,7 +29,7 @@ namespace RainesGames.Combat.States.PlayerTurn
                 GridManager.TerrainGridSystem.CellSetColor(cellIndex, color);
         }
 
-        public override void OnCellClick(int cellIndex, int buttonIndex)
+        public void OnCellClick(int cellIndex, int buttonIndex)
         {
             if(UnitSelectionManager.ActiveUnit == null || UnitSelectionManager.ActiveUnit.IsEnemy())
                 return;
@@ -36,12 +43,12 @@ namespace RainesGames.Combat.States.PlayerTurn
             }
         }
 
-        public override void OnCellEnter(TerrainGridSystem sender, int cellIndex)
+        public void OnCellEnter(TerrainGridSystem sender, int cellIndex)
         {
             OnCellMouseTransit(cellIndex, GridSelectionManager.MoveCellColor);
         }
 
-        public override void OnCellExit(TerrainGridSystem sender, int cellIndex)
+        public void OnCellExit(TerrainGridSystem sender, int cellIndex)
         {
             OnCellMouseTransit(cellIndex, GridSelectionManager.DefaultCellColor);
         }

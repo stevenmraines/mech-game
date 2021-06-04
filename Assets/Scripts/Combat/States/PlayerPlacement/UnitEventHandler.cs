@@ -1,26 +1,32 @@
-﻿using RainesGames.Grid;
+﻿using RainesGames.Common;
+using RainesGames.Grid;
 using RainesGames.Units;
 using RainesGames.Units.Selection;
 
 namespace RainesGames.Combat.States.PlayerPlacement
 {
-    public class UnitEventHandler : States.UnitEventHandler
+    public class UnitEventHandler : IUnitEvents
     {
-        public UnitEventHandler(PlayerPlacementState playerPlacementState) : base(playerPlacementState) {}
+        private PlayerPlacementState _state;
 
-        public override void OnUnitClick(UnitController unit, int buttonIndex)
+        public UnitEventHandler(PlayerPlacementState playerPlacementState)
+        {
+            _state = playerPlacementState;
+        }
+
+        public void OnUnitClick(UnitController unit, int buttonIndex)
         {
             if(unit.IsPlayer())
                 UnitSelectionManager.SetActiveUnit(unit);
         }
 
-        public override void OnUnitMouseEnter(UnitController unit)
+        public void OnUnitMouseEnter(UnitController unit)
         {
             // TODO Figure out how to use lambda expressions for these one line event handlers
             GridManager.DisableCellHighlight();
         }
 
-        public override void OnUnitMouseExit(UnitController unit)
+        public void OnUnitMouseExit(UnitController unit)
         {
             GridManager.EnableCellHighlight();
         }
