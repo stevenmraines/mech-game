@@ -1,4 +1,5 @@
-﻿using RainesGames.Combat.States.EnemyPlacement;
+﻿using RainesGames.Common.States;
+using RainesGames.Combat.States.EnemyPlacement;
 using RainesGames.Combat.States.EnemyTurn;
 using RainesGames.Combat.States.PlayerPlacement;
 using RainesGames.Combat.States.PlayerTurn;
@@ -19,6 +20,8 @@ namespace RainesGames.Units.Selection
 
         private static UnitController _activeUnit;
         public static UnitController ActiveUnit => _activeUnit;
+
+        private IStateEventRouter _cellEventRouter;
 
         private static UnitController _currentSelection;
         public static UnitController CurrentSelection => _currentSelection;
@@ -51,6 +54,8 @@ namespace RainesGames.Units.Selection
             OutlineWidth = 7f;
             PlayerColor = Color.green;
             EnemyColor = Color.red;
+
+            _cellEventRouter = new States.CellEventRouter();
         }
 
         static void DoSelectionResponse()
@@ -71,6 +76,7 @@ namespace RainesGames.Units.Selection
             EnemyPlacementState.OnExitState -= ResetActiveUnit;
             PlayerPlacementState.OnExitState -= ResetActiveUnit;
             PlayerTurnState.OnExitState -= ResetActiveUnit;
+            _cellEventRouter.DeregisterEventHandlers();
         }
 
         void OnEnable()
@@ -79,6 +85,7 @@ namespace RainesGames.Units.Selection
             EnemyPlacementState.OnExitState += ResetActiveUnit;
             PlayerPlacementState.OnExitState += ResetActiveUnit;
             PlayerTurnState.OnExitState += ResetActiveUnit;
+            _cellEventRouter.RegisterEventHandlers();
         }
 
         void ResetActiveUnit()

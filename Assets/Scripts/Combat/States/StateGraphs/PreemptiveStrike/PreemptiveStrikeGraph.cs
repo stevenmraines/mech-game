@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike
 {
-    public class PreemptiveStrikeGraph : IStateGraph
+    public class PreemptiveStrikeGraph : IStateGraph  // TODO Probably don't need an interface for this
     {
         private ACombatState _initialState;
         private CombatStateManager _manager;

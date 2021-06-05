@@ -1,18 +1,12 @@
 ﻿using RainesGames.Common;
 using RainesGames.Common.States;
+using RainesGames.Units.Selection;
 using TGS;
 
 namespace RainesGames.Units.States
 {
     public class CellEventRouter : IStateEventRouter, ICellEvents
     {
-        private UnitStateManager _manager;
-
-        public CellEventRouter(UnitStateManager manager)
-        {
-            _manager = manager;
-        }
-
         public void DeregisterEventHandlers()
         {
             Combat.States.CellEventRouter.OnCellClickReroute -= OnCellClick;
@@ -22,17 +16,20 @@ namespace RainesGames.Units.States
 
         public void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
         {
-            _manager.CurrentState.CellEventHandler.OnCellClick(sender, cellIndex, buttonIndex);
+            UnitStateManager unitStateManager = UnitSelectionManager.ActiveUnit.StateManager;
+            unitStateManager.CurrentState.CellEventHandler.OnCellClick(sender, cellIndex, buttonIndex);
         }
 
         public void OnCellEnter(TerrainGridSystem sender, int cellIndex)
         {
-            _manager.CurrentState.CellEventHandler.OnCellEnter(sender, cellIndex);
+            UnitStateManager unitStateManager = UnitSelectionManager.ActiveUnit.StateManager;
+            unitStateManager.CurrentState.CellEventHandler.OnCellEnter(sender, cellIndex);
         }
 
         public void OnCellExit(TerrainGridSystem sender, int cellIndex)
         {
-            _manager.CurrentState.CellEventHandler.OnCellExit(sender, cellIndex);
+            UnitStateManager unitStateManager = UnitSelectionManager.ActiveUnit.StateManager;
+            unitStateManager.CurrentState.CellEventHandler.OnCellExit(sender, cellIndex);
         }
 
         public void RegisterEventHandlers()
