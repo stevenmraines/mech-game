@@ -1,4 +1,5 @@
-﻿using RainesGames.Units.States.Idle;
+﻿using RainesGames.Combat.States;
+using RainesGames.Units.States.Idle;
 using RainesGames.Units.States.Move;
 using UnityEngine;
 
@@ -6,8 +7,8 @@ namespace RainesGames.Units.States
 {
     public class UnitStateManager : MonoBehaviour
     {
-        private IdleState _idle;
-        public IdleState Idle => _idle;
+        private NoActionPointsState _noActionPoints;
+        public NoActionPointsState NoActionPoints => _noActionPoints;
 
         private MoveState _move;
         public MoveState Move => _move;
@@ -25,7 +26,7 @@ namespace RainesGames.Units.States
         {
             _controller = GetComponent<UnitController>();
 
-            _idle = new IdleState(this);
+            _noActionPoints = new NoActionPointsState(this);
             _move = new MoveState(this);
 
             TransitionToState(_move);

@@ -1,12 +1,12 @@
 ﻿namespace RainesGames.Units.States.Idle
 {
-    public class IdleState : AUnitState
+    public class NoActionPointsState : AUnitState
     {
-        public IdleState(UnitStateManager manager) : base(manager) { }
+        public NoActionPointsState(UnitStateManager manager) : base(manager) { }
 
         public override bool CanEnterState()
         {
-            return true;
+            return _manager.Controller.ActionPointsManager.ActionPoints == 0;
         }
 
         public override void EnterState()

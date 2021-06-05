@@ -11,17 +11,11 @@ namespace RainesGames.Units.States.Move
 {
     public class CellEventHandler : ICellEvents
     {
-        // TODO if this is going to be persisted here, then we probs don't need to pass it to ColorizePath
         private List<int> _movePath;
         
         void CellMouseTransit(int cellIndex, Color cellColor)
         {
-            UnitController activeUnit = UnitSelectionManager.ActiveUnit;
-
-            if(activeUnit == null || activeUnit.IsEnemy())
-                return;
-
-            int activeUnitPosition = activeUnit.PositionManager.Cell.index;
+            int activeUnitPosition = UnitSelectionManager.ActiveUnit.PositionManager.Cell.index;
 
             _movePath = GridManager.FindPath(activeUnitPosition, cellIndex, true);
 

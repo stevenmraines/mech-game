@@ -15,19 +15,33 @@ namespace RainesGames.Combat.States.EnemyTurn
             _state = enemyTurnState;
         }
 
-        public void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
+        bool NoValidUnitSelected()
         {
-            if(UnitSelectionManager.ActiveUnit == null || UnitSelectionManager.ActiveUnit.IsPlayer())
-                return;
-
-            UnitController activeUnit = UnitSelectionManager.ActiveUnit;
-
-            if(activeUnit.HasAbility<MoveAbility>())
-                activeUnit.GetAbility<MoveAbility>().Move(cellIndex);
+            return UnitSelectionManager.ActiveUnit == null || UnitSelectionManager.ActiveUnit.IsPlayer();
         }
 
-        public void OnCellEnter(TerrainGridSystem sender, int cellIndex) { }
+        public void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
+        {
+            if(NoValidUnitSelected())
+                return;
 
-        public void OnCellExit(TerrainGridSystem sender, int cellIndex) { }
+            _state.Manager.CellEventRouter.RerouteCellClick(sender, cellIndex, buttonIndex);
+        }
+
+        public void OnCellEnter(TerrainGridSystem sender, int cellIndex)
+        {
+            if(NoValidUnitSelected())
+                return;
+
+            _state.Manager.CellEventRouter.RerouteCellEnter(sender, cellIndex);
+        }
+
+        public void OnCellExit(TerrainGridSystem sender, int cellIndex)
+        {
+            if(NoValidUnitSelected())
+                return;
+
+            _state.Manager.CellEventRouter.RerouteCellExit(sender, cellIndex);
+        }
     }
 }

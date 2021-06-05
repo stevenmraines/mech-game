@@ -12,7 +12,7 @@ namespace RainesGames.Combat.States
 
         public delegate void CellClickDelegate(TerrainGridSystem sender, int cellIndex, int buttonIndex);
         public static event CellClickDelegate OnCellClickReroute;
-        
+
         public delegate void CellMouseEventDelegate(TerrainGridSystem sender, int cellIndex);
         public static event CellMouseEventDelegate OnCellEnterReroute;
         public static event CellMouseEventDelegate OnCellExitReroute;
