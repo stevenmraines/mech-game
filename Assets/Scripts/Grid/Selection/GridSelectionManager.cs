@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace RainesGames.Grid.Selection
 {
+    // TODO This may not need to be a MonoBehaviour
     public class GridSelectionManager : MonoBehaviour
     {
         private static Color _defaultCellColor;

@@ -1,24 +1,22 @@
 ﻿using RainesGames.Common;
 using RainesGames.Common.States;
-using RainesGames.Units;
-using RainesGames.Units.Selection;
 
-namespace RainesGames.Combat.States
+namespace RainesGames.Units.States
 {
-    public class UnitEventDispatcher : IStateEventDispatcher, IUnitEvents
+    public class UnitEventRouter : IStateEventRouter, IUnitEvents
     {
-        private CombatStateManager _manager;
+        private UnitStateManager _manager;
 
-        public UnitEventDispatcher(CombatStateManager manager)
+        public UnitEventRouter(UnitStateManager manager)
         {
             _manager = manager;
         }
 
         public void DeregisterEventHandlers()
         {
-            UnitSelectionManager.OnUnitClick -= OnUnitClick;
-            UnitSelectionManager.OnUnitMouseEnter -= OnUnitMouseEnter;
-            UnitSelectionManager.OnUnitMouseExit -= OnUnitMouseExit;
+            Combat.States.UnitEventRouter.OnUnitClickReroute -= OnUnitClick;
+            Combat.States.UnitEventRouter.OnUnitMouseEnterReroute -= OnUnitMouseEnter;
+            Combat.States.UnitEventRouter.OnUnitMouseExitReroute -= OnUnitMouseExit;
         }
 
         public void OnUnitClick(UnitController unit, int buttonIndex)
@@ -38,9 +36,9 @@ namespace RainesGames.Combat.States
 
         public void RegisterEventHandlers()
         {
-            UnitSelectionManager.OnUnitClick += OnUnitClick;
-            UnitSelectionManager.OnUnitMouseEnter += OnUnitMouseEnter;
-            UnitSelectionManager.OnUnitMouseExit += OnUnitMouseExit;
+            Combat.States.UnitEventRouter.OnUnitClickReroute += OnUnitClick;
+            Combat.States.UnitEventRouter.OnUnitMouseEnterReroute += OnUnitMouseEnter;
+            Combat.States.UnitEventRouter.OnUnitMouseExitReroute += OnUnitMouseExit;
         }
     }
 }

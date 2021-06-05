@@ -6,7 +6,7 @@ namespace RainesGames.Units.Abilities
     [RequireComponent(typeof(UnitController))]
     public abstract class AAbility : MonoBehaviour, IActionCost
     {
-        protected UnitController _controller;
+        protected UnitController _parentUnit;
 
         protected int _firstActionCost;
         public int FirstActionCost => _firstActionCost;
@@ -16,13 +16,17 @@ namespace RainesGames.Units.Abilities
 
         protected virtual void Awake()
         {
-            _controller = GetComponent<UnitController>();
+            _parentUnit = GetComponent<UnitController>();
         }
 
         protected virtual void DecrementActionPoints()
         {
-            int actionPointCost = _controller.ActionPointsManager.FirstActionSpent ? _secondActionCost : _firstActionCost;
-            _controller.ActionPointsManager.Decrement(actionPointCost);
+            _parentUnit.ActionPointsManager.Decrement(GetActionPointCost());
+        }
+
+        public virtual int GetActionPointCost()
+        {
+            return _parentUnit.ActionPointsManager.FirstActionSpent ? _secondActionCost : _firstActionCost;
         }
     }
 }

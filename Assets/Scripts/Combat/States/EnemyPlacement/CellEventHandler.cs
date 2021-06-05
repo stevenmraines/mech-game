@@ -19,7 +19,10 @@ namespace RainesGames.Combat.States.EnemyPlacement
             if(UnitSelectionManager.ActiveUnit == null)
                 return;
 
-            UnitSelectionManager.ActiveUnit.PositionManager.PlaceUnit(GridManager.GetCell(cellIndex));
+            if(GridManager.IsBlocked(cellIndex))
+                return;
+
+            UnitSelectionManager.ActiveUnit.PositionManager.PlaceUnit(cellIndex);
 
             _state.Manager.AttemptTransition();
         }

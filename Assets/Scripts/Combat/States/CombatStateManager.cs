@@ -18,7 +18,7 @@ namespace RainesGames.Combat.States
     [RequireComponent(typeof(PlayerPlacementState))]
     [RequireComponent(typeof(PlayerTurnState))]
     [RequireComponent(typeof(PlayerWonState))]
-    public class CombatStateManager : MonoBehaviour, IGraphStateManager
+    public class CombatStateManager : MonoBehaviour
     {
         private BattleStartState _battleStart;
         public BattleStartState BattleStart => _battleStart;
@@ -46,8 +46,11 @@ namespace RainesGames.Combat.States
 
         private PreemptiveStrikeGraph _stateGraph;
 
-        private CellEventDispatcher _cellEventDispatcher;
-        private UnitEventDispatcher _unitEventDispatcher;
+        private CellEventRouter _cellEventRouter;
+        public CellEventRouter CellEventRouter => _cellEventRouter;
+
+        private UnitEventRouter _unitEventRouter;
+        public UnitEventRouter UnitEventRouter => _unitEventRouter;
 
         public void AttemptTransition()
         {
@@ -71,20 +74,21 @@ namespace RainesGames.Combat.States
             _playerWon = GetComponent<PlayerWonState>();
 
             _stateGraph = new PreemptiveStrikeGraph(this);
-            _cellEventDispatcher = new CellEventDispatcher(this);
-            _unitEventDispatcher = new UnitEventDispatcher(this);
+
+            _cellEventRouter = new CellEventRouter(this);
+            _unitEventRouter = new UnitEventRouter(this);
         }
 
         void OnDisable()
         {
-            _cellEventDispatcher.DeregisterEventHandlers();
-            _unitEventDispatcher.DeregisterEventHandlers();
+            _cellEventRouter.DeregisterEventHandlers();
+            _unitEventRouter.DeregisterEventHandlers();
         }
 
         void OnEnable()
         {
-            _cellEventDispatcher.RegisterEventHandlers();
-            _unitEventDispatcher.RegisterEventHandlers();
+            _cellEventRouter.RegisterEventHandlers();
+            _unitEventRouter.RegisterEventHandlers();
         }
 
         void Start()

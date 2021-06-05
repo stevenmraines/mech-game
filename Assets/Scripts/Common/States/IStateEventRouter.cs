@@ -1,6 +1,6 @@
 ﻿namespace RainesGames.Common.States
 {
-    public interface IStateEventDispatcher
+    public interface IStateEventRouter
     {
         void DeregisterEventHandlers();
         void RegisterEventHandlers();

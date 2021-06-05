@@ -19,17 +19,6 @@ namespace RainesGames.Units
             _controller = controller;
         }
 
-        public static bool CellIsOccupied(Cell cell)
-        {
-            foreach(UnitController unit in UnitManager.Units)
-            {
-                if(unit.PositionManager.Cell == cell)
-                    return true;
-            }
-
-            return false;
-        }
-
         void MoveUnitToCellCenter()
         {
             Vector3 cellPosition = GridManager.GetCellPosition(_cell);
@@ -41,15 +30,25 @@ namespace RainesGames.Units
             );
         }
 
-        public void PlaceUnit(Cell cell)
+        public void PlaceUnit(int newPositionIndex)
         {
-            SetCell(cell);
-            MoveUnitToCellCenter();
+            PlaceUnit(GridManager.GetCell(newPositionIndex));
         }
 
-        public void SetCell(Cell cell)
+        public void PlaceUnit(Cell newPosition)
         {
-            _cell = cell;
+            Cell oldPosition = _cell;
+            _cell = newPosition;
+            MoveUnitToCellCenter();
+            UpdateCellsBlocking(oldPosition, newPosition);
+        }
+
+        void UpdateCellsBlocking(Cell oldPosition, Cell newPosition)
+        {
+            if(oldPosition != null)
+                GridManager.UnblockCell(oldPosition);
+
+            GridManager.BlockCell(newPosition);
         }
     }
 }

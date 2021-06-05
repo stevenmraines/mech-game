@@ -1,7 +1,6 @@
 ﻿using RainesGames.Common;
-using RainesGames.Grid;
 using RainesGames.Units;
-using RainesGames.Units.Abilities;
+using RainesGames.Units.Abilities.Move;
 using RainesGames.Units.Selection;
 using TGS;
 
@@ -24,7 +23,7 @@ namespace RainesGames.Combat.States.EnemyTurn
             UnitController activeUnit = UnitSelectionManager.ActiveUnit;
 
             if(activeUnit.HasAbility<MoveAbility>())
-                activeUnit.GetAbility<MoveAbility>().Move(GridManager.GetCell(cellIndex));
+                activeUnit.GetAbility<MoveAbility>().Move(cellIndex);
         }
 
         public void OnCellEnter(TerrainGridSystem sender, int cellIndex) { }

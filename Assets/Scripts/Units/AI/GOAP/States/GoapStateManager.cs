@@ -1,12 +1,11 @@
-﻿using RainesGames.Common.States;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RainesGames.Units.AI.GOAP.States
 {
     [RequireComponent(typeof(IdleState))]
     [RequireComponent(typeof(MoveWithinRangeState))]
     [RequireComponent(typeof(PerformActionState))]
-    public class GoapStateManager : MonoBehaviour, ISimpleStateManager
+    public class GoapStateManager : MonoBehaviour
     {
         private IdleState _idle;
         public IdleState Idle => _idle;
@@ -27,12 +26,12 @@ namespace RainesGames.Units.AI.GOAP.States
             _performAction = new PerformActionState();
         }
         
-        public void TransitionToState(IState state)
+        public void TransitionToState(AGoapState state)
         {
             if(_currentState != null)
                 _currentState.ExitState();
 
-            _currentState = (AGoapState)state;
+            _currentState = state;
             _currentState.EnterState();
         }
     }
