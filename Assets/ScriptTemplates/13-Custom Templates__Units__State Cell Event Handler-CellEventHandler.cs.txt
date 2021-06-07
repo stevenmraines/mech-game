@@ -1,0 +1,19 @@
+﻿using RainesGames.Common;
+
+public class #SCRIPTNAME# : ICellEvents
+{
+    public void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
+    {
+        #NOTRIM#
+    }
+
+    public void OnCellEnter(TerrainGridSystem sender, int cellIndex)
+    {
+        #NOTRIM#
+    }
+
+    public void OnCellExit(TerrainGridSystem sender, int cellIndex)
+    {
+        #NOTRIM#
+    }
+}

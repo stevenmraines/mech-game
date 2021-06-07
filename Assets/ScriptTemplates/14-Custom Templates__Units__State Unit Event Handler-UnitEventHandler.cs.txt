@@ -1,0 +1,19 @@
+﻿using RainesGames.Common;
+
+public class #SCRIPTNAME# : IUnitEvents
+{
+    public void OnUnitClick(UnitController unit, int buttonIndex)
+    {
+        #NOTRIM#
+    }
+
+    public void OnUnitMouseEnter(UnitController unit)
+    {
+        #NOTRIM#
+    }
+
+    public void OnUnitMouseExit(UnitController unit)
+    {
+        #NOTRIM#
+    }
+}
