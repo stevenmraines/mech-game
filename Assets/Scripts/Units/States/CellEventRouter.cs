@@ -14,22 +14,24 @@ namespace RainesGames.Units.States
             Combat.States.CellEventRouter.OnCellExitReroute -= OnCellExit;
         }
 
+        UnitStateManager GetStateManager()
+        {
+            return UnitSelectionManager.ActiveUnit.StateManager;
+        }
+
         public void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
         {
-            UnitStateManager unitStateManager = UnitSelectionManager.ActiveUnit.StateManager;
-            unitStateManager.CurrentState.CellEventHandler.OnCellClick(sender, cellIndex, buttonIndex);
+            GetStateManager().CurrentState.CellEventHandler?.OnCellClick(sender, cellIndex, buttonIndex);
         }
 
         public void OnCellEnter(TerrainGridSystem sender, int cellIndex)
         {
-            UnitStateManager unitStateManager = UnitSelectionManager.ActiveUnit.StateManager;
-            unitStateManager.CurrentState.CellEventHandler.OnCellEnter(sender, cellIndex);
+            GetStateManager().CurrentState.CellEventHandler?.OnCellEnter(sender, cellIndex);
         }
 
         public void OnCellExit(TerrainGridSystem sender, int cellIndex)
         {
-            UnitStateManager unitStateManager = UnitSelectionManager.ActiveUnit.StateManager;
-            unitStateManager.CurrentState.CellEventHandler.OnCellExit(sender, cellIndex);
+            GetStateManager().CurrentState.CellEventHandler?.OnCellExit(sender, cellIndex);
         }
 
         public void RegisterEventHandlers()

@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace RainesGames.Units.States.Move
 {
-    public class CellEventHandler : ICellEvents
+    public class CellEventHandler : ICellEvents, IEventHandlerInterruptible
     {
         private List<int> _movePath;
         
@@ -20,6 +20,12 @@ namespace RainesGames.Units.States.Move
             _movePath = GridManager.FindPath(activeUnitPosition, cellIndex, true);
 
             ColorizePath(cellColor);
+        }
+
+        public void Cleanup()
+        {
+            if(_movePath != null)
+                ColorizePath(GridSelectionManager.DefaultCellColor);
         }
 
         void ColorizePath(Color color)

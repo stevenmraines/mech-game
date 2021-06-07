@@ -19,6 +19,11 @@ namespace RainesGames.Units.Abilities
             _parentUnit = GetComponent<UnitController>();
         }
 
+        public virtual bool ActionIsAffordable()
+        {
+            return _parentUnit.ActionPointsManager.ActionPoints >= GetActionPointCost();
+        }
+
         protected virtual void DecrementActionPoints()
         {
             _parentUnit.ActionPointsManager.Decrement(GetActionPointCost());

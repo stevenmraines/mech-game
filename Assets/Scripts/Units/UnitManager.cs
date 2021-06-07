@@ -1,5 +1,5 @@
-﻿using RainesGames.Combat.States.EnemyTurn;
-using RainesGames.Combat.States.PlayerTurn;
+﻿using RainesGames.Units.Selection;
+using RainesGames.Units.States;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -63,54 +63,43 @@ namespace RainesGames.Units
 
         public static List<UnitController> GetEnemyUnits()
         {
-            return GetUnitsWithTag(ENEMY_TAG);
+            List<UnitController> enemyUnits = new List<UnitController>();
+
+            foreach(UnitController unit in _units)
+            {
+                if(unit.IsEnemy())
+                    enemyUnits.Add(unit);
+            }
+
+            return enemyUnits;
         }
         
         public static List<UnitController> GetPlayerUnits()
-        {
-            return GetUnitsWithTag(PLAYER_TAG);
-        }
-
-        static List<UnitController> GetUnitsWithTag(string tag)
         {
             List<UnitController> playerUnits = new List<UnitController>();
 
             foreach(UnitController unit in _units)
             {
-                if(unit.gameObject.CompareTag(tag))
+                if(unit.IsPlayer())
                     playerUnits.Add(unit);
             }
 
             return playerUnits;
         }
 
-        void OnDisable()
+        void Update()
         {
-            // TODO Should this be handled on each unit individually on ActionPointsManager?
-            EnemyTurnState.OnEnterState -= ResetAllEnemyActionPoints;
-            PlayerTurnState.OnEnterState -= ResetAllPlayerActionPoints;
-        }
+            // TODO remove all this crap
+            if(UnitSelectionManager.ActiveUnit == null)
+                return;
 
-        void OnEnable()
-        {
-            EnemyTurnState.OnEnterState += ResetAllEnemyActionPoints;
-            PlayerTurnState.OnEnterState += ResetAllPlayerActionPoints;
-        }
+            UnitStateManager stateManager = UnitSelectionManager.ActiveUnit.StateManager;
 
-        public static void ResetAllEnemyActionPoints()
-        {
-            ResetAllUnitActionPoints(GetEnemyUnits());
-        }
+            if(Input.GetMouseButtonUp(1))
+                stateManager.TransitionToState(stateManager.Move);
 
-        public static void ResetAllPlayerActionPoints()
-        {
-            ResetAllUnitActionPoints(GetPlayerUnits());
-        }
-
-        static void ResetAllUnitActionPoints(List<UnitController> units)
-        {
-            foreach(UnitController unit in units)
-                unit.ActionPointsManager.ResetActionPoints();
+            if(Input.GetKeyUp(KeyCode.Alpha1))
+                stateManager.TransitionToState(stateManager.Hack);
         }
     }
 }

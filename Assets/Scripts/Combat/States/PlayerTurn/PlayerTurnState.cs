@@ -23,6 +23,7 @@ namespace RainesGames.Combat.States.PlayerTurn
             OnEnterState?.Invoke();
             GridManager.EnableCellHighlight();
             GridManager.DisableTerritories();
+            StartCoroutine(CombatStateUtilities.NoActionPointsCheck(_manager));
         }
 
         public override void ExitState()

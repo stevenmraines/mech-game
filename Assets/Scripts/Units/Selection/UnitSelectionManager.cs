@@ -22,6 +22,7 @@ namespace RainesGames.Units.Selection
         public static UnitController ActiveUnit => _activeUnit;
 
         private IStateEventRouter _cellEventRouter;
+        private IStateEventRouter _unitEventRouter;
 
         private static UnitController _currentSelection;
         public static UnitController CurrentSelection => _currentSelection;
@@ -56,6 +57,7 @@ namespace RainesGames.Units.Selection
             EnemyColor = Color.red;
 
             _cellEventRouter = new States.CellEventRouter();
+            _unitEventRouter = new States.UnitEventRouter();
         }
 
         static void DoSelectionResponse()
@@ -77,6 +79,7 @@ namespace RainesGames.Units.Selection
             PlayerPlacementState.OnExitState -= ResetActiveUnit;
             PlayerTurnState.OnExitState -= ResetActiveUnit;
             _cellEventRouter.DeregisterEventHandlers();
+            _unitEventRouter.DeregisterEventHandlers();
         }
 
         void OnEnable()
@@ -86,6 +89,7 @@ namespace RainesGames.Units.Selection
             PlayerPlacementState.OnExitState += ResetActiveUnit;
             PlayerTurnState.OnExitState += ResetActiveUnit;
             _cellEventRouter.RegisterEventHandlers();
+            _unitEventRouter.RegisterEventHandlers();
         }
 
         void ResetActiveUnit()
@@ -95,7 +99,7 @@ namespace RainesGames.Units.Selection
 
         public static void SetActiveUnit(UnitController unit)
         {
-            _activeUnit = _activeUnit == unit ? null : unit;
+            _activeUnit = unit;
         }
 
         static void TriggerMouseEvents()

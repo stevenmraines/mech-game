@@ -1,6 +1,6 @@
-﻿namespace RainesGames.Units.Abilities.Move
+﻿namespace RainesGames.Units.Abilities.Hack
 {
-    public class MoveAbility : AAbility
+    public class HackAbility : AAbility
     {
         private Validator _validator;
 
@@ -12,11 +12,11 @@
             _validator = new Validator();
         }
 
-        public void Move(int cellIndex)
+        public void Hack(UnitController targetUnit)
         {
-            if(_validator.IsValid(_parentUnit, cellIndex))
+            if(_validator.IsValid(_parentUnit, targetUnit))
             {
-                _parentUnit.PositionManager.PlaceUnit(cellIndex);
+                targetUnit.HackingManager.Hack();
                 DecrementActionPoints();
             }
         }

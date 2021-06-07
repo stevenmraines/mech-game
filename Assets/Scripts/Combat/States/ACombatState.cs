@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace RainesGames.Combat.States
 {
-    public abstract class ACombatState : MonoBehaviour, IState
+    public abstract class ACombatState : MonoBehaviour, IState, IStateUpdateable
     {
-        private CombatStateManager _manager;
+        protected CombatStateManager _manager;
         public CombatStateManager Manager => _manager;
 
         protected ICellEvents _cellEventHandler;

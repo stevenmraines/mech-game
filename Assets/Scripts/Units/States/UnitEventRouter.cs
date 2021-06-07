@@ -1,17 +1,11 @@
 ﻿using RainesGames.Common;
 using RainesGames.Common.States;
+using RainesGames.Units.Selection;
 
 namespace RainesGames.Units.States
 {
     public class UnitEventRouter : IStateEventRouter, IUnitEvents
     {
-        private UnitStateManager _manager;
-
-        public UnitEventRouter(UnitStateManager manager)
-        {
-            _manager = manager;
-        }
-
         public void DeregisterEventHandlers()
         {
             Combat.States.UnitEventRouter.OnUnitClickReroute -= OnUnitClick;
@@ -19,19 +13,24 @@ namespace RainesGames.Units.States
             Combat.States.UnitEventRouter.OnUnitMouseExitReroute -= OnUnitMouseExit;
         }
 
+        UnitStateManager GetStateManager()
+        {
+            return UnitSelectionManager.ActiveUnit.StateManager;
+        }
+
         public void OnUnitClick(UnitController unit, int buttonIndex)
         {
-            _manager.CurrentState.UnitEventHandler.OnUnitClick(unit, buttonIndex);
+            GetStateManager().CurrentState.UnitEventHandler?.OnUnitClick(unit, buttonIndex);
         }
 
         public void OnUnitMouseEnter(UnitController unit)
         {
-            _manager.CurrentState.UnitEventHandler.OnUnitMouseEnter(unit);
+            GetStateManager().CurrentState.UnitEventHandler?.OnUnitMouseEnter(unit);
         }
 
         public void OnUnitMouseExit(UnitController unit)
         {
-            _manager.CurrentState.UnitEventHandler.OnUnitMouseExit(unit);
+            GetStateManager().CurrentState.UnitEventHandler?.OnUnitMouseExit(unit);
         }
 
         public void RegisterEventHandlers()

@@ -22,6 +22,8 @@ namespace RainesGames.Combat.States.EnemyTurn
             base.EnterState();
             OnEnterState?.Invoke();
             GridManager.EnableCellHighlight();
+            GridManager.DisableTerritories();
+            StartCoroutine(CombatStateUtilities.NoActionPointsCheck(_manager));
         }
 
         public override void ExitState()

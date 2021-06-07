@@ -4,6 +4,5 @@
     {
         void EnterState();
         void ExitState();
-        void UpdateState();
     }
 }

@@ -13,9 +13,6 @@ namespace RainesGames.Units.States
         protected IUnitEvents _unitEventHandler;
         public IUnitEvents UnitEventHandler => _unitEventHandler;
 
-        protected bool _entered = false;
-        public bool Entered => _entered;
-
         public AUnitState(UnitStateManager manager)
         {
             _manager = manager;
@@ -23,16 +20,18 @@ namespace RainesGames.Units.States
 
         public abstract bool CanEnterState();
 
-        public virtual void EnterState()
+        public abstract void EnterState();
+
+        public abstract void ExitState();
+
+        public bool IsCellTargetingState()
         {
-            _entered = true;
+            return _cellEventHandler != null;
         }
 
-        public virtual void ExitState()
+        public bool IsUnitTargetingState()
         {
-            _entered = false;
+            return _unitEventHandler != null;
         }
-
-        public abstract void UpdateState();
     }
 }

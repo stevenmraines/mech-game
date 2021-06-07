@@ -7,6 +7,7 @@ using RainesGames.Combat.States.PlayerTurn;
 using RainesGames.Combat.States.PlayerWon;
 using RainesGames.Combat.States.StateGraphs.PreemptiveStrike;
 using RainesGames.Common.States;
+using RainesGames.Units.Abilities;
 using UnityEngine;
 
 namespace RainesGames.Combat.States
@@ -83,20 +84,18 @@ namespace RainesGames.Combat.States
         {
             _cellEventRouter.DeregisterEventHandlers();
             _unitEventRouter.DeregisterEventHandlers();
+            ActionPointsManager.OnActionPointsDecrementStatic -= AttemptTransition;
         }
 
         void OnEnable()
         {
             _cellEventRouter.RegisterEventHandlers();
             _unitEventRouter.RegisterEventHandlers();
+            ActionPointsManager.OnActionPointsDecrementStatic += AttemptTransition;
         }
 
         void Start()
         {
-            /*
-             * Move this to Start instead of Awake because there's a race condition
-             * happening when CombatStartState Awake is called after its EnterState.
-             */
             AttemptTransition();
         }
 
@@ -115,10 +114,6 @@ namespace RainesGames.Combat.States
                 return;
 
             _currentState.UpdateState();
-
-            // TODO this will likely need to be triggered by an event once the game is more built out, leave here for now
-            if(_currentState != BattleStart && _currentState != EnemyPlacement && _currentState != PlayerPlacement)
-                AttemptTransition();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using RainesGames.Combat.States;
 using RainesGames.Units;
 using RainesGames.Units.Selection;
+using RainesGames.Units.States;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -42,18 +43,47 @@ namespace RainesGames.UI
 
             List<UnitController> selectables = _selectablesProvider.GetSelectables();
 
+            int j = 0;
+
             for(int i = 0; i < selectables.Count; i++)
             {
-                string unitString = selectables[i].name + " (" + selectables[i].ActionPointsManager.ActionPoints + ")";
+                string unitName = selectables[i].name + "  -  (AP: " + selectables[i].ActionPointsManager.ActionPoints + ")";
+
+                UnitStateManager stateManager = selectables[i].StateManager;
+                AUnitState currentState = stateManager.CurrentState;
+
+                if(currentState == stateManager.NoActionPoints)
+                    unitName += "  -  State: No AP";
+                
+                if(currentState == stateManager.Move)
+                    unitName += "  -  State: Move";
+                
+                if(currentState == stateManager.Hack)
+                    unitName += "  -  State: Hack";
+
+                int x = 10;
+                int width = 300;
+                int height = 20;
+
+                GUI.Label(new Rect(x, GetY(i, j), width, height), unitName);
+
+                if(selectables[i].IsHacked())
+                {
+                    j++;
+                    GUI.Label(new Rect(x, GetY(i, j), width, height), "\tHACKED (" + selectables[i].HackingManager.TurnsRemaining + ")");
+                }
 
                 if(selectables[i] == UnitSelectionManager.ActiveUnit)
-                    unitString += " - ACTIVE";
-
-                if(UnitSelectionManager.CurrentSelection == selectables[i])
-                    unitString += " - HOVERED";
-
-                GUI.Label(new Rect(10, i * 20 + 50, 300, 20), unitString);
+                {
+                    j++;
+                    GUI.Label(new Rect(x, GetY(i, j), width, height), "\tACTIVE");
+                }
             }
+        }
+
+        int GetY(int i, int j)
+        {
+            return (i + j) * 20 + 50;
         }
 
         void OnGUI()

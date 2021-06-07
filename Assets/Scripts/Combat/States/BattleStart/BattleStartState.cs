@@ -34,7 +34,7 @@ namespace RainesGames.Combat.States.BattleStart
 
             hud.DisableBattleStartMessage();
 
-            Manager.AttemptTransition();
+            _manager.AttemptTransition();
         }
 
         public override void UpdateState() { }
