@@ -1,0 +1,18 @@
+﻿using TGS;
+using UnityEngine;
+
+public class #SCRIPTNAME# : ACellAbilityValidator
+{
+    public #SCRIPTNAME#(UnitController parentUnit) : base(parentUnit) { }
+
+    public override bool IsValid(Cell targetCell)
+    {
+        if(false)
+        {
+            Debug.Log("");
+            return false;
+        }
+
+        return true;
+    }
+}

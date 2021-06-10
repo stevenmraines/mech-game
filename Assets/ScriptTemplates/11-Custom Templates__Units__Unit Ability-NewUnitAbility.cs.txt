@@ -1,18 +1,16 @@
-﻿public class #SCRIPTNAME# : AAbility
+﻿public class #SCRIPTNAME# : AUnitAbility
 {
-    private Validator _validator;
-
     protected override void Awake()
     {
         base.Awake();
         _firstActionCost = 1;
         _secondActionCost = 1;
-        _validator = new Validator();
+        _validator = new Validator(_controller);
     }
 
-    public void Execute()
+    public override void Execute(UnitController targetUnit)
     {
-        if(_validator.IsValid())
+        if(_validator.IsValid(targetUnit))
         {
             #NOTRIM#
             DecrementActionPoints();

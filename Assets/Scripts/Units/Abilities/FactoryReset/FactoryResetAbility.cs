@@ -1,22 +1,20 @@
 ﻿namespace RainesGames.Units.Abilities.FactoryReset
 {
-    public class FactoryResetAbility : AAbility
+    public class FactoryResetAbility : AUnitAbility
     {
-        private Validator _validator;
-
         protected override void Awake()
         {
             base.Awake();
             _firstActionCost = 1;
             _secondActionCost = 1;
-            _validator = new Validator();
+            _validator = new Validator(_controller);
         }
 
-        public void Execute(UnitController targetUnit)
+        public override void Execute(UnitController targetUnit)
         {
-            if(_validator.IsValid(_controller, targetUnit))
+            if(_validator.IsValid(targetUnit))
             {
-                targetUnit.FactoryResetStatusManager.FactoryReset();
+                targetUnit.FactoryResetStatusManager.Activate();
                 DecrementActionPoints();
             }
         }

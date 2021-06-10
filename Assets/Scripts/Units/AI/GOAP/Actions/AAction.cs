@@ -38,14 +38,14 @@ namespace RainesGames.Units.AI.GOAP.Actions
             _preconditions = new Dictionary<string, object>();
         }
 
-        protected int GetActionCost()
+        public int GetActionPointCost()
         {
             return _actionPointsManager.FirstActionSpent ? _secondActionCost : _firstActionCost;
         }
 
         protected bool HasEnoughActionPoints()
         {
-            return _actionPointsManager.ActionPoints >= GetActionCost();
+            return _actionPointsManager.ActionPoints >= GetActionPointCost();
         }
 
         protected void DetermineTarget()

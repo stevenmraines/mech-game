@@ -8,7 +8,7 @@ namespace RainesGames.Units.States.Hack
     {
         public void OnUnitClick(UnitController unit, int buttonIndex)
         {
-            UnitSelectionManager.ActiveUnit.GetAbility<HackAbility>().Hack(unit);
+            UnitSelectionManager.ActiveUnit.GetAbility<HackAbility>().Execute(unit);
         }
 
         public void OnUnitMouseEnter(UnitController unit) { }

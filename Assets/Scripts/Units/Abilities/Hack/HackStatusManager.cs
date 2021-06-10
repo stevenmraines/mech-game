@@ -3,7 +3,7 @@ using RainesGames.Combat.States.PlayerTurn;
 
 namespace RainesGames.Units.Abilities.Hack
 {
-    public class HackStatusManager : ATempStatusManager
+    public class HackStatusManager : AStatusManager
     {
         public HackStatusManager(UnitController controller) : base(controller)
         {
@@ -19,12 +19,9 @@ namespace RainesGames.Units.Abilities.Hack
             PlayerTurnState.OnExitState -= OnExitStatePlayerTurn;
         }
 
-        public void Hack()
+        public override void Activate()
         {
-            _active = true;
-            _turnsRemaining = _statusDuration;
-
-            // TODO do this with an event?
+            base.Activate();
             _controller.ActionPointsManager.ForceSpendAllActionPoints();
         }
 

@@ -1,22 +1,20 @@
 ﻿namespace RainesGames.Units.Abilities.Hack
 {
-    public class HackAbility : AAbility
+    public class HackAbility : AUnitAbility
     {
-        private Validator _validator;
-
         protected override void Awake()
         {
             base.Awake();
             _firstActionCost = 1;
             _secondActionCost = 1;
-            _validator = new Validator();
+            _validator = new Validator(_controller);
         }
 
-        public void Hack(UnitController targetUnit)
+        public override void Execute(UnitController targetUnit)
         {
-            if(_validator.IsValid(_controller, targetUnit))
+            if(_validator.IsValid(targetUnit))
             {
-                targetUnit.HackStatusManager.Hack();
+                targetUnit.HackStatusManager.Activate();
                 DecrementActionPoints();
             }
         }

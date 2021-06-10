@@ -1,6 +1,6 @@
 ﻿namespace RainesGames.Units.Abilities
 {
-    public abstract class ATempStatusManager
+    public abstract class AStatusManager
     {
         protected UnitController _controller;
 
@@ -13,9 +13,15 @@
         protected int _turnsRemaining = 0;
         public int TurnsRemaining => _turnsRemaining;
 
-        public ATempStatusManager(UnitController controller)
+        public AStatusManager(UnitController controller)
         {
             _controller = controller;
+        }
+
+        public virtual void Activate()
+        {
+            _active = true;
+            _turnsRemaining = _statusDuration;
         }
 
         protected virtual void Countdown()

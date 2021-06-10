@@ -71,7 +71,6 @@ namespace RainesGames.Units.Abilities
 
         public void ResetActionPoints()
         {
-            // Units that have had the Factory Reset ability used on them should remain inactive until the status wears off
             if(_controller.IsFactoryReset())
                 return;
 

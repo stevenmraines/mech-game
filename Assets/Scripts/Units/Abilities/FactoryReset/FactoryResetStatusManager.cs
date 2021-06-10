@@ -3,7 +3,7 @@ using RainesGames.Combat.States.PlayerTurn;
 
 namespace RainesGames.Units.Abilities.FactoryReset
 {
-    public class FactoryResetStatusManager : ATempStatusManager
+    public class FactoryResetStatusManager : AStatusManager
     {
         public FactoryResetStatusManager(UnitController controller) : base(controller)
         {
@@ -17,10 +17,9 @@ namespace RainesGames.Units.Abilities.FactoryReset
             PlayerTurnState.OnExitState -= OnExitStatePlayerTurn;
         }
 
-        public void FactoryReset()
+        public override void Activate()
         {
-            _active = true;
-            _turnsRemaining = _statusDuration;
+            base.Activate();
             _controller.ActionPointsManager.ForceSpendAllActionPoints();
         }
 

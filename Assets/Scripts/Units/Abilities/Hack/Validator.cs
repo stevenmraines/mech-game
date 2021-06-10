@@ -2,9 +2,11 @@
 
 namespace RainesGames.Units.Abilities.Hack
 {
-    public class Validator
+    public class Validator : AUnitAbilityValidator
     {
-        public bool IsValid(UnitController parentUnit, UnitController targetUnit)
+        public Validator(UnitController parentUnit) : base(parentUnit) { }
+
+        public override bool IsValid(UnitController targetUnit)
         {
             if(targetUnit.IsHacked())
             {
@@ -13,7 +15,7 @@ namespace RainesGames.Units.Abilities.Hack
             }
 
             // TODO Maybe add functionality to hack your own units that have been hacked by the enemy, to "unhack" them
-            if(parentUnit.SameTagAs(targetUnit))
+            if(_parentUnit.SameTagAs(targetUnit))
             {
                 Debug.Log("Cannot hack your own units");
                 return false;

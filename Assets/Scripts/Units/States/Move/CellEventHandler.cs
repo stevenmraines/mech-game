@@ -36,7 +36,7 @@ namespace RainesGames.Units.States.Move
 
         public void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
         {
-            UnitSelectionManager.ActiveUnit.GetAbility<MoveAbility>().Move(cellIndex);
+            UnitSelectionManager.ActiveUnit.GetAbility<MoveAbility>().Execute(GridManager.GetCell(cellIndex));
             ColorizePath(GridSelectionManager.DefaultCellColor);
         }
 

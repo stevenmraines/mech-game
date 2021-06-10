@@ -1,0 +1,17 @@
+﻿using UnityEngine;
+
+public class #SCRIPTNAME# : AUnitAbilityValidator
+{
+    public #SCRIPTNAME#(UnitController parentUnit) : base(parentUnit) { }
+
+    public override bool IsValid(UnitController targetUnit)
+    {
+        if(false)
+        {
+            Debug.Log("");
+            return false;
+        }
+
+        return true;
+    }
+}

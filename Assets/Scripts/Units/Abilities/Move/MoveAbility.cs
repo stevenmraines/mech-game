@@ -1,22 +1,22 @@
-﻿namespace RainesGames.Units.Abilities.Move
-{
-    public class MoveAbility : AAbility
-    {
-        private Validator _validator;
+﻿using TGS;
 
+namespace RainesGames.Units.Abilities.Move
+{
+    public class MoveAbility : ACellAbility
+    {
         protected override void Awake()
         {
             base.Awake();
             _firstActionCost = 1;
             _secondActionCost = 1;
-            _validator = new Validator();
+            _validator = new Validator(_controller);
         }
 
-        public void Move(int cellIndex)
+        public override void Execute(Cell targetCell)
         {
-            if(_validator.IsValid(_controller, cellIndex))
+            if(_validator.IsValid(targetCell))
             {
-                _controller.PositionManager.PlaceUnit(cellIndex);
+                _controller.PositionManager.PlaceUnit(targetCell);
                 DecrementActionPoints();
             }
         }
