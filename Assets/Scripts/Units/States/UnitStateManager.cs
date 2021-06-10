@@ -1,5 +1,6 @@
 ﻿using RainesGames.Combat.States.EnemyTurn;
 using RainesGames.Combat.States.PlayerTurn;
+using RainesGames.Units.States.FactoryReset;
 using RainesGames.Units.States.Hack;
 using RainesGames.Units.States.Idle;
 using RainesGames.Units.States.Move;
@@ -8,6 +9,9 @@ namespace RainesGames.Units.States
 {
     public class UnitStateManager
     {
+        private FactoryResetState _factoryReset;
+        public FactoryResetState FactoryReset => _factoryReset;
+
         private HackState _hack;
         public HackState Hack => _hack;
 
@@ -27,6 +31,7 @@ namespace RainesGames.Units.States
         {
             _controller = controller;
 
+            _factoryReset = new FactoryResetState(this);
             _hack = new HackState(this);
             _move = new MoveState(this);
             _noActionPoints = new NoActionPointsState(this);

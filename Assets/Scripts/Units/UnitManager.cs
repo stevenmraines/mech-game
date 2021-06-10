@@ -100,6 +100,9 @@ namespace RainesGames.Units
 
             if(Input.GetKeyUp(KeyCode.Alpha1))
                 stateManager.TransitionToState(stateManager.Hack);
+
+            if(Input.GetKeyUp(KeyCode.Alpha2))
+                stateManager.TransitionToState(stateManager.FactoryReset);
         }
     }
 }

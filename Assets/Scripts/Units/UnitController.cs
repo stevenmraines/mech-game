@@ -1,4 +1,6 @@
 ﻿using RainesGames.Units.Abilities;
+using RainesGames.Units.Abilities.FactoryReset;
+using RainesGames.Units.Abilities.Hack;
 using RainesGames.Units.States;
 using UnityEngine;
 
@@ -11,8 +13,11 @@ namespace RainesGames.Units
         protected ActionPointsManager _actionPointsManager;
         public ActionPointsManager ActionPointsManager => _actionPointsManager;
 
-        protected UnitHackingManager _hackingManager;
-        public UnitHackingManager HackingManager => _hackingManager;
+        protected FactoryResetStatusManager _factoryResetStatusManager;
+        public FactoryResetStatusManager FactoryResetStatusManager => _factoryResetStatusManager;
+
+        protected HackStatusManager _hackStatusManager;
+        public HackStatusManager HackStatusManager => _hackStatusManager;
 
         protected UnitPositionManager _positionManager;
         public UnitPositionManager PositionManager => _positionManager;
@@ -25,8 +30,9 @@ namespace RainesGames.Units
 
         protected void Awake()
         {
+            _factoryResetStatusManager = new FactoryResetStatusManager(this);
+            _hackStatusManager = new HackStatusManager(this);
             _actionPointsManager = new ActionPointsManager(this);
-            _hackingManager = new UnitHackingManager(this);
             _positionManager = new UnitPositionManager(this);
             _renderer = GetComponent<Renderer>();
             _stateManager = new UnitStateManager(this);
@@ -62,9 +68,14 @@ namespace RainesGames.Units
             return !IsPlayer();
         }
 
+        public bool IsFactoryReset()
+        {
+            return _factoryResetStatusManager.Active;
+        }
+
         public bool IsHacked()
         {
-            return _hackingManager.Active;
+            return _hackStatusManager.Active;
         }
 
         public bool IsPlayer()
@@ -75,6 +86,11 @@ namespace RainesGames.Units
         public bool SameTagAs(UnitController unit)
         {
             return HasTag(unit.gameObject.tag);
+        }
+
+        public bool SameTeamAs(UnitController unit)
+        {
+            return (IsPlayer() && unit.IsPlayer()) || (IsEnemy() && unit.IsEnemy());
         }
     }
 }

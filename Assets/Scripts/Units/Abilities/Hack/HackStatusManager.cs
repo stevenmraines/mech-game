@@ -1,39 +1,28 @@
 ﻿using RainesGames.Combat.States.EnemyTurn;
 using RainesGames.Combat.States.PlayerTurn;
 
-namespace RainesGames.Units
+namespace RainesGames.Units.Abilities.Hack
 {
-    public class UnitHackingManager : ATempStatusManager
+    public class HackStatusManager : ATempStatusManager
     {
-        public const int HACK_DURATION = 4;
-
-        public UnitHackingManager(UnitController controller) : base(controller)
+        public HackStatusManager(UnitController controller) : base(controller)
         {
+            _statusDuration = 4;
+
             EnemyTurnState.OnExitState += OnExitStateEnemyTurn;
             PlayerTurnState.OnExitState += OnExitStatePlayerTurn;
         }
 
-        ~UnitHackingManager()
+        ~HackStatusManager()
         {
             EnemyTurnState.OnExitState -= OnExitStateEnemyTurn;
             PlayerTurnState.OnExitState -= OnExitStatePlayerTurn;
         }
 
-        protected override void Countdown()
-        {
-            if(!_active)
-                return;
-
-            _turnsRemaining--;
-
-            if(_turnsRemaining == 0)
-                _active = false;
-        }
-
         public void Hack()
         {
             _active = true;
-            _turnsRemaining = HACK_DURATION;
+            _turnsRemaining = _statusDuration;
 
             // TODO do this with an event?
             _controller.ActionPointsManager.ForceSpendAllActionPoints();

@@ -1,6 +1,6 @@
-﻿namespace RainesGames.Units.Abilities.Hack
+﻿namespace RainesGames.Units.Abilities.FactoryReset
 {
-    public class HackAbility : AAbility
+    public class FactoryResetAbility : AAbility
     {
         private Validator _validator;
 
@@ -12,11 +12,11 @@
             _validator = new Validator();
         }
 
-        public void Hack(UnitController targetUnit)
+        public void Execute(UnitController targetUnit)
         {
             if(_validator.IsValid(_controller, targetUnit))
             {
-                targetUnit.HackStatusManager.Hack();
+                targetUnit.FactoryResetStatusManager.FactoryReset();
                 DecrementActionPoints();
             }
         }

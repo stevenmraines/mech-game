@@ -14,9 +14,9 @@
 
         public void Move(int cellIndex)
         {
-            if(_validator.IsValid(_parentUnit, cellIndex))
+            if(_validator.IsValid(_controller, cellIndex))
             {
-                _parentUnit.PositionManager.PlaceUnit(cellIndex);
+                _controller.PositionManager.PlaceUnit(cellIndex);
                 DecrementActionPoints();
             }
         }

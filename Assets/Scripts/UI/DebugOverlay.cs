@@ -60,6 +60,9 @@ namespace RainesGames.UI
                 
                 if(currentState == stateManager.Hack)
                     unitName += "  -  State: Hack";
+                
+                if(currentState == stateManager.FactoryReset)
+                    unitName += "  -  State: Factory Reset";
 
                 int x = 10;
                 int width = 300;
@@ -70,7 +73,7 @@ namespace RainesGames.UI
                 if(selectables[i].IsHacked())
                 {
                     j++;
-                    GUI.Label(new Rect(x, GetY(i, j), width, height), "\tHACKED (" + selectables[i].HackingManager.TurnsRemaining + ")");
+                    GUI.Label(new Rect(x, GetY(i, j), width, height), "\tHACKED (" + selectables[i].HackStatusManager.TurnsRemaining + ")");
                 }
 
                 if(selectables[i] == UnitSelectionManager.ActiveUnit)
