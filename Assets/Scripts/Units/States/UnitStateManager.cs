@@ -4,6 +4,7 @@ using RainesGames.Units.States.FactoryReset;
 using RainesGames.Units.States.Hack;
 using RainesGames.Units.States.Idle;
 using RainesGames.Units.States.Move;
+using RainesGames.Units.States.Overclock;
 
 namespace RainesGames.Units.States
 {
@@ -21,6 +22,9 @@ namespace RainesGames.Units.States
         private NoActionPointsState _noActionPoints;
         public NoActionPointsState NoActionPoints => _noActionPoints;
 
+        private OverclockState _overclock;
+        public OverclockState Overclock => _overclock;
+
         private AUnitState _currentState;
         public AUnitState CurrentState => _currentState;
 
@@ -35,6 +39,7 @@ namespace RainesGames.Units.States
             _hack = new HackState(this);
             _move = new MoveState(this);
             _noActionPoints = new NoActionPointsState(this);
+            _overclock = new OverclockState(this);
             
             AutoStateChange();
 

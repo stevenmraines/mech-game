@@ -1471,6 +1471,7 @@ GameObject:
   - component: {fileID: 1667359995}
   - component: {fileID: 1667359998}
   - component: {fileID: 1667359997}
+  - component: {fileID: 1667359999}
   m_Layer: 9
   m_Name: Player Mech
   m_TagString: Player
@@ -1616,6 +1617,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 455b3c8bce384bb48a8e327f3afa9ea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1667359999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667359989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6115cdd527faf340a97603e5c330539, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1667964168
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,6 +1679,7 @@ GameObject:
   - component: {fileID: 1794475004}
   - component: {fileID: 1794475012}
   - component: {fileID: 1794475013}
+  - component: {fileID: 1794475014}
   m_Layer: 0
   m_Name: Enemy Mech 2
   m_TagString: Enemy
@@ -1822,6 +1836,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60ee9f50350a7174497cdaae54a15183, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1794475014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794475003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6115cdd527faf340a97603e5c330539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1818430137

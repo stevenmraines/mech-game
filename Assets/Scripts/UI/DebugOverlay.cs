@@ -63,6 +63,9 @@ namespace RainesGames.UI
                 
                 if(currentState == stateManager.FactoryReset)
                     unitName += "  -  State: Factory Reset";
+                
+                if(currentState == stateManager.Overclock)
+                    unitName += "  -  State: Overclock";
 
                 int x = 10;
                 int width = 300;
