@@ -1,7 +1,9 @@
 ﻿using TGS;
+using UnityEngine;
 
 namespace RainesGames.Units.Abilities.Move
 {
+    [DisallowMultipleComponent]
     public class MoveAbility : ACellAbility
     {
         protected override void Awake()

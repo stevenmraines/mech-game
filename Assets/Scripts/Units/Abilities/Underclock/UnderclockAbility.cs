@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-namespace RainesGames.Units.Abilities.Overclock
+namespace RainesGames.Units.Abilities.Underclock
 {
     [DisallowMultipleComponent]
-    public class OverclockAbility : AUnitAbility
+    public class UnderclockAbility : AUnitAbility
     {
         protected override void Awake()
         {
@@ -17,7 +17,7 @@ namespace RainesGames.Units.Abilities.Overclock
         {
             if(_validator.IsValid(targetUnit))
             {
-                targetUnit.ActionPointsManager.Increment();
+                targetUnit.UnderclockStatusManager.Activate();
                 DecrementActionPoints();
             }
         }

@@ -1,4 +1,7 @@
-﻿public class #SCRIPTNAME# : AUnitAbility
+﻿using UnityEngine;
+
+[DisallowMultipleComponent]
+public class #SCRIPTNAME# : AUnitAbility
 {
     protected override void Awake()
     {

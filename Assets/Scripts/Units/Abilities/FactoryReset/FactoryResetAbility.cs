@@ -1,5 +1,8 @@
-﻿namespace RainesGames.Units.Abilities.FactoryReset
+﻿using UnityEngine;
+
+namespace RainesGames.Units.Abilities.FactoryReset
 {
+    [DisallowMultipleComponent]
     public class FactoryResetAbility : AUnitAbility
     {
         protected override void Awake()

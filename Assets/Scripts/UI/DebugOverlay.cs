@@ -66,6 +66,9 @@ namespace RainesGames.UI
                 
                 if(currentState == stateManager.Overclock)
                     unitName += "  -  State: Overclock";
+                
+                if(currentState == stateManager.Underclock)
+                    unitName += "  -  State: Underclock";
 
                 int x = 10;
                 int width = 300;

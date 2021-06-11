@@ -1,5 +1,6 @@
 ﻿using RainesGames.Combat.States.EnemyTurn;
 using RainesGames.Combat.States.PlayerTurn;
+using UnityEngine;
 
 namespace RainesGames.Units.Abilities
 {
@@ -74,7 +75,12 @@ namespace RainesGames.Units.Abilities
             if(_controller.IsFactoryReset())
                 return;
 
-            _actionPoints = _startOfTurnActionPoints;
+            int resetAmount = _startOfTurnActionPoints;
+
+            if(_controller.IsUnderclocked())
+                resetAmount = Mathf.Max(0, _startOfTurnActionPoints - 1);  // TODO Make this and overclock stackable?
+
+            _actionPoints = resetAmount;
             _firstActionSpent = false;
         }
     }

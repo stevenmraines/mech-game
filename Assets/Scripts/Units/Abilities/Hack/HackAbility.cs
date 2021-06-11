@@ -1,5 +1,8 @@
-﻿namespace RainesGames.Units.Abilities.Hack
+﻿using UnityEngine;
+
+namespace RainesGames.Units.Abilities.Hack
 {
+    [DisallowMultipleComponent]
     public class HackAbility : AUnitAbility
     {
         protected override void Awake()

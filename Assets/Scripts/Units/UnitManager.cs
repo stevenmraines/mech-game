@@ -106,6 +106,9 @@ namespace RainesGames.Units
             
             if(Input.GetKeyUp(KeyCode.Alpha3))
                 stateManager.TransitionToState(stateManager.Overclock);
+            
+            if(Input.GetKeyUp(KeyCode.Alpha4))
+                stateManager.TransitionToState(stateManager.Underclock);
         }
     }
 }

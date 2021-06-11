@@ -1,5 +1,7 @@
 ﻿using TGS;
+using UnityEngine;
 
+[DisallowMultipleComponent]
 public class #SCRIPTNAME# : ACellAbility
 {
     protected override void Awake()

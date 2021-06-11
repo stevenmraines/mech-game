@@ -1,6 +1,7 @@
 ﻿using RainesGames.Units.Abilities;
 using RainesGames.Units.Abilities.FactoryReset;
 using RainesGames.Units.Abilities.Hack;
+using RainesGames.Units.Abilities.Underclock;
 using RainesGames.Units.States;
 using UnityEngine;
 
@@ -28,10 +29,14 @@ namespace RainesGames.Units
         protected UnitStateManager _stateManager;
         public UnitStateManager StateManager => _stateManager;
 
+        protected UnderclockStatusManager _underclockStatusManager;
+        public UnderclockStatusManager UnderclockStatusManager => _underclockStatusManager;
+
         protected void Awake()
         {
             _factoryResetStatusManager = new FactoryResetStatusManager(this);
             _hackStatusManager = new HackStatusManager(this);
+            _underclockStatusManager = new UnderclockStatusManager(this);
             _actionPointsManager = new ActionPointsManager(this);
             _positionManager = new UnitPositionManager(this);
             _renderer = GetComponent<Renderer>();
@@ -81,6 +86,12 @@ namespace RainesGames.Units
         public bool IsPlayer()
         {
             return (HasPlayerTag() && !IsHacked()) || (HasEnemyTag() && IsHacked());
+        }
+
+        // TODO maybe split all these convenience methods out into a partial class or something
+        public bool IsUnderclocked()
+        {
+            return _underclockStatusManager.Active;
         }
 
         public bool SameTagAs(UnitController unit)
