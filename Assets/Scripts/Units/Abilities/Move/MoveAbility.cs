@@ -4,7 +4,7 @@ using UnityEngine;
 namespace RainesGames.Units.Abilities.Move
 {
     [DisallowMultipleComponent]
-    public class MoveAbility : ACellAbility
+    public class MoveAbility : AbsCellAbility
     {
         protected override void Awake()
         {
@@ -21,6 +21,11 @@ namespace RainesGames.Units.Abilities.Move
                 _controller.PositionManager.PlaceUnit(targetCell);
                 DecrementActionPoints();
             }
+        }
+
+        void Start()
+        {
+            _state = _controller.StateManager.Move;
         }
     }
 }

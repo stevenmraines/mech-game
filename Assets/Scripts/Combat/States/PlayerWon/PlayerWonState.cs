@@ -1,6 +1,6 @@
 namespace RainesGames.Combat.States.PlayerWon
 {
-    public class PlayerWonState : ACombatState
+    public class PlayerWonState : AbsCombatState
     {
         protected override void Awake()
         {

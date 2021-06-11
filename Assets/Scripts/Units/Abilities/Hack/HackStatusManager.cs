@@ -3,7 +3,7 @@ using RainesGames.Combat.States.PlayerTurn;
 
 namespace RainesGames.Units.Abilities.Hack
 {
-    public class HackStatusManager : AStatusManager
+    public class HackStatusManager : AbsStatusManager
     {
         public HackStatusManager(UnitController controller) : base(controller)
         {

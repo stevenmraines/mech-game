@@ -2,7 +2,7 @@
 
 namespace RainesGames.Units.States.Move
 {
-    public class MoveState : AUnitState
+    public class MoveState : AbsUnitState
     {
         private MoveAbility _ability;
         public MoveAbility Ability => _ability;

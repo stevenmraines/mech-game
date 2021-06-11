@@ -2,9 +2,9 @@
 
 namespace RainesGames.Units.Abilities
 {
-    public abstract class ACellAbility : AAbility
+    public abstract class AbsCellAbility : AbsAbility
     {
-        protected ACellAbilityValidator _validator;
+        protected AbsCellAbilityValidator _validator;
 
         public abstract void Execute(Cell targetCell);
     }

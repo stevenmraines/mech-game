@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RainesGames.Units.Abilities.Move
 {
-    public class Validator : ACellAbilityValidator
+    public class Validator : AbsCellAbilityValidator
     {
         public Validator(UnitController parentUnit) : base(parentUnit) { }
 

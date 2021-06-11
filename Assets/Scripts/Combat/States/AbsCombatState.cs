@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RainesGames.Combat.States
 {
-    public abstract class ACombatState : MonoBehaviour, IState, IStateUpdateable
+    public abstract class AbsCombatState : MonoBehaviour, IState, IStateUpdateable
     {
         protected CombatStateManager _manager;
         public CombatStateManager Manager => _manager;

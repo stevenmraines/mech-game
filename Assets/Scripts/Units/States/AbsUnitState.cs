@@ -3,7 +3,7 @@ using RainesGames.Common.States;
 
 namespace RainesGames.Units.States
 {
-    public abstract class AUnitState : IState
+    public abstract class AbsUnitState : IState
     {
         protected UnitStateManager _manager;
 
@@ -13,7 +13,7 @@ namespace RainesGames.Units.States
         protected IUnitEvents _unitEventHandler;
         public IUnitEvents UnitEventHandler => _unitEventHandler;
 
-        public AUnitState(UnitStateManager manager)
+        public AbsUnitState(UnitStateManager manager)
         {
             _manager = manager;
         }

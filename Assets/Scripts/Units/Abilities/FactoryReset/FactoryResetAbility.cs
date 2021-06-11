@@ -3,7 +3,7 @@
 namespace RainesGames.Units.Abilities.FactoryReset
 {
     [DisallowMultipleComponent]
-    public class FactoryResetAbility : AUnitAbility
+    public class FactoryResetAbility : AbsUnitAbility
     {
         protected override void Awake()
         {
@@ -20,6 +20,11 @@ namespace RainesGames.Units.Abilities.FactoryReset
                 targetUnit.FactoryResetStatusManager.Activate();
                 DecrementActionPoints();
             }
+        }
+
+        void Start()
+        {
+            _state = _controller.StateManager.FactoryReset;
         }
     }
 }

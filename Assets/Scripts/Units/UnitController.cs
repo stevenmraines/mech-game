@@ -1,8 +1,10 @@
 ﻿using RainesGames.Units.Abilities;
 using RainesGames.Units.Abilities.FactoryReset;
 using RainesGames.Units.Abilities.Hack;
+using RainesGames.Units.Abilities.Move;
 using RainesGames.Units.Abilities.Underclock;
 using RainesGames.Units.States;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RainesGames.Units
@@ -43,12 +45,30 @@ namespace RainesGames.Units
             _stateManager = new UnitStateManager(this);
         }
 
-        public T GetAbility<T>() where T : AAbility
+        public T GetAbility<T>() where T : AbsAbility
         {
             return GetComponent<T>();
         }
 
-        public bool HasAbility<T>() where T : AAbility
+        public AbsAbility[] GetAbilities(bool filterMove = true)
+        {
+            AbsAbility[] abilities = gameObject.GetComponents<AbsAbility>();
+
+            if(!filterMove)
+                return abilities;
+
+            List<AbsAbility> filteredAbilities = new List<AbsAbility>();
+
+            foreach(AbsAbility ability in abilities)
+            {
+                if(ability.GetType() != typeof(MoveAbility))
+                    filteredAbilities.Add(ability);
+            }
+
+            return filteredAbilities.ToArray();
+        }
+
+        public bool HasAbility<T>() where T : AbsAbility
         {
             return GetAbility<T>() != null;
         }

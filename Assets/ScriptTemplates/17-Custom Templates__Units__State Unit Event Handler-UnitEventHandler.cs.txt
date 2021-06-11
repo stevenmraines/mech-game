@@ -7,13 +7,7 @@ public class #SCRIPTNAME# : IUnitEvents
         #NOTRIM#
     }
 
-    public void OnUnitMouseEnter(UnitController unit)
-    {
-        #NOTRIM#
-    }
+    public void OnUnitMouseEnter(UnitController unit) { }
 
-    public void OnUnitMouseExit(UnitController unit)
-    {
-        #NOTRIM#
-    }
+    public void OnUnitMouseExit(UnitController unit) { }
 }

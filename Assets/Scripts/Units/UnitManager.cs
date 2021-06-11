@@ -1,4 +1,6 @@
-﻿using RainesGames.Units.Selection;
+﻿using RainesGames.Combat.States;
+using RainesGames.Units.Abilities;
+using RainesGames.Units.Selection;
 using RainesGames.Units.States;
 using System.Collections.Generic;
 using UnityEngine;
@@ -90,25 +92,48 @@ namespace RainesGames.Units
         void Update()
         {
             // TODO remove all this crap
-            if(UnitSelectionManager.ActiveUnit == null)
+            UnitController activeUnit = UnitSelectionManager.ActiveUnit;
+
+            if(activeUnit == null)
                 return;
 
-            UnitStateManager stateManager = UnitSelectionManager.ActiveUnit.StateManager;
+            CombatStateManager combat = FindObjectOfType<CombatStateManager>();
+
+            if(combat.CurrentState == combat.PlayerTurn && activeUnit.IsEnemy())
+                return;
+
+            if(combat.CurrentState == combat.EnemyTurn && activeUnit.IsPlayer())
+                return;
+
+            UnitStateManager stateManager = activeUnit.StateManager;
 
             if(Input.GetMouseButtonUp(1))
                 stateManager.TransitionToState(stateManager.Move);
 
-            if(Input.GetKeyUp(KeyCode.Alpha1))
-                stateManager.TransitionToState(stateManager.Hack);
+            AbsAbility[] abilities = AbilityTraySort.SortAbilities(activeUnit.GetAbilities());
 
-            if(Input.GetKeyUp(KeyCode.Alpha2))
-                stateManager.TransitionToState(stateManager.FactoryReset);
-            
-            if(Input.GetKeyUp(KeyCode.Alpha3))
-                stateManager.TransitionToState(stateManager.Overclock);
-            
-            if(Input.GetKeyUp(KeyCode.Alpha4))
-                stateManager.TransitionToState(stateManager.Underclock);
+            if(abilities.Length == 0)
+                return;
+
+            Dictionary<int, KeyCode> intKeyCodeMap = new Dictionary<int, KeyCode>()
+            {
+                { 0, KeyCode.Alpha1 },
+                { 1, KeyCode.Alpha2 },
+                { 2, KeyCode.Alpha3 },
+                { 3, KeyCode.Alpha4 },
+                { 4, KeyCode.Alpha5 },
+                { 5, KeyCode.Alpha6 },
+                { 6, KeyCode.Alpha7 },
+                { 7, KeyCode.Alpha8 },
+                { 8, KeyCode.Alpha9 },
+                { 9, KeyCode.Alpha0 }
+            };
+
+            for(int i = 0; i < abilities.Length; i++)
+            {
+                if(intKeyCodeMap.ContainsKey(i) && Input.GetKeyUp(intKeyCodeMap[i]))
+                    stateManager.TransitionToState(abilities[i].State);
+            }
         }
     }
 }

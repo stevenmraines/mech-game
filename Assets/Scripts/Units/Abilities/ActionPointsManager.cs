@@ -20,6 +20,7 @@ namespace RainesGames.Units.Abilities
 
         public delegate void ActionPointsDelegate();
         public event ActionPointsDelegate OnActionPointsDecrement;
+        public event ActionPointsDelegate OnActionPointsIncrement;
         public static event ActionPointsDelegate OnActionPointsDecrementStatic;
 
         public ActionPointsManager(UnitController controller)
@@ -56,6 +57,7 @@ namespace RainesGames.Units.Abilities
         public void Increment(int points = 1)
         {
             _actionPoints += points;
+            OnActionPointsIncrement?.Invoke();
         }
 
         void OnEnterStateEnemyTurn()

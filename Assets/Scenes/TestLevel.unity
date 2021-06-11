@@ -1441,6 +1441,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _combatStateManager: {fileID: 1818430138}
   _centeredLabel: {fileID: 11400000, guid: 2ae31e2e388a30f4781aa093a14c3625, type: 2}
+  _medTextLabel: {fileID: 11400000, guid: 1970e7db0e5ce9540a54f77cb7d04874, type: 2}
 --- !u!4 &1652864317
 Transform:
   m_ObjectHideFlags: 0

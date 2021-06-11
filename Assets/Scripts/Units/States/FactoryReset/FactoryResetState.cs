@@ -1,6 +1,6 @@
 ﻿namespace RainesGames.Units.States.FactoryReset
 {
-    public class FactoryResetState : AUnitState
+    public class FactoryResetState : AbsUnitState
     {
         public FactoryResetState(UnitStateManager manager) : base(manager)
         {

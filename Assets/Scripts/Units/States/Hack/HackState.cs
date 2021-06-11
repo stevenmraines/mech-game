@@ -2,7 +2,7 @@
 
 namespace RainesGames.Units.States.Hack
 {
-    public class HackState : AUnitState
+    public class HackState : AbsUnitState
     {
         private HackAbility _ability;
         public HackAbility Ability => _ability;

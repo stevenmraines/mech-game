@@ -3,7 +3,7 @@ using RainesGames.Units.Selection;
 
 namespace RainesGames.Combat.States.PlayerPlacement
 {
-    public class PlayerPlacementState : ACombatState
+    public class PlayerPlacementState : AbsCombatState
     {
         public delegate void StateTransitionDelegate();
         public static event StateTransitionDelegate OnExitState;

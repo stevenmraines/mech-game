@@ -2,7 +2,7 @@
 
 namespace RainesGames.Units.States.Underclock
 {
-    public class UnderclockState : AUnitState
+    public class UnderclockState : AbsUnitState
     {
         private UnderclockAbility _ability;
         public UnderclockAbility Ability => _ability;

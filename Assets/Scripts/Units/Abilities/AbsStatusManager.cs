@@ -1,6 +1,6 @@
 ﻿namespace RainesGames.Units.Abilities
 {
-    public abstract class AStatusManager
+    public abstract class AbsStatusManager
     {
         protected UnitController _controller;
 
@@ -13,7 +13,7 @@
         protected int _turnsRemaining = 0;
         public int TurnsRemaining => _turnsRemaining;
 
-        public AStatusManager(UnitController controller)
+        public AbsStatusManager(UnitController controller)
         {
             _controller = controller;
         }

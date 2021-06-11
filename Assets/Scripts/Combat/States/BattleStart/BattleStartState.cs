@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RainesGames.Combat.States.BattleStart
 {
-    public class BattleStartState : ACombatState
+    public class BattleStartState : AbsCombatState
     {
         protected override void Awake()
         {

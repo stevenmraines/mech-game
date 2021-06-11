@@ -22,7 +22,7 @@ namespace RainesGames.Combat.States.EnemyTurn
             if(activeUnit == null)
                 return true;
 
-            AUnitState currentState = UnitSelectionManager.ActiveUnit.StateManager.CurrentState;
+            AbsUnitState currentState = UnitSelectionManager.ActiveUnit.StateManager.CurrentState;
             bool activeUnitIsTargetingUnits = activeUnit.IsEnemy() && currentState.IsUnitTargetingState();
 
             if(!activeUnitIsTargetingUnits)

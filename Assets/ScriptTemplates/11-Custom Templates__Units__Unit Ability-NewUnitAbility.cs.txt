@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [DisallowMultipleComponent]
-public class #SCRIPTNAME# : AUnitAbility
+public class #SCRIPTNAME# : AbsUnitAbility
 {
     protected override void Awake()
     {
@@ -18,5 +18,10 @@ public class #SCRIPTNAME# : AUnitAbility
             #NOTRIM#
             DecrementActionPoints();
         }
+    }
+
+    void Start()
+    {
+        // _state = _controller.StateManager.;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace RainesGames.Units.States.Overclock
 {
-    public class OverclockState : AUnitState
+    public class OverclockState : AbsUnitState
     {
         private OverclockAbility _ability;
         public OverclockAbility Ability => _ability;

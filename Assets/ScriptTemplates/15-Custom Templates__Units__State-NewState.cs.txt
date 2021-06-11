@@ -1,4 +1,4 @@
-﻿public class #SCRIPTNAME# : AUnitState
+﻿public class #SCRIPTNAME# : AbsUnitState
 {
     public #SCRIPTNAME#(UnitStateManager manager) : base(manager)
     {

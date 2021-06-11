@@ -1,6 +1,6 @@
 ﻿namespace RainesGames.Units.States.Idle
 {
-    public class NoActionPointsState : AUnitState
+    public class NoActionPointsState : AbsUnitState
     {
         public NoActionPointsState(UnitStateManager manager) : base(manager) { }
 

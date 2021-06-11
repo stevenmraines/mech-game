@@ -3,7 +3,7 @@ using RainesGames.Combat.States.PlayerTurn;
 
 namespace RainesGames.Units.Abilities.Underclock
 {
-    public class UnderclockStatusManager : AStatusManager
+    public class UnderclockStatusManager : AbsStatusManager
     {
         public UnderclockStatusManager(UnitController controller) : base(controller)
         {

@@ -42,8 +42,8 @@ namespace RainesGames.Combat.States
         private PlayerWonState _playerWon;
         public PlayerWonState PlayerWon => _playerWon;
 
-        private ACombatState _currentState;
-        public ACombatState CurrentState => _currentState;
+        private AbsCombatState _currentState;
+        public AbsCombatState CurrentState => _currentState;
 
         private PreemptiveStrikeGraph _stateGraph;
 
@@ -61,7 +61,7 @@ namespace RainesGames.Combat.States
             if(nextState == null)
                 return;
 
-            TransitionToState((ACombatState)nextState);
+            TransitionToState((AbsCombatState)nextState);
         }
 
         void Awake()
@@ -99,7 +99,7 @@ namespace RainesGames.Combat.States
             AttemptTransition();
         }
 
-        void TransitionToState(ACombatState state)
+        void TransitionToState(AbsCombatState state)
         {
             if(_currentState != null)
                 _currentState.ExitState();

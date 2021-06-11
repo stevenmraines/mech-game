@@ -3,7 +3,7 @@
 namespace RainesGames.Units.Abilities.Overclock
 {
     [DisallowMultipleComponent]
-    public class OverclockAbility : AUnitAbility
+    public class OverclockAbility : AbsUnitAbility
     {
         protected override void Awake()
         {
@@ -20,6 +20,11 @@ namespace RainesGames.Units.Abilities.Overclock
                 targetUnit.ActionPointsManager.Increment();
                 DecrementActionPoints();
             }
+        }
+
+        void Start()
+        {
+            _state = _controller.StateManager.Overclock;
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace RainesGames.Units.Abilities.Underclock
 {
-    public class Validator : AUnitAbilityValidator
+    public class Validator : AbsUnitAbilityValidator
     {
         public Validator(UnitController parentUnit) : base(parentUnit) { }
 

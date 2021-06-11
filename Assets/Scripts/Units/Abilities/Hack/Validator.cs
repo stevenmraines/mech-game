@@ -2,7 +2,7 @@
 
 namespace RainesGames.Units.Abilities.Hack
 {
-    public class Validator : AUnitAbilityValidator
+    public class Validator : AbsUnitAbilityValidator
     {
         public Validator(UnitController parentUnit) : base(parentUnit) { }
 

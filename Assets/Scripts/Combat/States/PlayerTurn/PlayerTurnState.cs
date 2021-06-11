@@ -3,7 +3,7 @@ using RainesGames.Units.Selection;
 
 namespace RainesGames.Combat.States.PlayerTurn
 {
-    public class PlayerTurnState : ACombatState
+    public class PlayerTurnState : AbsCombatState
     {
         public delegate void StateTransitionDelegate();
         public static event StateTransitionDelegate OnEnterState;

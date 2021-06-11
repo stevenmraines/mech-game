@@ -1,7 +1,7 @@
 ﻿using RainesGames.Combat.States.EnemyTurn;
 using RainesGames.Combat.States.PlayerTurn;
 
-public class #SCRIPTNAME# : AStatusManager
+public class #SCRIPTNAME# : AbsStatusManager
 {
     public #SCRIPTNAME#(UnitController controller) : base(controller)
     {

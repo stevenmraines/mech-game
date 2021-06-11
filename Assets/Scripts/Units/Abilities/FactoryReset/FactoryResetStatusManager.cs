@@ -3,7 +3,7 @@ using RainesGames.Combat.States.PlayerTurn;
 
 namespace RainesGames.Units.Abilities.FactoryReset
 {
-    public class FactoryResetStatusManager : AStatusManager
+    public class FactoryResetStatusManager : AbsStatusManager
     {
         public FactoryResetStatusManager(UnitController controller) : base(controller)
         {

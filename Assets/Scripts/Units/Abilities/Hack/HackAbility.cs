@@ -3,7 +3,7 @@
 namespace RainesGames.Units.Abilities.Hack
 {
     [DisallowMultipleComponent]
-    public class HackAbility : AUnitAbility
+    public class HackAbility : AbsUnitAbility
     {
         protected override void Awake()
         {
@@ -20,6 +20,11 @@ namespace RainesGames.Units.Abilities.Hack
                 targetUnit.HackStatusManager.Activate();
                 DecrementActionPoints();
             }
+        }
+
+        void Start()
+        {
+            _state = _controller.StateManager.Hack;
         }
     }
 }

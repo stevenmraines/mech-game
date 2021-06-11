@@ -29,8 +29,8 @@ namespace RainesGames.Units.States
         private UnderclockState _underclock;
         public UnderclockState Underclock => _underclock;
 
-        private AUnitState _currentState;
-        public AUnitState CurrentState => _currentState;
+        private AbsUnitState _currentState;
+        public AbsUnitState CurrentState => _currentState;
 
         private UnitController _controller;
         public UnitController Controller => _controller;
@@ -51,6 +51,7 @@ namespace RainesGames.Units.States
             EnemyTurnState.OnEnterState += AutoStateChange;
             PlayerTurnState.OnEnterState += AutoStateChange;
             _controller.ActionPointsManager.OnActionPointsDecrement += AutoStateChange;
+            _controller.ActionPointsManager.OnActionPointsIncrement += AutoStateChange;
         }
 
         ~UnitStateManager()
@@ -58,6 +59,7 @@ namespace RainesGames.Units.States
             EnemyTurnState.OnEnterState -= AutoStateChange;
             PlayerTurnState.OnEnterState -= AutoStateChange;
             _controller.ActionPointsManager.OnActionPointsDecrement -= AutoStateChange;
+            _controller.ActionPointsManager.OnActionPointsIncrement -= AutoStateChange;
         }
 
         public void AutoStateChange()
@@ -65,9 +67,9 @@ namespace RainesGames.Units.States
             TransitionToState(GetFallbackState());
         }
 
-        AUnitState GetFallbackState()
+        AbsUnitState GetFallbackState()
         {
-            AUnitState fallbackState = _move;
+            AbsUnitState fallbackState = _move;
 
             if(!_move.CanEnterState())
                 fallbackState = _noActionPoints;
@@ -75,7 +77,7 @@ namespace RainesGames.Units.States
             return fallbackState;
         }
 
-        public void TransitionToState(AUnitState state)
+        public void TransitionToState(AbsUnitState state)
         {
             if(!state.CanEnterState())
                 state = GetFallbackState();

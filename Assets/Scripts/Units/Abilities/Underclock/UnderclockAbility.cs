@@ -3,7 +3,7 @@
 namespace RainesGames.Units.Abilities.Underclock
 {
     [DisallowMultipleComponent]
-    public class UnderclockAbility : AUnitAbility
+    public class UnderclockAbility : AbsUnitAbility
     {
         protected override void Awake()
         {
@@ -20,6 +20,11 @@ namespace RainesGames.Units.Abilities.Underclock
                 targetUnit.UnderclockStatusManager.Activate();
                 DecrementActionPoints();
             }
+        }
+
+        void Start()
+        {
+            _state = _controller.StateManager.Underclock;
         }
     }
 }

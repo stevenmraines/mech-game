@@ -1,10 +1,10 @@
 ﻿namespace RainesGames.Units.Abilities
 {
-    public abstract class AAbilityValidator
+    public abstract class AbsAbilityValidator
     {
         protected UnitController _parentUnit;
 
-        public AAbilityValidator(UnitController parentUnit)
+        public AbsAbilityValidator(UnitController parentUnit)
         {
             _parentUnit = parentUnit;
         }
