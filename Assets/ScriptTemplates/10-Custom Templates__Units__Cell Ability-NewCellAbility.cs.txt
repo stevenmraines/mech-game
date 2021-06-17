@@ -2,17 +2,18 @@
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public class #SCRIPTNAME# : AbsCellAbility
+public class #SCRIPTNAME# : AbsAbility, ICellAbility
 {
     protected override void Awake()
     {
         base.Awake();
         _firstActionCost = 1;
         _secondActionCost = 1;
+        _showInTray = true;
         _validator = new Validator(_controller);
     }
 
-    public override void Execute(Cell targetCell)
+    public void Execute(Cell targetCell)
     {
         if(_validator.IsValid(targetCell))
         {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class #SCRIPTNAME# : AbsUnitAbilityValidator
+public class #SCRIPTNAME# : AbsAbilityValidator, IUnitAbilityValidator
 {
     public #SCRIPTNAME#(UnitController parentUnit) : base(parentUnit) { }
 

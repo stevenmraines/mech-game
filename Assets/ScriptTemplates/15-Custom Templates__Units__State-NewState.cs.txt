@@ -1,14 +1,18 @@
 ﻿public class #SCRIPTNAME# : AbsUnitState
 {
+    private AbsAbility _ability;
+    public AbsAbility Ability => _ability;
+
     public #SCRIPTNAME#(UnitStateManager manager) : base(manager)
     {
         // _cellEventHandler = new CellEventHandler();
         // _unitEventHandler = new UnitEventHandler();
+        _ability = _manager.Controller.GetAbility<AbsAbility>();
     }
 
     public override bool CanEnterState()
     {
-        return true;
+        return _ability != null && _ability.ActionIsAffordable();// && _ability.IsPowered();
     }
 
     public override void EnterState() { }

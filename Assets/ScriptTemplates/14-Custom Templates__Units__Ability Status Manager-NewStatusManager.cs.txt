@@ -5,8 +5,6 @@ public class #SCRIPTNAME# : AbsStatusManager
 {
     public #SCRIPTNAME#(UnitController controller) : base(controller)
     {
-        // _statusDuration = 3;
-
         EnemyTurnState.OnExitState += OnExitStateEnemyTurn;
         PlayerTurnState.OnExitState += OnExitStatePlayerTurn;
     }

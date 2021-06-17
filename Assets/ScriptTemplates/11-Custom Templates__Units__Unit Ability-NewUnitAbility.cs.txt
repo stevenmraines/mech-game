@@ -1,17 +1,18 @@
 ﻿using UnityEngine;
 
 [DisallowMultipleComponent]
-public class #SCRIPTNAME# : AbsUnitAbility
+public class #SCRIPTNAME# : AbsAbility, IUnitAbility
 {
     protected override void Awake()
     {
         base.Awake();
         _firstActionCost = 1;
         _secondActionCost = 1;
+        _showInTray = true;
         _validator = new Validator(_controller);
     }
 
-    public override void Execute(UnitController targetUnit)
+    public void Execute(UnitController targetUnit)
     {
         if(_validator.IsValid(targetUnit))
         {

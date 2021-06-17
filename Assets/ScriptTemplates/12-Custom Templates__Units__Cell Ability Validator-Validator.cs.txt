@@ -1,7 +1,7 @@
 ﻿using TGS;
 using UnityEngine;
 
-public class #SCRIPTNAME# : AbsCellAbilityValidator
+public class #SCRIPTNAME# : AbsAbilityValidator, ICellAbilityValidator
 {
     public #SCRIPTNAME#(UnitController parentUnit) : base(parentUnit) { }
 

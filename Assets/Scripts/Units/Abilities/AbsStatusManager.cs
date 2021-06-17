@@ -7,6 +7,7 @@
         protected bool _active = false;
         public bool Active => _active;
 
+        // TODO StatusDuration should come from a scriptable object
         protected int _statusDuration = 1;
         public int StatusDuration => _statusDuration;
 
