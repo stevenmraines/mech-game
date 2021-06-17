@@ -2,7 +2,6 @@
 using RainesGames.Units.Abilities;
 using RainesGames.Units.Abilities.FactoryReset;
 using RainesGames.Units.Abilities.Hack;
-using RainesGames.Units.Abilities.Move;
 using RainesGames.Units.Abilities.Underclock;
 using RainesGames.Units.Power;
 using RainesGames.Units.States;

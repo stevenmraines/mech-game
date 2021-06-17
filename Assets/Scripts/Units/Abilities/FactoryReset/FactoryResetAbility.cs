@@ -8,13 +8,11 @@ namespace RainesGames.Units.Abilities.FactoryReset
     [RequireComponent(typeof(ReroutePowerAbility))]
     public class FactoryResetAbility : AbsAbility, IUnitAbility, IPowerContainerInteractable, IPoweredItem
     {
+        public AbilityData Data;
+        public int MaxPower => Data.MaxPower;
+        public int MinPower => Data.MinPower;
+
         private Validator _validator;
-
-        private int _maxPower = 2;
-        public int MaxPower => _maxPower;
-
-        private int _minPower = 2;
-        public int MinPower => _minPower;
 
         private int _power = 0;
         public int Power => _power;
@@ -43,7 +41,7 @@ namespace RainesGames.Units.Abilities.FactoryReset
 
         public bool IsPowered()
         {
-            return _power >= _minPower;
+            return _power >= Data.MinPower;
         }
 
         public void RemovePower(int power)

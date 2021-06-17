@@ -1,18 +1,18 @@
 ﻿using RainesGames.Common.Power;
+using RainesGames.Units.Abilities.ReroutePower;
 using UnityEngine;
 
 namespace RainesGames.Units.Abilities.Hack
 {
     [DisallowMultipleComponent]
+    [RequireComponent(typeof(ReroutePowerAbility))]
     public class HackAbility : AbsAbility, IUnitAbility, IPowerContainerInteractable, IPoweredItem
     {
+        public AbilityData Data;
+        public int MaxPower => Data.MaxPower;
+        public int MinPower => Data.MinPower;
+
         private Validator _validator;
-
-        private int _maxPower = 3;
-        public int MaxPower => _maxPower;
-
-        private int _minPower = 3;
-        public int MinPower => _minPower;
 
         private int _power = 0;
         public int Power => _power;
@@ -41,7 +41,7 @@ namespace RainesGames.Units.Abilities.Hack
 
         public bool IsPowered()
         {
-            return _power >= _minPower;
+            return _power >= Data.MinPower;
         }
 
         public void RemovePower(int power)
