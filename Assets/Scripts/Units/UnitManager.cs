@@ -106,11 +106,12 @@ namespace RainesGames.Units
                 return;
 
             UnitStateManager stateManager = activeUnit.StateManager;
+            bool reroutingPower = stateManager.CurrentState == stateManager.ReroutePower;
 
-            if(Input.GetMouseButtonUp(1))
+            if(!reroutingPower && Input.GetMouseButtonUp(1))
                 stateManager.TransitionToState(stateManager.Move);
 
-            AbsAbility[] abilities = AbilityTraySort.SortAbilities(activeUnit.GetAbilities());
+            AbsAbility[] abilities = AbilityTraySort.GetSortedUnitAbilities(activeUnit);
 
             if(abilities.Length == 0)
                 return;
@@ -131,7 +132,7 @@ namespace RainesGames.Units
 
             for(int i = 0; i < abilities.Length; i++)
             {
-                if(intKeyCodeMap.ContainsKey(i) && Input.GetKeyUp(intKeyCodeMap[i]))
+                if(!reroutingPower && intKeyCodeMap.ContainsKey(i) && Input.GetKeyUp(intKeyCodeMap[i]))
                     stateManager.TransitionToState(abilities[i].State);
             }
         }

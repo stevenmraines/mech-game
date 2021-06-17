@@ -15,7 +15,7 @@ namespace RainesGames.Units.States.Underclock
 
         public override bool CanEnterState()
         {
-            return _ability != null && _ability.ActionIsAffordable();
+            return _ability != null && _ability.ActionIsAffordable() && _ability.IsPowered();
         }
 
         public override void EnterState() { }

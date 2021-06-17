@@ -1,10 +1,11 @@
-﻿using TGS;
+﻿using RainesGames.Units.Abilities.CancelReroutePower;
 using UnityEngine;
 
-namespace RainesGames.Units.Abilities.Move
+namespace RainesGames.Units.Abilities.ReroutePower
 {
     [DisallowMultipleComponent]
-    public class MoveAbility : AbsAbility, ICellAbility
+    [RequireComponent(typeof(CancelReroutePowerAbility))]
+    public class ReroutePowerAbility : AbsAbility, ITargetlessAbility
     {
         private Validator _validator;
 
@@ -13,22 +14,21 @@ namespace RainesGames.Units.Abilities.Move
             base.Awake();
             _firstActionCost = 1;
             _secondActionCost = 1;
-            _showInTray = false;
             _validator = new Validator(_controller);
         }
 
-        public void Execute(Cell targetCell)
+        public void Execute()
         {
-            if(_validator.IsValid(targetCell))
+            if(_validator.IsValid())
             {
-                _controller.PositionManager.PlaceUnit(targetCell);
+                _controller.PowerManager.DiscardOldState();
                 DecrementActionPoints();
             }
         }
 
         void Start()
         {
-            _state = _controller.StateManager.Move;
+             _state = _controller.StateManager.ReroutePower;
         }
     }
 }

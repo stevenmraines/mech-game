@@ -1,10 +1,13 @@
-﻿using RainesGames.Units.Abilities;
+﻿using RainesGames.Common.Power;
+using RainesGames.Units.Abilities;
 using RainesGames.Units.Abilities.FactoryReset;
 using RainesGames.Units.Abilities.Hack;
 using RainesGames.Units.Abilities.Move;
 using RainesGames.Units.Abilities.Underclock;
+using RainesGames.Units.Power;
 using RainesGames.Units.States;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RainesGames.Units
@@ -24,6 +27,9 @@ namespace RainesGames.Units
 
         protected UnitPositionManager _positionManager;
         public UnitPositionManager PositionManager => _positionManager;
+
+        protected PowerManager _powerManager;
+        public PowerManager PowerManager => _powerManager;
         
         protected Renderer _renderer;
         public Renderer Renderer => _renderer;
@@ -43,6 +49,7 @@ namespace RainesGames.Units
             _positionManager = new UnitPositionManager(this);
             _renderer = GetComponent<Renderer>();
             _stateManager = new UnitStateManager(this);
+            _powerManager = new PowerManager(this);
         }
 
         public T GetAbility<T>() where T : AbsAbility
@@ -50,22 +57,28 @@ namespace RainesGames.Units
             return GetComponent<T>();
         }
 
-        public AbsAbility[] GetAbilities(bool filterMove = true)
+        public AbsAbility[] GetAbilities(bool filterShowInTray = true)
         {
             AbsAbility[] abilities = gameObject.GetComponents<AbsAbility>();
 
-            if(!filterMove)
+            if(!filterShowInTray)
                 return abilities;
 
             List<AbsAbility> filteredAbilities = new List<AbsAbility>();
 
             foreach(AbsAbility ability in abilities)
             {
-                if(ability.GetType() != typeof(MoveAbility))
+                if(ability.ShowInTray)
                     filteredAbilities.Add(ability);
             }
 
             return filteredAbilities.ToArray();
+        }
+
+        public AbsAbility[] GetPoweredAbilities()
+        {
+            AbsAbility[] abilities = gameObject.GetComponents<AbsAbility>();
+            return abilities.Where(ability => ability is IPowerContainerInteractable).ToArray();
         }
 
         public bool HasAbility<T>() where T : AbsAbility

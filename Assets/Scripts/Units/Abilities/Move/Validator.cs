@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace RainesGames.Units.Abilities.Move
 {
-    public class Validator : AbsCellAbilityValidator
+    public class Validator : AbsAbilityValidator, ICellAbilityValidator
     {
         public Validator(UnitController parentUnit) : base(parentUnit) { }
 
         // TODO Check parentUnit's movement score against path distance
-        public override bool IsValid(Cell targetCell)
+        public bool IsValid(Cell targetCell)
         {
             if(GridManager.IsBlocked(targetCell))
             {

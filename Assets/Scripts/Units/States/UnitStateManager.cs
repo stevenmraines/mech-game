@@ -5,6 +5,7 @@ using RainesGames.Units.States.Hack;
 using RainesGames.Units.States.Idle;
 using RainesGames.Units.States.Move;
 using RainesGames.Units.States.Overclock;
+using RainesGames.Units.States.ReroutePower;
 using RainesGames.Units.States.Underclock;
 
 namespace RainesGames.Units.States
@@ -26,6 +27,9 @@ namespace RainesGames.Units.States
         private OverclockState _overclock;
         public OverclockState Overclock => _overclock;
 
+        private ReroutePowerState _reroutePower;
+        public ReroutePowerState ReroutePower => _reroutePower;
+
         private UnderclockState _underclock;
         public UnderclockState Underclock => _underclock;
 
@@ -44,6 +48,7 @@ namespace RainesGames.Units.States
             _move = new MoveState(this);
             _noActionPoints = new NoActionPointsState(this);
             _overclock = new OverclockState(this);
+            _reroutePower = new ReroutePowerState(this);
             _underclock = new UnderclockState(this);
             
             AutoStateChange();

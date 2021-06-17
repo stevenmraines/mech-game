@@ -2,11 +2,11 @@
 
 namespace RainesGames.Units.Abilities.Overclock
 {
-    public class Validator : AbsUnitAbilityValidator
+    public class Validator : AbsAbilityValidator, IUnitAbilityValidator
     {
         public Validator(UnitController parentUnit) : base(parentUnit) { }
 
-        public override bool IsValid(UnitController targetUnit)
+        public bool IsValid(UnitController targetUnit)
         {
             if(!_parentUnit.SameTeamAs(targetUnit))
             {

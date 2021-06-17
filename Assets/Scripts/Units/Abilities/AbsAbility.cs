@@ -1,13 +1,13 @@
-﻿using RainesGames.Common.Actions;
-using RainesGames.Units.States;
+﻿using RainesGames.Units.States;
 using UnityEngine;
 
 namespace RainesGames.Units.Abilities
 {
     [RequireComponent(typeof(UnitController))]
-    public abstract class AbsAbility : MonoBehaviour, IActionCost
+    public abstract class AbsAbility : MonoBehaviour, IAbility
     {
         protected UnitController _controller;
+        public UnitController Controller => _controller;
 
         protected int _firstActionCost;
         public int FirstActionCost => _firstActionCost;
@@ -15,11 +15,11 @@ namespace RainesGames.Units.Abilities
         protected int _secondActionCost;
         public int SecondActionCost => _secondActionCost;
 
-        protected int _sortOrder = 0;
-        public int SortOrder => _sortOrder;
-
         protected AbsUnitState _state;
         public AbsUnitState State => _state;
+
+        protected bool _showInTray = true;
+        public bool ShowInTray => _showInTray;
 
         protected virtual void Awake()
         {
