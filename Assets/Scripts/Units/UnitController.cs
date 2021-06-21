@@ -11,12 +11,13 @@ using UnityEngine;
 
 namespace RainesGames.Units
 {
-    [RequireComponent(typeof(BoxCollider))]
-    [RequireComponent(typeof(Rigidbody))]
     public class UnitController : MonoBehaviour
     {
         protected ActionPointsManager _actionPointsManager;
         public ActionPointsManager ActionPointsManager => _actionPointsManager;
+
+        protected Animator _animator;
+        public Animator Animator => _animator;
 
         protected FactoryResetStatusManager _factoryResetStatusManager;
         public FactoryResetStatusManager FactoryResetStatusManager => _factoryResetStatusManager;
@@ -39,7 +40,7 @@ namespace RainesGames.Units
         protected UnderclockStatusManager _underclockStatusManager;
         public UnderclockStatusManager UnderclockStatusManager => _underclockStatusManager;
 
-        protected void Awake()
+        protected virtual void Awake()
         {
             _factoryResetStatusManager = new FactoryResetStatusManager(this);
             _hackStatusManager = new HackStatusManager(this);
@@ -49,6 +50,7 @@ namespace RainesGames.Units
             _renderer = GetComponent<Renderer>();
             _stateManager = new UnitStateManager(this);
             _powerManager = new PowerManager(this);
+            _animator = GetComponent<Animator>();
         }
 
         public T GetAbility<T>() where T : AbsAbility

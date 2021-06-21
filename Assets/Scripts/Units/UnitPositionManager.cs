@@ -37,9 +37,19 @@ namespace RainesGames.Units
 
         public void PlaceUnit(Cell newPosition)
         {
+            SetCell(newPosition);
+            MoveUnitToCellCenter();
+        }
+
+        public void SetCell(int newPositionIndex)
+        {
+            SetCell(GridManager.GetCell(newPositionIndex));
+        }
+
+        public void SetCell(Cell newPosition)
+        {
             Cell oldPosition = _cell;
             _cell = newPosition;
-            MoveUnitToCellCenter();
             UpdateCellsBlocking(oldPosition, newPosition);
         }
 

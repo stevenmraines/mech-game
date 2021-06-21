@@ -1,19 +1,18 @@
-﻿using RainesGames.Grid;
-using TGS;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace RainesGames.Units.Abilities.Move
 {
-    public class Validator : AbsAbilityValidator, ICellAbilityValidator
+    public class Validator : AbsAbilityValidator, ICellPathAbilityValidator
     {
         public Validator(UnitController parentUnit) : base(parentUnit) { }
 
         // TODO Check parentUnit's movement score against path distance
-        public bool IsValid(Cell targetCell)
+        public bool IsValid(List<int> path)
         {
-            if(GridManager.IsBlocked(targetCell))
+            if(path.Count == 0)
             {
-                Debug.Log("Cannot move to occupied cell");
+                Debug.Log("Cannot find path to target cell");
                 return false;
             }
 

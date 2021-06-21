@@ -28,7 +28,7 @@ namespace RainesGames.Grid.Selection
              * TGS.OnCellClick is fired even if some object sitting on top of a cell is clicked,
              * so catch it here first to make sure no units are selected. If not, then proceed.
              */
-            if(buttonIndex != 0 || UnitSelectionManager.CurrentSelection != null)
+            if(UnitSelectionManager.CurrentSelection != null)
                 return;
 
             OnCellClick?.Invoke(sender, cellIndex, buttonIndex);

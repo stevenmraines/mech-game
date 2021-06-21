@@ -30,7 +30,7 @@ namespace RainesGames.Combat.States.BattleStart
             HudUiController hud = FindObjectOfType<HudUiController>();
             hud.EnableBattleStartMessage();
 
-            yield return new WaitForSecondsRealtime(3);
+            yield return new WaitForSecondsRealtime(2);
 
             hud.DisableBattleStartMessage();
 
