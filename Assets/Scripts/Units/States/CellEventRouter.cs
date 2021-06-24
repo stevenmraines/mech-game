@@ -1,4 +1,4 @@
-﻿using RainesGames.Common;
+﻿using RainesGames.Common.Grid;
 using RainesGames.Common.States;
 using RainesGames.Units.Selection;
 using TGS;

@@ -1,5 +1,5 @@
-﻿using RainesGames.Common;
-using RainesGames.Common.States;
+﻿using RainesGames.Common.States;
+using RainesGames.Common.Units;
 using RainesGames.Units;
 using RainesGames.Units.Selection;
 
@@ -24,8 +24,8 @@ namespace RainesGames.Combat.States
         public void DeregisterEventHandlers()
         {
             UnitSelectionManager.OnUnitClick -= OnUnitClick;
-            UnitSelectionManager.OnUnitMouseEnter -= OnUnitMouseEnter;
-            UnitSelectionManager.OnUnitMouseExit -= OnUnitMouseExit;
+            UnitSelectionManager.OnUnitMouseEnter -= OnUnitEnter;
+            UnitSelectionManager.OnUnitMouseExit -= OnUnitExit;
         }
 
         public void OnUnitClick(UnitController unit, int buttonIndex)
@@ -33,21 +33,21 @@ namespace RainesGames.Combat.States
             _manager.CurrentState.UnitEventHandler.OnUnitClick(unit, buttonIndex);
         }
 
-        public void OnUnitMouseEnter(UnitController unit)
+        public void OnUnitEnter(UnitController unit)
         {
-            _manager.CurrentState.UnitEventHandler.OnUnitMouseEnter(unit);
+            _manager.CurrentState.UnitEventHandler.OnUnitEnter(unit);
         }
 
-        public void OnUnitMouseExit(UnitController unit)
+        public void OnUnitExit(UnitController unit)
         {
-            _manager.CurrentState.UnitEventHandler.OnUnitMouseExit(unit);
+            _manager.CurrentState.UnitEventHandler.OnUnitExit(unit);
         }
 
         public void RegisterEventHandlers()
         {
             UnitSelectionManager.OnUnitClick += OnUnitClick;
-            UnitSelectionManager.OnUnitMouseEnter += OnUnitMouseEnter;
-            UnitSelectionManager.OnUnitMouseExit += OnUnitMouseExit;
+            UnitSelectionManager.OnUnitMouseEnter += OnUnitEnter;
+            UnitSelectionManager.OnUnitMouseExit += OnUnitExit;
         }
 
         public void RerouteUnitClick(UnitController unit, int buttonIndex)

@@ -1,4 +1,4 @@
-﻿using RainesGames.Common;
+﻿using RainesGames.Common.Units;
 using RainesGames.Grid;
 using RainesGames.Units;
 using RainesGames.Units.Selection;
@@ -20,14 +20,14 @@ namespace RainesGames.Combat.States.EnemyPlacement
                 UnitSelectionManager.SetActiveUnit(unit);
         }
 
-        public void OnUnitMouseEnter(UnitController unit)
+        public void OnUnitEnter(UnitController unit)
         {
-            GridManager.DisableCellHighlight();
+            GridWrapper.DisableCellHighlight();
         }
 
-        public void OnUnitMouseExit(UnitController unit)
+        public void OnUnitExit(UnitController unit)
         {
-            GridManager.EnableCellHighlight();
+            GridWrapper.EnableCellHighlight();
         }
     }
 }

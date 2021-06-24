@@ -19,8 +19,8 @@ namespace RainesGames.Combat.States.PlayerPlacement
         public override void EnterState()
         {
             base.EnterState();
-            GridManager.EnableCellHighlight();
-            GridManager.EnableTerritories();
+            GridWrapper.EnableCellHighlight();
+            GridWrapper.EnableTerritories();
         }
 
         public override void ExitState()

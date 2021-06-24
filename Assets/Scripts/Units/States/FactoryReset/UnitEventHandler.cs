@@ -1,4 +1,4 @@
-﻿using RainesGames.Common;
+﻿using RainesGames.Common.Units;
 using RainesGames.Units.Abilities.FactoryReset;
 using RainesGames.Units.Selection;
 
@@ -11,8 +11,8 @@ namespace RainesGames.Units.States.FactoryReset
             UnitSelectionManager.ActiveUnit.GetAbility<FactoryResetAbility>().Execute(unit);
         }
 
-        public void OnUnitMouseEnter(UnitController unit) { }
+        public void OnUnitEnter(UnitController unit) { }
 
-        public void OnUnitMouseExit(UnitController unit) { }
+        public void OnUnitExit(UnitController unit) { }
     }
 }

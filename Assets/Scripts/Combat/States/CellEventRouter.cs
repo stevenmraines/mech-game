@@ -1,4 +1,4 @@
-﻿using RainesGames.Common;
+﻿using RainesGames.Common.Grid;
 using RainesGames.Common.States;
 using RainesGames.Grid;
 using RainesGames.Grid.Selection;
@@ -24,9 +24,9 @@ namespace RainesGames.Combat.States
 
         public void DeregisterEventHandlers()
         {
-            GridSelectionManager.OnCellClick -= OnCellClick;
-            GridManager.TerrainGridSystem.OnCellEnter -= OnCellEnter;
-            GridManager.TerrainGridSystem.OnCellExit -= OnCellExit;
+            CellSelectionManager.OnCellClick -= OnCellClick;
+            GridWrapper.TerrainGridSystem.OnCellEnter -= OnCellEnter;
+            GridWrapper.TerrainGridSystem.OnCellExit -= OnCellExit;
         }
 
         public void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
@@ -46,9 +46,9 @@ namespace RainesGames.Combat.States
 
         public void RegisterEventHandlers()
         {
-            GridSelectionManager.OnCellClick += OnCellClick;
-            GridManager.TerrainGridSystem.OnCellEnter += OnCellEnter;
-            GridManager.TerrainGridSystem.OnCellExit += OnCellExit;
+            CellSelectionManager.OnCellClick += OnCellClick;
+            GridWrapper.TerrainGridSystem.OnCellEnter += OnCellEnter;
+            GridWrapper.TerrainGridSystem.OnCellExit += OnCellExit;
         }
 
         public void RerouteCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)

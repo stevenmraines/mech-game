@@ -16,7 +16,7 @@ namespace RainesGames.Combat.States.BattleStart
         public override void EnterState()
         {
             base.EnterState();
-            GridManager.DisableCellHighlight();
+            GridWrapper.DisableCellHighlight();
             StartCoroutine(ShowBattleStartMessage());
         }
 

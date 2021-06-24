@@ -1,4 +1,4 @@
-﻿using RainesGames.Common;
+﻿using RainesGames.Common.Units;
 using RainesGames.Units.Abilities.Overclock;
 using RainesGames.Units.Selection;
 
@@ -12,8 +12,8 @@ namespace RainesGames.Units.States.Overclock
             UnitSelectionManager.ActiveUnit.GetAbility<OverclockAbility>().Execute(unit);
         }
 
-        public void OnUnitMouseEnter(UnitController unit) { }
+        public void OnUnitEnter(UnitController unit) { }
 
-        public void OnUnitMouseExit(UnitController unit) { }
+        public void OnUnitExit(UnitController unit) { }
     }
 }

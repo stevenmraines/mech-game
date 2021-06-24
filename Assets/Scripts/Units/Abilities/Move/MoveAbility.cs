@@ -15,6 +15,10 @@ namespace RainesGames.Units.Abilities.Move
         private int _runningHash = Animator.StringToHash("Running");
         private Validator _validator;
 
+        public delegate void MoveAbilityDelegate();
+        public static event MoveAbilityDelegate OnMoveEnd;
+        public static event MoveAbilityDelegate OnMoveStart;
+
         protected override void Awake()
         {
             base.Awake();
@@ -56,6 +60,7 @@ namespace RainesGames.Units.Abilities.Move
 
         IEnumerator Move(List<int> path)
         {
+            OnMoveStart?.Invoke();
             TransitionToRun();
             SetNavDestination(path[_pathIndex]);
 
@@ -73,6 +78,7 @@ namespace RainesGames.Units.Abilities.Move
             _controller.PositionManager.SetCell(path[path.Count - 1]);
             DecrementActionPoints();
             TransitionToIdle();
+            OnMoveEnd?.Invoke();
         }
 
         void ResetPathIndex()
@@ -82,7 +88,7 @@ namespace RainesGames.Units.Abilities.Move
 
         void SetNavDestination(int cellIndex)
         {
-            _navMeshAgent.SetDestination(GridManager.GetCellPosition(cellIndex));
+            _navMeshAgent.SetDestination(GridWrapper.GetCellPosition(cellIndex));
         }
 
         void Start()

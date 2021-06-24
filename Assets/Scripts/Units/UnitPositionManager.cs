@@ -21,7 +21,7 @@ namespace RainesGames.Units
 
         void MoveUnitToCellCenter()
         {
-            Vector3 cellPosition = GridManager.GetCellPosition(_cell);
+            Vector3 cellPosition = GridWrapper.GetCellPosition(_cell);
 
             _controller.gameObject.transform.position = new Vector3(
                 cellPosition.x,
@@ -32,7 +32,7 @@ namespace RainesGames.Units
 
         public void PlaceUnit(int newPositionIndex)
         {
-            PlaceUnit(GridManager.GetCell(newPositionIndex));
+            PlaceUnit(GridWrapper.GetCell(newPositionIndex));
         }
 
         public void PlaceUnit(Cell newPosition)
@@ -43,7 +43,7 @@ namespace RainesGames.Units
 
         public void SetCell(int newPositionIndex)
         {
-            SetCell(GridManager.GetCell(newPositionIndex));
+            SetCell(GridWrapper.GetCell(newPositionIndex));
         }
 
         public void SetCell(Cell newPosition)
@@ -56,9 +56,9 @@ namespace RainesGames.Units
         void UpdateCellsBlocking(Cell oldPosition, Cell newPosition)
         {
             if(oldPosition != null)
-                GridManager.UnblockCell(oldPosition);
+                GridWrapper.UnblockCell(oldPosition);
 
-            GridManager.BlockCell(newPosition);
+            GridWrapper.BlockCell(newPosition);
         }
     }
 }

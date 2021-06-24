@@ -5,7 +5,7 @@ using UnityEngine;
 namespace RainesGames.Grid.Selection
 {
     // TODO This may not need to be a MonoBehaviour
-    public class GridSelectionManager : MonoBehaviour
+    public class CellSelectionManager : MonoBehaviour
     {
         private static Color _defaultCellColor;
         public static Color DefaultCellColor => _defaultCellColor;
@@ -36,12 +36,12 @@ namespace RainesGames.Grid.Selection
 
         void OnDisable()
         {
-            GridManager.TerrainGridSystem.OnCellClick -= CheckCellClick;
+            GridWrapper.TerrainGridSystem.OnCellClick -= CheckCellClick;
         }
 
         void OnEnable()
         {
-            GridManager.TerrainGridSystem.OnCellClick += CheckCellClick;
+            GridWrapper.TerrainGridSystem.OnCellClick += CheckCellClick;
         }
     }
 }

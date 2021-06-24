@@ -20,9 +20,6 @@ namespace RainesGames.Units.States.Move
 
         public override void EnterState() { }
 
-        public override void ExitState()
-        {
-            ((CellEventHandler)_cellEventHandler).Cleanup();
-        }
+        public override void ExitState() { }
     }
 }

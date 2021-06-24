@@ -1,4 +1,4 @@
-﻿using RainesGames.Common;
+﻿using RainesGames.Common.Grid;
 using RainesGames.Grid;
 using RainesGames.Units.Selection;
 using TGS;
@@ -19,7 +19,7 @@ namespace RainesGames.Combat.States.EnemyPlacement
             if(UnitSelectionManager.ActiveUnit == null)
                 return;
 
-            if(GridManager.IsBlocked(cellIndex))
+            if(GridWrapper.IsBlocked(cellIndex))
                 return;
 
             UnitSelectionManager.ActiveUnit.PositionManager.PlaceUnit(cellIndex);

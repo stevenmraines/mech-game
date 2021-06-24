@@ -21,8 +21,8 @@ namespace RainesGames.Combat.States.EnemyTurn
         {
             base.EnterState();
             OnEnterState?.Invoke();
-            GridManager.EnableCellHighlight();
-            GridManager.DisableTerritories();
+            GridWrapper.EnableCellHighlight();
+            GridWrapper.DisableTerritories();
             StartCoroutine(CombatStateUtilities.NoActionPointsCheck(_manager));
         }
 

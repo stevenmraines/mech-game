@@ -1,4 +1,4 @@
-﻿using RainesGames.Common;
+﻿using RainesGames.Common.Units;
 using RainesGames.Grid;
 using RainesGames.Units;
 using RainesGames.Units.Selection;
@@ -42,9 +42,9 @@ namespace RainesGames.Combat.States.PlayerTurn
             _state.Manager.UnitEventRouter.RerouteUnitClick(unit, buttonIndex);
         }
 
-        public void OnUnitMouseEnter(UnitController unit)
+        public void OnUnitEnter(UnitController unit)
         {
-            GridManager.DisableCellHighlight();
+            GridWrapper.DisableCellHighlight();
 
             if(UnitSelectionManager.ActiveUnit == null)
                 return;
@@ -52,9 +52,9 @@ namespace RainesGames.Combat.States.PlayerTurn
             _state.Manager.UnitEventRouter.RerouteUnitMouseEnter(unit);
         }
 
-        public void OnUnitMouseExit(UnitController unit)
+        public void OnUnitExit(UnitController unit)
         {
-            GridManager.EnableCellHighlight();
+            GridWrapper.EnableCellHighlight();
 
             if(UnitSelectionManager.ActiveUnit == null)
                 return;

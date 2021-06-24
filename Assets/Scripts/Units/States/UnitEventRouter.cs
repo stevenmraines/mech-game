@@ -1,5 +1,5 @@
-﻿using RainesGames.Common;
-using RainesGames.Common.States;
+﻿using RainesGames.Common.States;
+using RainesGames.Common.Units;
 using RainesGames.Units.Selection;
 
 namespace RainesGames.Units.States
@@ -9,8 +9,8 @@ namespace RainesGames.Units.States
         public void DeregisterEventHandlers()
         {
             Combat.States.UnitEventRouter.OnUnitClickReroute -= OnUnitClick;
-            Combat.States.UnitEventRouter.OnUnitMouseEnterReroute -= OnUnitMouseEnter;
-            Combat.States.UnitEventRouter.OnUnitMouseExitReroute -= OnUnitMouseExit;
+            Combat.States.UnitEventRouter.OnUnitMouseEnterReroute -= OnUnitEnter;
+            Combat.States.UnitEventRouter.OnUnitMouseExitReroute -= OnUnitExit;
         }
 
         UnitStateManager GetStateManager()
@@ -23,21 +23,21 @@ namespace RainesGames.Units.States
             GetStateManager().CurrentState.UnitEventHandler?.OnUnitClick(unit, buttonIndex);
         }
 
-        public void OnUnitMouseEnter(UnitController unit)
+        public void OnUnitEnter(UnitController unit)
         {
-            GetStateManager().CurrentState.UnitEventHandler?.OnUnitMouseEnter(unit);
+            GetStateManager().CurrentState.UnitEventHandler?.OnUnitEnter(unit);
         }
 
-        public void OnUnitMouseExit(UnitController unit)
+        public void OnUnitExit(UnitController unit)
         {
-            GetStateManager().CurrentState.UnitEventHandler?.OnUnitMouseExit(unit);
+            GetStateManager().CurrentState.UnitEventHandler?.OnUnitExit(unit);
         }
 
         public void RegisterEventHandlers()
         {
             Combat.States.UnitEventRouter.OnUnitClickReroute += OnUnitClick;
-            Combat.States.UnitEventRouter.OnUnitMouseEnterReroute += OnUnitMouseEnter;
-            Combat.States.UnitEventRouter.OnUnitMouseExitReroute += OnUnitMouseExit;
+            Combat.States.UnitEventRouter.OnUnitMouseEnterReroute += OnUnitEnter;
+            Combat.States.UnitEventRouter.OnUnitMouseExitReroute += OnUnitExit;
         }
     }
 }
