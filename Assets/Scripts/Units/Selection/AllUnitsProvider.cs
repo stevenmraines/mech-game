@@ -7,7 +7,7 @@ namespace RainesGames.Units.Selection
     {
         public List<UnitController> GetSelectables()
         {
-            return new List<UnitController>(UnitManager.Units);
+            return new List<UnitController>(AllUnitsManager.Units);
         }
     }
 }

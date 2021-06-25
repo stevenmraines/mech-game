@@ -1,5 +1,4 @@
-﻿using RainesGames.Common.Units;
-using RainesGames.Units.Abilities.Overclock;
+﻿using RainesGames.Units.Abilities.Overclock;
 using RainesGames.Units.Selection;
 
 namespace RainesGames.Units.States.Overclock

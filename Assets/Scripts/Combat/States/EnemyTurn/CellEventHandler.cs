@@ -1,4 +1,4 @@
-﻿using RainesGames.Common.Grid;
+﻿using RainesGames.Grid;
 using RainesGames.Units;
 using RainesGames.Units.Abilities.Move;
 using RainesGames.Units.Selection;

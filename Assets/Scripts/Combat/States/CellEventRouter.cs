@@ -1,5 +1,4 @@
-﻿using RainesGames.Common.Grid;
-using RainesGames.Common.States;
+﻿using RainesGames.Common.States;
 using RainesGames.Grid;
 using RainesGames.Grid.Selection;
 using TGS;
@@ -31,17 +30,17 @@ namespace RainesGames.Combat.States
 
         public void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
         {
-            _manager.CurrentState.CellEventHandler.OnCellClick(sender, cellIndex, buttonIndex);
+            _manager.CurrentState.CellEventHandler?.OnCellClick(sender, cellIndex, buttonIndex);
         }
 
         public void OnCellEnter(TerrainGridSystem sender, int cellIndex)
         {
-            _manager.CurrentState.CellEventHandler.OnCellEnter(sender, cellIndex);
+            _manager.CurrentState.CellEventHandler?.OnCellEnter(sender, cellIndex);
         }
 
         public void OnCellExit(TerrainGridSystem sender, int cellIndex)
         {
-            _manager.CurrentState.CellEventHandler.OnCellExit(sender, cellIndex);
+            _manager.CurrentState.CellEventHandler?.OnCellExit(sender, cellIndex);
         }
 
         public void RegisterEventHandlers()

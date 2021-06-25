@@ -1,5 +1,4 @@
-﻿using RainesGames.Common.Units;
-using RainesGames.Grid;
+﻿using RainesGames.Grid;
 using RainesGames.Units;
 using RainesGames.Units.Selection;
 

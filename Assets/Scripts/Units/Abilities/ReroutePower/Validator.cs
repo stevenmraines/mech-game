@@ -2,11 +2,9 @@
 
 namespace RainesGames.Units.Abilities.ReroutePower
 {
-    public class Validator : AbsAbilityValidator, ITargetlessAbilityValidator
+    public class Validator : ITargetlessAbilityValidator
     {
-        public Validator(UnitController parentUnit) : base(parentUnit) { }
-
-        public bool IsValid()
+        public bool IsValid(UnitController parentUnit)
         {
             if(false)
             {

@@ -1,5 +1,4 @@
-﻿using RainesGames.Common.Units;
-using RainesGames.Grid;
+﻿using RainesGames.Grid;
 using RainesGames.Units;
 using RainesGames.Units.Selection;
 using RainesGames.Units.States;
@@ -22,8 +21,9 @@ namespace RainesGames.Combat.States.EnemyTurn
             if(activeUnit == null)
                 return true;
 
-            AbsUnitState currentState = UnitSelectionManager.ActiveUnit.StateManager.CurrentState;
-            bool activeUnitIsTargetingUnits = activeUnit.IsEnemy() && currentState.IsUnitTargetingState();
+            // TODO can't I just check if the active unit is in the noAP/move state?
+            IUnitState currentState = UnitSelectionManager.ActiveUnit.CurrentState;
+            bool activeUnitIsTargetingUnits = activeUnit.IsEnemy() && currentState is IUnitTargetState;
 
             if(!activeUnitIsTargetingUnits)
                 return true;

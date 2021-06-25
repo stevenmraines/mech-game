@@ -16,7 +16,7 @@ namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike.TransitionValid
 
         bool EnemyPlacement()
         {
-            return UnitManager.AllPlayerUnitsPlaced();
+            return AllUnitsManager.AllPlayerUnitsPlaced();
         }
     }
 }

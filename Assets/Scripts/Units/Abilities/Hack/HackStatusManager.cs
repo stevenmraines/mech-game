@@ -22,7 +22,7 @@ namespace RainesGames.Units.Abilities.Hack
         public override void Activate()
         {
             base.Activate();
-            _controller.ActionPointsManager.ForceSpendAllActionPoints();
+            _controller.AbilityPointsManager.ForceSpendAllAbilityPoints(_controller);
         }
 
         void OnExitStateEnemyTurn()

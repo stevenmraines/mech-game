@@ -1,56 +1,79 @@
-﻿using RainesGames.Common.Power;
+﻿using RainesGames.Combat.States.EnemyTurn;
+using RainesGames.Combat.States.PlayerTurn;
+using RainesGames.Common.Power;
 using RainesGames.Units.Abilities;
 using RainesGames.Units.Abilities.FactoryReset;
 using RainesGames.Units.Abilities.Hack;
 using RainesGames.Units.Abilities.Underclock;
 using RainesGames.Units.Power;
 using RainesGames.Units.States;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace RainesGames.Units
 {
-    public class UnitController : MonoBehaviour
+    public class UnitController : MonoBehaviour, IAbilityPoints, IAbilityPointsConfig
     {
-        protected ActionPointsManager _actionPointsManager;
-        public ActionPointsManager ActionPointsManager => _actionPointsManager;
-
-        protected Animator _animator;
-        public Animator Animator => _animator;
-
-        protected FactoryResetStatusManager _factoryResetStatusManager;
+        private AbilityPointsManager _abilityPointsManager;
+        public AbilityPointsManager AbilityPointsManager => _abilityPointsManager;
+        
+        private FactoryResetStatusManager _factoryResetStatusManager;
         public FactoryResetStatusManager FactoryResetStatusManager => _factoryResetStatusManager;
-
-        protected HackStatusManager _hackStatusManager;
+        
+        private HackStatusManager _hackStatusManager;
         public HackStatusManager HackStatusManager => _hackStatusManager;
-
-        protected UnitPositionManager _positionManager;
+        
+        private UnitPositionManager _positionManager;
         public UnitPositionManager PositionManager => _positionManager;
-
-        protected PowerManager _powerManager;
+        
+        private PowerManager _powerManager;
         public PowerManager PowerManager => _powerManager;
         
-        protected Renderer _renderer;
-        public Renderer Renderer => _renderer;
-
-        protected UnitStateManager _stateManager;
+        private UnitStateManager _stateManager;
         public UnitStateManager StateManager => _stateManager;
-
-        protected UnderclockStatusManager _underclockStatusManager;
+        
+        private UnderclockStatusManager _underclockStatusManager;
         public UnderclockStatusManager UnderclockStatusManager => _underclockStatusManager;
+        
+        private Animator _animator;
+        public Animator Animator => _animator;
 
-        protected virtual void Awake()
+        private IUnitState _currentState;
+        public IUnitState CurrentState { get => _currentState; set => _currentState = value; }
+
+        private NavMeshAgent _navMeshAgent;
+        public NavMeshAgent NavMeshAgent => _navMeshAgent;
+
+        private int _baseMovement = 6;
+
+        private int _abilityPoints;
+        public int AbilityPoints { get => _abilityPoints; set => _abilityPoints = value; }
+
+        private bool _firstAbilitySpent = false;
+        public bool FirstAbilitySpent { get => _firstAbilitySpent; set => _firstAbilitySpent = value; }
+
+        private int _startOfTurnAbilityPoints = 2;
+        public int StartOfTurnAbilityPoints => _startOfTurnAbilityPoints;
+
+        void Awake()
         {
             _factoryResetStatusManager = new FactoryResetStatusManager(this);
             _hackStatusManager = new HackStatusManager(this);
             _underclockStatusManager = new UnderclockStatusManager(this);
-            _actionPointsManager = new ActionPointsManager(this);
             _positionManager = new UnitPositionManager(this);
-            _renderer = GetComponent<Renderer>();
-            _stateManager = new UnitStateManager(this);
             _powerManager = new PowerManager(this);
             _animator = GetComponent<Animator>();
+            _navMeshAgent = GetComponent<NavMeshAgent>();
+            _abilityPointsManager = FindObjectOfType<AbilityPointsManager>();
+            _stateManager = FindObjectOfType<UnitStateManager>();
+        }
+
+        public bool CurrentStateIs(Type stateType)
+        {
+            return _currentState.GetType() == stateType;
         }
 
         public T GetAbility<T>() where T : AbsAbility
@@ -76,6 +99,11 @@ namespace RainesGames.Units
             return filteredAbilities.ToArray();
         }
 
+        public int GetMovement()
+        {
+            return _baseMovement;
+        }
+
         public AbsAbility[] GetPoweredAbilities()
         {
             AbsAbility[] abilities = gameObject.GetComponents<AbsAbility>();
@@ -89,12 +117,12 @@ namespace RainesGames.Units
 
         public bool HasEnemyTag()
         {
-            return HasTag(UnitManager.ENEMY_TAG);
+            return HasTag(AllUnitsManager.ENEMY_TAG);
         }
 
         public bool HasPlayerTag()
         {
-            return HasTag(UnitManager.PLAYER_TAG);
+            return HasTag(AllUnitsManager.PLAYER_TAG);
         }
 
         public bool HasTag(string tag)
@@ -122,10 +150,50 @@ namespace RainesGames.Units
             return (HasPlayerTag() && !IsHacked()) || (HasEnemyTag() && IsHacked());
         }
 
-        // TODO maybe split all these convenience methods out into a partial class or something
         public bool IsUnderclocked()
         {
             return _underclockStatusManager.Active;
+        }
+
+        void OnAbilityPointsChange(UnitController unit)
+        {
+            // TODO Make _abilityPointsManager, _stateManager, etc. serialized fields and give these components to EVERY unit, to avoid this check
+            if(unit == this)
+                _stateManager.TransitionToState(this);
+        }
+
+        void OnDisable()
+        {
+            _abilityPointsManager.OnAbilityPointsDecrement -= OnAbilityPointsChange;
+            _abilityPointsManager.OnAbilityPointsIncrement -= OnAbilityPointsChange;
+            EnemyTurnState.OnEnterState -= OnEnterStateEnemyTurn;
+            PlayerTurnState.OnEnterState -= OnEnterStatePlayerTurn;
+        }
+
+        void OnEnable()
+        {
+            _abilityPointsManager.OnAbilityPointsDecrement += OnAbilityPointsChange;
+            _abilityPointsManager.OnAbilityPointsIncrement += OnAbilityPointsChange;
+            EnemyTurnState.OnEnterState += OnEnterStateEnemyTurn;
+            PlayerTurnState.OnEnterState += OnEnterStatePlayerTurn;
+        }
+
+        void OnEnterStateEnemyTurn()
+        {
+            if(IsEnemy())
+                Reset();
+        }
+
+        void OnEnterStatePlayerTurn()
+        {
+            if(IsPlayer())
+                Reset();
+        }
+
+        void Reset()
+        {
+            _abilityPointsManager.ResetAbilityPoints(this);
+            _stateManager.TransitionToState(this);
         }
 
         public bool SameTagAs(UnitController unit)
@@ -136,6 +204,11 @@ namespace RainesGames.Units
         public bool SameTeamAs(UnitController unit)
         {
             return (IsPlayer() && unit.IsPlayer()) || (IsEnemy() && unit.IsEnemy());
+        }
+
+        void Start()
+        {
+            Reset();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace RainesGames.Units.Abilities.FactoryReset
         public override void Activate()
         {
             base.Activate();
-            _controller.ActionPointsManager.ForceSpendAllActionPoints();
+            _controller.AbilityPointsManager.ForceSpendAllAbilityPoints(_controller);
         }
 
         private void OnExitStateEnemyTurn()

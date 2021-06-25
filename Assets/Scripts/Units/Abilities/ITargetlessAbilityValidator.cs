@@ -2,6 +2,6 @@
 {
     public interface ITargetlessAbilityValidator
     {
-        bool IsValid();
+        bool IsValid(UnitController parentUnit);
     }
 }

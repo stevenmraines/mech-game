@@ -1,35 +1,26 @@
 ﻿using RainesGames.Units.Abilities.CancelReroutePower;
 using RainesGames.Units.Abilities.ReroutePower;
+using UnityEngine;
 
 namespace RainesGames.Units.States.ReroutePower
 {
-    public class ReroutePowerState : AbsUnitState
+    public class ReroutePowerState : MonoBehaviour, IUnitState
     {
-        private ReroutePowerAbility _rerouteAbility;
-        public ReroutePowerAbility RerouteAbility => _rerouteAbility;
-
-        private CancelReroutePowerAbility _cancelRerouteAbility;
-        public CancelReroutePowerAbility CancelRerouteAbility => _cancelRerouteAbility;
-
-        public ReroutePowerState(UnitStateManager manager) : base(manager)
+        public bool CanEnterState(UnitController unit)
         {
-            _rerouteAbility = _manager.Controller.GetAbility<ReroutePowerAbility>();
-            _cancelRerouteAbility = _manager.Controller.GetAbility<CancelReroutePowerAbility>();
+            ReroutePowerAbility rerouteAbility = unit.GetAbility<ReroutePowerAbility>();
+            CancelReroutePowerAbility cancelRerouteAbility = unit.GetAbility<CancelReroutePowerAbility>();
+            return rerouteAbility != null && cancelRerouteAbility != null && rerouteAbility.AbilityIsAffordable();
         }
 
-        public override bool CanEnterState()
+        public void EnterState(UnitController unit)
         {
-            return _rerouteAbility != null && _cancelRerouteAbility != null && _rerouteAbility.ActionIsAffordable();
+            unit.PowerManager.RecordOldState();
         }
 
-        public override void EnterState()
+        public void ExitState(UnitController unit)
         {
-            _manager.Controller.PowerManager.RecordOldState();
-        }
-
-        public override void ExitState()
-        {
-            _manager.Controller.PowerManager.DiscardOldState();
+            unit.PowerManager.DiscardOldState();
         }
     }
 }

@@ -1,25 +1,26 @@
 ﻿using RainesGames.Units.Abilities.Underclock;
+using UnityEngine;
 
 namespace RainesGames.Units.States.Underclock
 {
-    public class UnderclockState : AbsUnitState
+    public class UnderclockState : MonoBehaviour, IUnitState, IUnitTargetState
     {
-        private UnderclockAbility _ability;
-        public UnderclockAbility Ability => _ability;
-
-        public UnderclockState(UnitStateManager manager) : base(manager)
+        private IUnitEvents _unitEventHandler;
+        public IUnitEvents UnitEventHandler => _unitEventHandler;
+        
+        void Awake()
         {
-            _ability = _manager.Controller.GetAbility<UnderclockAbility>();
             _unitEventHandler = new UnitEventHandler();
         }
 
-        public override bool CanEnterState()
+        public bool CanEnterState(UnitController unit)
         {
-            return _ability != null && _ability.ActionIsAffordable() && _ability.IsPowered();
+            UnderclockAbility ability = unit.GetAbility<UnderclockAbility>();
+            return ability != null && ability.AbilityIsAffordable() && ability.IsPowered();
         }
 
-        public override void EnterState() { }
+        public void EnterState(UnitController unit) { }
 
-        public override void ExitState() { }
+        public void ExitState(UnitController unit) { }
     }
 }

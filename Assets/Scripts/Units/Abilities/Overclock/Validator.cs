@@ -2,13 +2,11 @@
 
 namespace RainesGames.Units.Abilities.Overclock
 {
-    public class Validator : AbsAbilityValidator, IUnitAbilityValidator
+    public class Validator : IUnitTargetAbilityValidator
     {
-        public Validator(UnitController parentUnit) : base(parentUnit) { }
-
-        public bool IsValid(UnitController targetUnit)
+        public bool IsValid(UnitController parentUnit, UnitController targetUnit)
         {
-            if(!_parentUnit.SameTeamAs(targetUnit))
+            if(!parentUnit.SameTeamAs(targetUnit))
             {
                 Debug.Log("Cannot target enemy units");
                 return false;

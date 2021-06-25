@@ -84,14 +84,14 @@ namespace RainesGames.Combat.States
         {
             _cellEventRouter.DeregisterEventHandlers();
             _unitEventRouter.DeregisterEventHandlers();
-            ActionPointsManager.OnActionPointsDecrementStatic -= AttemptTransition;
+            AbilityPointsManager.OnAbilityPointsDecrementStatic -= AttemptTransition;
         }
 
         void OnEnable()
         {
             _cellEventRouter.RegisterEventHandlers();
             _unitEventRouter.RegisterEventHandlers();
-            ActionPointsManager.OnActionPointsDecrementStatic += AttemptTransition;
+            AbilityPointsManager.OnAbilityPointsDecrementStatic += AttemptTransition;
         }
 
         void Start()

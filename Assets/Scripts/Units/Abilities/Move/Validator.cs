@@ -3,12 +3,10 @@ using UnityEngine;
 
 namespace RainesGames.Units.Abilities.Move
 {
-    public class Validator : AbsAbilityValidator, ICellPathAbilityValidator
+    public class Validator : IPathTargetAbilityValidator
     {
-        public Validator(UnitController parentUnit) : base(parentUnit) { }
-
         // TODO Check parentUnit's movement score against path distance
-        public bool IsValid(List<int> path)
+        public bool IsValid(UnitController parentUnit, List<int> path)
         {
             if(path.Count == 0)
             {

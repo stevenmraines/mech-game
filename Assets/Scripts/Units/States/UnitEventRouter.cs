@@ -1,5 +1,4 @@
 ﻿using RainesGames.Common.States;
-using RainesGames.Common.Units;
 using RainesGames.Units.Selection;
 
 namespace RainesGames.Units.States
@@ -13,24 +12,29 @@ namespace RainesGames.Units.States
             Combat.States.UnitEventRouter.OnUnitMouseExitReroute -= OnUnitExit;
         }
 
-        UnitStateManager GetStateManager()
+        IUnitEvents GetUnitEventHandler()
         {
-            return UnitSelectionManager.ActiveUnit.StateManager;
+            IUnitState currentState = UnitSelectionManager.ActiveUnit.CurrentState;
+
+            if(currentState is IUnitTargetState)
+                return ((IUnitTargetState)currentState).UnitEventHandler;
+
+            return null;
         }
 
         public void OnUnitClick(UnitController unit, int buttonIndex)
         {
-            GetStateManager().CurrentState.UnitEventHandler?.OnUnitClick(unit, buttonIndex);
+            GetUnitEventHandler()?.OnUnitClick(unit, buttonIndex);
         }
 
         public void OnUnitEnter(UnitController unit)
         {
-            GetStateManager().CurrentState.UnitEventHandler?.OnUnitEnter(unit);
+            GetUnitEventHandler()?.OnUnitEnter(unit);
         }
 
         public void OnUnitExit(UnitController unit)
         {
-            GetStateManager().CurrentState.UnitEventHandler?.OnUnitExit(unit);
+            GetUnitEventHandler()?.OnUnitExit(unit);
         }
 
         public void RegisterEventHandlers()

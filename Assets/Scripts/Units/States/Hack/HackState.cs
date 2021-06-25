@@ -1,25 +1,26 @@
 ﻿using RainesGames.Units.Abilities.Hack;
+using UnityEngine;
 
 namespace RainesGames.Units.States.Hack
 {
-    public class HackState : AbsUnitState
+    public class HackState : MonoBehaviour, IUnitState, IUnitTargetState
     {
-        private HackAbility _ability;
-        public HackAbility Ability => _ability;
+        private IUnitEvents _unitEventHandler;
+        public IUnitEvents UnitEventHandler => _unitEventHandler;
 
-        public HackState(UnitStateManager manager) : base(manager)
+        void Awake()
         {
-            _ability = _manager.Controller.GetAbility<HackAbility>();
             _unitEventHandler = new UnitEventHandler();
         }
 
-        public override bool CanEnterState()
+        public bool CanEnterState(UnitController unit)
         {
-            return _ability != null && _ability.ActionIsAffordable() && _ability.IsPowered();
+            HackAbility ability = unit.GetAbility<HackAbility>();
+            return ability != null && ability.AbilityIsAffordable() && ability.IsPowered();
         }
 
-        public override void EnterState() { }
+        public void EnterState(UnitController unit) { }
 
-        public override void ExitState() { }
+        public void ExitState(UnitController unit) { }
     }
 }

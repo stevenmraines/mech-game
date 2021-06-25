@@ -1,25 +1,27 @@
-﻿using RainesGames.Units.Abilities.Move;
+﻿using RainesGames.Grid;
+using RainesGames.Units.Abilities.Move;
+using UnityEngine;
 
 namespace RainesGames.Units.States.Move
 {
-    public class MoveState : AbsUnitState
+    public class MoveState : MonoBehaviour, IUnitState, ICellTargetState
     {
-        private MoveAbility _ability;
-        public MoveAbility Ability => _ability;
+        private ICellEvents _cellEventHandler;
+        public ICellEvents CellEventHandler => _cellEventHandler;
 
-        public MoveState(UnitStateManager manager) : base(manager)
+        void Awake()
         {
-            _ability = _manager.Controller.GetAbility<MoveAbility>();
             _cellEventHandler = new CellEventHandler();
         }
 
-        public override bool CanEnterState()
+        public bool CanEnterState(UnitController unit)
         {
-            return _ability != null && _ability.ActionIsAffordable();
+            MoveAbility ability = unit.GetAbility<MoveAbility>();
+            return ability != null && ability.AbilityIsAffordable();
         }
 
-        public override void EnterState() { }
+        public void EnterState(UnitController unit) { }
 
-        public override void ExitState() { }
+        public void ExitState(UnitController unit) { }
     }
 }

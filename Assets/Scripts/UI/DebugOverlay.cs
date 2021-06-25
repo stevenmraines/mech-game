@@ -5,6 +5,7 @@ using RainesGames.Units.Abilities;
 using RainesGames.Units.Abilities.CancelReroutePower;
 using RainesGames.Units.Abilities.ReroutePower;
 using RainesGames.Units.Selection;
+using RainesGames.Units.States.ReroutePower;
 using UnityEngine;
 
 namespace RainesGames.UI
@@ -80,8 +81,8 @@ namespace RainesGames.UI
             };
 
             bool isPowered = ability is IPowerContainerInteractable;
-            bool reroutingPower = activeUnit.StateManager.CurrentState == activeUnit.StateManager.ReroutePower;
-            bool canEnterState = ability.State.CanEnterState();
+            bool reroutingPower = activeUnit.CurrentStateIs(typeof(ReroutePowerState));
+            bool canEnterState = ability.State.CanEnterState(activeUnit);
             bool canRerouteAbilityPower = reroutingPower && isPowered;
             bool abilityIsUsable = !reroutingPower && canEnterState;
 
@@ -118,7 +119,7 @@ namespace RainesGames.UI
             if(GUI.tooltip + "Ability" == ability.GetType().Name)
                 GUI.Label(tooltipPosition, GUI.tooltip);
 
-            if(activeUnit.StateManager.CurrentState == activeUnit.StateManager.ReroutePower)
+            if(activeUnit.CurrentStateIs(typeof(ReroutePowerState)))
                 DrawReroutePowerButtons(activeUnit);
 
             if(!(ability is IPowerContainerInteractable))
@@ -234,9 +235,9 @@ namespace RainesGames.UI
             if(unit == null)
                 return;
 
-            string unitInfo = unit.name + "  (" + unit.ActionPointsManager.ActionPoints + ")";
+            string unitInfo = unit.name + "  (" + unit.AbilityPoints + ")";
 
-            string stateName = unit.StateManager.CurrentState.GetType().Name;
+            string stateName = unit.CurrentState.GetType().Name;
             unitInfo += "\nState: " + stateName.Substring(0, stateName.Length - 5);
 
             if(unit.IsHacked() || unit.IsFactoryReset() || unit.IsUnderclocked())
@@ -317,7 +318,7 @@ namespace RainesGames.UI
 
         void HandleUseAbility(UnitController activeUnit, AbsAbility ability)
         {
-            activeUnit.StateManager.TransitionToState(ability.State);
+            activeUnit.StateManager.TransitionToState(activeUnit, ability.State);
         }
 
         void OnGUI()

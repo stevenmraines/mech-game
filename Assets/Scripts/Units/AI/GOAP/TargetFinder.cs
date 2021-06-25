@@ -7,7 +7,7 @@ namespace RainesGames.Units.AI.GOAP
         // TODO Does every action need it's own TargetFinder?
         public UnitController DetermineTarget()
         {
-            return UnitManager.GetPlayerUnits()[0];
+            return AllUnitsManager.GetPlayerUnits()[0];
         }
     }
 }

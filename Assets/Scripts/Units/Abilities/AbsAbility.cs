@@ -9,36 +9,36 @@ namespace RainesGames.Units.Abilities
         protected UnitController _controller;
         public UnitController Controller => _controller;
 
-        protected int _firstActionCost;
-        public int FirstActionCost => _firstActionCost;
+        protected int _firstAbilityCost;
+        public int FirstAbilityCost => _firstAbilityCost;
 
-        protected int _secondActionCost;
-        public int SecondActionCost => _secondActionCost;
+        protected int _secondAbilityCost;
+        public int SecondAbilityCost => _secondAbilityCost;
 
-        protected AbsUnitState _state;
-        public AbsUnitState State => _state;
+        protected IUnitState _state;
+        public IUnitState State => _state;
 
         protected bool _showInTray = true;
         public bool ShowInTray => _showInTray;
 
-        protected virtual void Awake()
+        public virtual bool AbilityIsAffordable()
+        {
+            return _controller.AbilityPoints >= GetAbilityPointCost();
+        }
+
+        protected virtual void DecrementAbilityPoints()
+        {
+            _controller.AbilityPointsManager.Decrement(_controller, GetAbilityPointCost());
+        }
+
+        public virtual int GetAbilityPointCost()
+        {
+            return _controller.FirstAbilitySpent ? _secondAbilityCost : _firstAbilityCost;
+        }
+        
+        protected virtual void Start()
         {
             _controller = GetComponent<UnitController>();
-        }
-
-        public virtual bool ActionIsAffordable()
-        {
-            return _controller.ActionPointsManager.ActionPoints >= GetActionPointCost();
-        }
-
-        protected virtual void DecrementActionPoints()
-        {
-            _controller.ActionPointsManager.Decrement(GetActionPointCost());
-        }
-
-        public virtual int GetActionPointCost()
-        {
-            return _controller.ActionPointsManager.FirstActionSpent ? _secondActionCost : _firstActionCost;
         }
     }
 }

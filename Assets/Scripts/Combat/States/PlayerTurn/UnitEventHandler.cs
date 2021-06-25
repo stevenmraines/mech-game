@@ -1,5 +1,4 @@
-﻿using RainesGames.Common.Units;
-using RainesGames.Grid;
+﻿using RainesGames.Grid;
 using RainesGames.Units;
 using RainesGames.Units.Selection;
 using RainesGames.Units.States;
@@ -22,8 +21,8 @@ namespace RainesGames.Combat.States.PlayerTurn
             if(activeUnit == null)
                 return true;
 
-            AbsUnitState currentState = UnitSelectionManager.ActiveUnit.StateManager.CurrentState;
-            bool activeUnitIsTargetingUnits = activeUnit.IsPlayer() && currentState.IsUnitTargetingState();
+            IUnitState currentState = UnitSelectionManager.ActiveUnit.CurrentState;
+            bool activeUnitIsTargetingUnits = activeUnit.IsPlayer() && currentState is IUnitTargetState;
 
             if(!activeUnitIsTargetingUnits)
                 return true;

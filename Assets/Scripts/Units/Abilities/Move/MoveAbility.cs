@@ -7,8 +7,7 @@ using UnityEngine.AI;
 namespace RainesGames.Units.Abilities.Move
 {
     [DisallowMultipleComponent]
-    // TODO All this functionality doesn't need to be duplicated for every unit with the move ability
-    public class MoveAbility : AbsAbility, ICellPathAbility
+    public class MoveAbility : AbsAbility, IPathTargetAbility
     {
         private NavMeshAgent _navMeshAgent;
         private int _pathIndex = 0;
@@ -19,16 +18,15 @@ namespace RainesGames.Units.Abilities.Move
         public static event MoveAbilityDelegate OnMoveEnd;
         public static event MoveAbilityDelegate OnMoveStart;
 
-        protected override void Awake()
+        void Awake()
         {
-            base.Awake();
-            _firstActionCost = 1;
-            _secondActionCost = 1;
+            _firstAbilityCost = 1;
+            _secondAbilityCost = 1;
             _showInTray = false;
-            _validator = new Validator(_controller);
+            _validator = new Validator();
         }
         
-        // TODO Move all this NavMeshAgent helper stuff into some separate class?
+        // TODO Move all this NavMeshAgent helper stuff into some separate class
         bool DestinationReached()
         {
             bool pathPending = _navMeshAgent.pathPending;
@@ -41,7 +39,7 @@ namespace RainesGames.Units.Abilities.Move
 
         public void Execute(List<int> path)
         {
-            if(_validator.IsValid(path))
+            if(_validator.IsValid(_controller, path))
             {
                 ResetPathIndex();
                 StartCoroutine(Move(path));
@@ -76,7 +74,7 @@ namespace RainesGames.Units.Abilities.Move
             }
 
             _controller.PositionManager.SetCell(path[path.Count - 1]);
-            DecrementActionPoints();
+            DecrementAbilityPoints();
             TransitionToIdle();
             OnMoveEnd?.Invoke();
         }
@@ -91,10 +89,11 @@ namespace RainesGames.Units.Abilities.Move
             _navMeshAgent.SetDestination(GridWrapper.GetCellPosition(cellIndex));
         }
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             _state = _controller.StateManager.Move;
-            _navMeshAgent = ((MechController)_controller).NavMeshAgent;
+            _navMeshAgent = _controller.NavMeshAgent;
         }
 
         void TransitionToIdle()

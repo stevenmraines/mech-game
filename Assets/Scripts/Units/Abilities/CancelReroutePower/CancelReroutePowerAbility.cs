@@ -7,11 +7,10 @@ namespace RainesGames.Units.Abilities.CancelReroutePower
     [RequireComponent(typeof(ReroutePowerAbility))]
     public class CancelReroutePowerAbility : AbsAbility
     {
-        protected override void Awake()
+        void Awake()
         {
-            base.Awake();
-            _firstActionCost = 0;
-            _secondActionCost = 0;
+            _firstAbilityCost = 0;
+            _secondAbilityCost = 0;
             _showInTray = false;
         }
 
@@ -20,11 +19,12 @@ namespace RainesGames.Units.Abilities.CancelReroutePower
             _controller.PowerManager.RevertChanges();
 
             // Cancelling a power reroute costs no AP, but calling this triggers the unit state change
-            DecrementActionPoints();
+            DecrementAbilityPoints();
         }
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             _state = _controller.StateManager.ReroutePower;
         }
     }

@@ -1,5 +1,5 @@
 using RainesGames.Common;
-using RainesGames.Common.Grid;
+using RainesGames.Grid;
 using System.Collections.Generic;
 using TGS;
 using UnityEngine;
@@ -9,7 +9,7 @@ namespace RainesGames.Units.Abilities.Move
     public class MovePathSelectionManager : MonoBehaviour, IUnitCellEvents
     {
         private IPathCondenser _pathCondenser;
-        private IPathProvider _pathProvider;
+        private IUnitPathProvider _pathProvider;
         private IPathTransitEvents _pathTransitResponse;
         private IPathWaypointManager _waypointManager;
 
@@ -18,7 +18,7 @@ namespace RainesGames.Units.Abilities.Move
         void Awake()
         {
             _pathCondenser = GetComponent<IPathCondenser>();
-            _pathProvider = GetComponent<IPathProvider>();
+            _pathProvider = GetComponent<IUnitPathProvider>();
             _pathTransitResponse = GetComponent<IPathTransitEvents>();
             _waypointManager = GetComponent<IPathWaypointManager>();
         }

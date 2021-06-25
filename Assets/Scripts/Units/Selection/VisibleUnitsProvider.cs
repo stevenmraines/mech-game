@@ -34,9 +34,9 @@ namespace RainesGames.Units.Selection
 
             _visibleUnits = new List<UnitController>();
 
-            foreach(UnitController unit in UnitManager.Units)
+            foreach(UnitController unit in AllUnitsManager.Units)
             {
-                if(IsVisible(unit.Renderer))
+                //if(IsVisible(unit.Renderer))
                     _visibleUnits.Add(unit);
             }
 

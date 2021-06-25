@@ -1,4 +1,4 @@
-using RainesGames.Common.Grid;
+using RainesGames.Common;
 using RainesGames.Grid;
 using System.Collections.Generic;
 using TGS;
@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace RainesGames.Units.Abilities.Move
 {
-    public class JoinedWaypointsPathProvider : MonoBehaviour, IPathProvider
+    public class JoinedWaypointsPathProvider : MonoBehaviour, IUnitPathProvider
     {
         public List<int> GetPath(UnitController unit, List<int> waypoints, int cellIndex, TerrainGridSystem sender)
         {

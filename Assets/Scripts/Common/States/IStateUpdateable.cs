@@ -1,7 +1,8 @@
 ﻿namespace RainesGames.Common.States
 {
-    public interface IStateUpdateable
+    public interface IStateUpdateable : IState
     {
+        bool Entered { get; }
         void UpdateState();
     }
 }

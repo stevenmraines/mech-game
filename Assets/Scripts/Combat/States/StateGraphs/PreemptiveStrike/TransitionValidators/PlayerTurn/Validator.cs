@@ -16,7 +16,7 @@ namespace RainesGames.Combat.States.StateGraphs.PreemptiveStrike.TransitionValid
 
         bool EnemyTurn()
         {
-            return UnitManager.AllPlayerActionPointsSpent();
+            return AllUnitsManager.AllPlayerActionPointsSpent();
         }
     }
 }

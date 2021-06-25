@@ -1,6 +1,6 @@
-﻿using RainesGames.Common.Grid;
-using RainesGames.Common.States;
-using RainesGames.Common.Units;
+﻿using RainesGames.Common.States;
+using RainesGames.Grid;
+using RainesGames.Units;
 using UnityEngine;
 
 namespace RainesGames.Combat.States

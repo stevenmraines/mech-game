@@ -1,20 +1,19 @@
-﻿using RainesGames.Common.Actions;
-using RainesGames.Units.Abilities;
+﻿using RainesGames.Units.Abilities;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace RainesGames.Units.AI.GOAP.Actions
 {
-    public abstract class AAction : MonoBehaviour, IActionCost
+    public abstract class AAction : MonoBehaviour, IAbilityCost
     {
-        protected ActionPointsManager _actionPointsManager;
+        protected AbilityPointsManager _actionPointsManager;
         protected UnitController _controller;
 
         protected int _firstActionCost = 1;
-        public int FirstActionCost => _firstActionCost;
+        public int FirstAbilityCost => _firstActionCost;
 
         protected int _secondActionCost = 1;
-        public int SecondActionCost => _secondActionCost;
+        public int SecondAbilityCost => _secondActionCost;
 
         protected Dictionary<string, object> _effects;
         public Dictionary<string, object> Effects => _effects;
@@ -32,20 +31,20 @@ namespace RainesGames.Units.AI.GOAP.Actions
         protected virtual void Awake()
         {
             _controller = GetComponent<UnitController>();
-            _actionPointsManager = _controller.ActionPointsManager;
+            _actionPointsManager = _controller.AbilityPointsManager;
             _targetFinder = new TargetFinder();
             _effects = new Dictionary<string, object>();
             _preconditions = new Dictionary<string, object>();
         }
 
-        public int GetActionPointCost()
+        public int GetAbilityPointCost()
         {
-            return _actionPointsManager.FirstActionSpent ? _secondActionCost : _firstActionCost;
+            return _controller.FirstAbilitySpent ? _secondActionCost : _firstActionCost;
         }
 
         protected bool HasEnoughActionPoints()
         {
-            return _actionPointsManager.ActionPoints >= GetActionPointCost();
+            return _controller.AbilityPoints >= GetAbilityPointCost();
         }
 
         protected void DetermineTarget()

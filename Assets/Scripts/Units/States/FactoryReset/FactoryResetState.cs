@@ -1,25 +1,26 @@
 ﻿using RainesGames.Units.Abilities.FactoryReset;
+using UnityEngine;
 
 namespace RainesGames.Units.States.FactoryReset
 {
-    public class FactoryResetState : AbsUnitState
+    public class FactoryResetState : MonoBehaviour, IUnitState, IUnitTargetState
     {
-        private FactoryResetAbility _ability;
-        public FactoryResetAbility Ability => _ability;
+        private IUnitEvents _unitEventHandler;
+        public IUnitEvents UnitEventHandler => _unitEventHandler;
 
-        public FactoryResetState(UnitStateManager manager) : base(manager)
+        void Awake()
         {
             _unitEventHandler = new UnitEventHandler();
-            _ability = _manager.Controller.GetAbility<FactoryResetAbility>();
         }
 
-        public override bool CanEnterState()
+        public bool CanEnterState(UnitController unit)
         {
-            return _ability != null && _ability.ActionIsAffordable() && _ability.IsPowered();
+            FactoryResetAbility ability = unit.GetAbility<FactoryResetAbility>();
+            return ability != null && ability.AbilityIsAffordable() && ability.IsPowered();
         }
 
-        public override void EnterState() { }
+        public void EnterState(UnitController unit) { }
 
-        public override void ExitState() { }
+        public void ExitState(UnitController unit) { }
     }
 }

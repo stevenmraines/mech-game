@@ -6,7 +6,7 @@ namespace RainesGames.Units.Abilities.Hack
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(ReroutePowerAbility))]
-    public class HackAbility : AbsAbility, IUnitAbility, IPowerContainerInteractable, IPoweredItem
+    public class HackAbility : AbsAbility, IUnitTargetAbility, IPowerContainerInteractable, IPoweredItem
     {
         public AbilityData Data;
         public int MaxPower => Data.MaxPower;
@@ -17,12 +17,11 @@ namespace RainesGames.Units.Abilities.Hack
         private int _power = 0;
         public int Power => _power;
 
-        protected override void Awake()
+        void Awake()
         {
-            base.Awake();
-            _firstActionCost = 1;
-            _secondActionCost = 1;
-            _validator = new Validator(_controller);
+            _firstAbilityCost = 1;
+            _secondAbilityCost = 1;
+            _validator = new Validator();
         }
 
         public void AddPower(int power)
@@ -32,10 +31,10 @@ namespace RainesGames.Units.Abilities.Hack
 
         public void Execute(UnitController targetUnit)
         {
-            if(_validator.IsValid(targetUnit))
+            if(_validator.IsValid(_controller, targetUnit))
             {
                 targetUnit.HackStatusManager.Activate();
-                DecrementActionPoints();
+                DecrementAbilityPoints();
             }
         }
 
@@ -49,8 +48,9 @@ namespace RainesGames.Units.Abilities.Hack
             _power -= power;
         }
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             _state = _controller.StateManager.Hack;
         }
     }

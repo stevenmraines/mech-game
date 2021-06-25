@@ -9,25 +9,25 @@ namespace RainesGames.Units.Abilities.ReroutePower
     {
         private Validator _validator;
 
-        protected override void Awake()
+        void Awake()
         {
-            base.Awake();
-            _firstActionCost = 1;
-            _secondActionCost = 1;
-            _validator = new Validator(_controller);
+            _firstAbilityCost = 1;
+            _secondAbilityCost = 1;
+            _validator = new Validator();
         }
 
         public void Execute()
         {
-            if(_validator.IsValid())
+            if(_validator.IsValid(_controller))
             {
                 _controller.PowerManager.DiscardOldState();
-                DecrementActionPoints();
+                DecrementAbilityPoints();
             }
         }
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
              _state = _controller.StateManager.ReroutePower;
         }
     }

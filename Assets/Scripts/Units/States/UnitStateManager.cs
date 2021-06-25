@@ -1,16 +1,23 @@
-﻿using RainesGames.Combat.States.EnemyTurn;
-using RainesGames.Combat.States.PlayerTurn;
 using RainesGames.Units.States.FactoryReset;
 using RainesGames.Units.States.Hack;
-using RainesGames.Units.States.Idle;
 using RainesGames.Units.States.Move;
+using RainesGames.Units.States.NoAbilityPoints;
 using RainesGames.Units.States.Overclock;
 using RainesGames.Units.States.ReroutePower;
 using RainesGames.Units.States.Underclock;
+using UnityEngine;
 
 namespace RainesGames.Units.States
 {
-    public class UnitStateManager
+    [DisallowMultipleComponent]
+    [RequireComponent(typeof(FactoryResetState))]
+    [RequireComponent(typeof(HackState))]
+    [RequireComponent(typeof(MoveState))]
+    [RequireComponent(typeof(NoAbilityPointsState))]
+    [RequireComponent(typeof(OverclockState))]
+    [RequireComponent(typeof(ReroutePowerState))]
+    [RequireComponent(typeof(UnderclockState))]
+    public class UnitStateManager : MonoBehaviour
     {
         private FactoryResetState _factoryReset;
         public FactoryResetState FactoryReset => _factoryReset;
@@ -20,9 +27,9 @@ namespace RainesGames.Units.States
 
         private MoveState _move;
         public MoveState Move => _move;
-        
-        private NoActionPointsState _noActionPoints;
-        public NoActionPointsState NoActionPoints => _noActionPoints;
+
+        private NoAbilityPointsState _noAbilityPoints;
+        public NoAbilityPointsState NoAbilityPoints => _noAbilityPoints;
 
         private OverclockState _overclock;
         public OverclockState Overclock => _overclock;
@@ -33,68 +40,53 @@ namespace RainesGames.Units.States
         private UnderclockState _underclock;
         public UnderclockState Underclock => _underclock;
 
-        private AbsUnitState _currentState;
-        public AbsUnitState CurrentState => _currentState;
-
-        private UnitController _controller;
-        public UnitController Controller => _controller;
-
-        public UnitStateManager(UnitController controller)
+        void Awake()
         {
-            _controller = controller;
+            _factoryReset = GetComponent<FactoryResetState>();
+            _hack = GetComponent<HackState>();
+            _move = GetComponent<MoveState>();
+            _noAbilityPoints = GetComponent<NoAbilityPointsState>();
+            _overclock = GetComponent<OverclockState>();
+            _reroutePower = GetComponent<ReroutePowerState>();
+            _underclock = GetComponent<UnderclockState>();
+        }
 
-            _factoryReset = new FactoryResetState(this);
-            _hack = new HackState(this);
-            _move = new MoveState(this);
-            _noActionPoints = new NoActionPointsState(this);
-            _overclock = new OverclockState(this);
-            _reroutePower = new ReroutePowerState(this);
-            _underclock = new UnderclockState(this);
+        IUnitState GetFallbackState(UnitController unit)
+        {
+            if(_move.CanEnterState(unit))
+                return _move;
+
+            return _noAbilityPoints;
+        }
+
+        void OnDisable()
+        {
             
-            AutoStateChange();
-
-            EnemyTurnState.OnEnterState += AutoStateChange;
-            PlayerTurnState.OnEnterState += AutoStateChange;
-            _controller.ActionPointsManager.OnActionPointsDecrement += AutoStateChange;
-            _controller.ActionPointsManager.OnActionPointsIncrement += AutoStateChange;
+            //_controller.ActionPointsManager.OnAbilityPointsDecrement -= AutoStateChange;
+            //_controller.ActionPointsManager.OnAbilityPointsIncrement -= AutoStateChange;
         }
 
-        ~UnitStateManager()
+        void OnEnable()
         {
-            EnemyTurnState.OnEnterState -= AutoStateChange;
-            PlayerTurnState.OnEnterState -= AutoStateChange;
-            _controller.ActionPointsManager.OnActionPointsDecrement -= AutoStateChange;
-            _controller.ActionPointsManager.OnActionPointsIncrement -= AutoStateChange;
+            //EnemyTurnState.OnEnterState += AutoStateChange;
+            //PlayerTurnState.OnEnterState += AutoStateChange;
+            //_controller.ActionPointsManager.OnAbilityPointsDecrement += AutoStateChange;
+            //_controller.ActionPointsManager.OnAbilityPointsIncrement += AutoStateChange;
         }
 
-        public void AutoStateChange()
+        public void TransitionToState(UnitController unit, IUnitState state = null)
         {
-            TransitionToState(GetFallbackState());
-        }
+            if(unit.CurrentState == null || state == null || !state.CanEnterState(unit))
+                state = GetFallbackState(unit);
 
-        AbsUnitState GetFallbackState()
-        {
-            AbsUnitState fallbackState = _move;
-
-            if(!_move.CanEnterState())
-                fallbackState = _noActionPoints;
-
-            return fallbackState;
-        }
-
-        public void TransitionToState(AbsUnitState state)
-        {
-            if(!state.CanEnterState())
-                state = GetFallbackState();
-
-            if(_currentState == state)
+            if(unit.CurrentState == state)
                 return;
 
-            if(_currentState != null)
-                _currentState.ExitState();
+            if(unit.CurrentState != null)
+                unit.CurrentState.ExitState(unit);
 
-            _currentState = state;
-            _currentState.EnterState();
+            unit.CurrentState = state;
+            state.EnterState(unit);
         }
     }
 }

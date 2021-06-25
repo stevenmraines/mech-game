@@ -1,25 +1,26 @@
 ﻿using RainesGames.Units.Abilities.Overclock;
+using UnityEngine;
 
 namespace RainesGames.Units.States.Overclock
 {
-    public class OverclockState : AbsUnitState
+    public class OverclockState : MonoBehaviour, IUnitState, IUnitTargetState
     {
-        private OverclockAbility _ability;
-        public OverclockAbility Ability => _ability;
-
-        public OverclockState(UnitStateManager manager) : base(manager)
+        private IUnitEvents _unitEventHandler;
+        public IUnitEvents UnitEventHandler => _unitEventHandler;
+        
+        void Awake()
         {
-            _ability = _manager.Controller.GetAbility<OverclockAbility>();
              _unitEventHandler = new UnitEventHandler();
         }
 
-        public override bool CanEnterState()
+        public bool CanEnterState(UnitController unit)
         {
-            return _ability != null && _ability.ActionIsAffordable() && _ability.IsPowered();
+            OverclockAbility ability = unit.GetAbility<OverclockAbility>();
+            return ability != null && ability.AbilityIsAffordable() && ability.IsPowered();
         }
 
-        public override void EnterState() { }
+        public void EnterState(UnitController unit) { }
 
-        public override void ExitState() { }
+        public void ExitState(UnitController unit) { }
     }
 }
