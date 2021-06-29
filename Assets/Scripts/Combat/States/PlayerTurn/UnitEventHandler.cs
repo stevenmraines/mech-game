@@ -1,7 +1,5 @@
-﻿using RainesGames.Grid;
-using RainesGames.Units;
+﻿using RainesGames.Units;
 using RainesGames.Units.Selection;
-using RainesGames.Units.States;
 
 namespace RainesGames.Combat.States.PlayerTurn
 {
@@ -16,21 +14,20 @@ namespace RainesGames.Combat.States.PlayerTurn
 
         bool CanSetActiveUnit()
         {
-            UnitController activeUnit = UnitSelectionManager.ActiveUnit;
+            AbsUnit activeUnit = UnitSelectionManager.ActiveUnit;
 
             if(activeUnit == null)
                 return true;
 
-            IUnitState currentState = UnitSelectionManager.ActiveUnit.CurrentState;
-            bool activeUnitIsTargetingUnits = activeUnit.IsPlayer() && currentState is IUnitTargetState;
+            bool playerIsTargetingUnits = activeUnit.IsPlayer() && activeUnit.HasUnitEventHandler();
 
-            if(!activeUnitIsTargetingUnits)
+            if(!playerIsTargetingUnits)
                 return true;
 
             return false;
         }
 
-        public void OnUnitClick(UnitController unit, int buttonIndex)
+        public void OnUnitClick(AbsUnit unit, int buttonIndex)
         {
             if(CanSetActiveUnit())
             {
@@ -41,20 +38,16 @@ namespace RainesGames.Combat.States.PlayerTurn
             _state.Manager.UnitEventRouter.RerouteUnitClick(unit, buttonIndex);
         }
 
-        public void OnUnitEnter(UnitController unit)
+        public void OnUnitEnter(AbsUnit unit)
         {
-            GridWrapper.DisableCellHighlight();
-
             if(UnitSelectionManager.ActiveUnit == null)
                 return;
 
             _state.Manager.UnitEventRouter.RerouteUnitMouseEnter(unit);
         }
 
-        public void OnUnitExit(UnitController unit)
+        public void OnUnitExit(AbsUnit unit)
         {
-            GridWrapper.EnableCellHighlight();
-
             if(UnitSelectionManager.ActiveUnit == null)
                 return;
 

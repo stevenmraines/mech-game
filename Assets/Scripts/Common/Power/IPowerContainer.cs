@@ -2,6 +2,6 @@
 {
     public interface IPowerContainer : IPowerContainerStatic
     {
-        int Power { get; }
+        int GetPower();
     }
 }

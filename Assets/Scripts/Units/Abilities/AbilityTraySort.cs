@@ -21,7 +21,7 @@ namespace RainesGames.Units.Abilities
 
         public static Type[] SortedAbilityTypes => _sortedAbilityTypes;
 
-        public static AbsAbility[] GetSortedUnitAbilities(UnitController unit)
+        public static AbsAbility[] GetSortedUnitAbilities(AbsUnit unit)
         {
             AbsAbility[] abilities = unit.GetAbilities();
 

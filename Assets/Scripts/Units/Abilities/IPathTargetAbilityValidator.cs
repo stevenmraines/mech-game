@@ -4,6 +4,6 @@ namespace RainesGames.Units.Abilities
 {
     public interface IPathTargetAbilityValidator
     {
-        bool IsValid(UnitController parentUnit, List<int> path);
+        bool IsValid(AbsUnit parentUnit, List<int> path);
     }
 }

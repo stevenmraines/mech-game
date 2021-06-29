@@ -1,5 +1,4 @@
-﻿using RainesGames.Grid;
-using RainesGames.Units;
+﻿using RainesGames.Units;
 using RainesGames.Units.Selection;
 
 namespace RainesGames.Combat.States.PlayerPlacement
@@ -13,21 +12,14 @@ namespace RainesGames.Combat.States.PlayerPlacement
             _state = playerPlacementState;
         }
 
-        public void OnUnitClick(UnitController unit, int buttonIndex)
+        public void OnUnitClick(AbsUnit unit, int buttonIndex)
         {
             if(unit.IsPlayer())
                 UnitSelectionManager.SetActiveUnit(unit);
         }
 
-        public void OnUnitEnter(UnitController unit)
-        {
-            // TODO Figure out how to use lambda expressions for these one line event handlers
-            GridWrapper.DisableCellHighlight();
-        }
+        public void OnUnitEnter(AbsUnit unit) { }
 
-        public void OnUnitExit(UnitController unit)
-        {
-            GridWrapper.EnableCellHighlight();
-        }
+        public void OnUnitExit(AbsUnit unit) { }
     }
 }

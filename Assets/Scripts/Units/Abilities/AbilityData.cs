@@ -5,4 +5,5 @@ public class AbilityData : ScriptableObject
 {
 	public int MaxPower = 1;
 	public int MinPower = 1;
+	public AudioClip SoundEffect;
 }

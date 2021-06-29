@@ -1,11 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using RainesGames.Combat.States.BattleStart;
+using RainesGames.Combat.States.EnemyPlacement;
+using RainesGames.Combat.States.EnemyTurn;
+using RainesGames.Combat.States.PlayerPlacement;
+using RainesGames.Combat.States.PlayerTurn;
+using RainesGames.Units;
+using RainesGames.Units.Selection;
+using System.Collections.Generic;
 using TGS;
 using UnityEngine;
 
 namespace RainesGames.Grid
 {
     [RequireComponent(typeof(TerrainGridSystem))]
-    public class GridWrapper : MonoBehaviour
+    public class GridWrapper : MonoBehaviour, IUnitTransitEvents
     {
         private static TerrainGridSystem _terrainGridSystem;
         public static TerrainGridSystem TerrainGridSystem => _terrainGridSystem;
@@ -96,6 +103,50 @@ namespace RainesGames.Grid
         public static bool IsBlocked(Cell cell)
         {
             return !cell.canCross;
+        }
+
+        void OnDisable()
+        {
+            BattleStartState.OnEnterState -= DisableCellHighlight;
+            EnemyPlacementState.OnEnterState -= OnEnterPlacementState;
+            EnemyTurnState.OnEnterState -= OnEnterTurnState;
+            PlayerPlacementState.OnEnterState -= OnEnterPlacementState;
+            PlayerTurnState.OnEnterState -= OnEnterTurnState;
+            UnitSelectionManager.OnUnitEnter -= OnUnitEnter;
+            UnitSelectionManager.OnUnitExit -= OnUnitExit;
+        }
+
+        void OnEnable()
+        {
+            BattleStartState.OnEnterState += DisableCellHighlight;
+            EnemyPlacementState.OnEnterState += OnEnterPlacementState;
+            EnemyTurnState.OnEnterState += OnEnterTurnState;
+            PlayerPlacementState.OnEnterState += OnEnterPlacementState;
+            PlayerTurnState.OnEnterState += OnEnterTurnState;
+            UnitSelectionManager.OnUnitEnter += OnUnitEnter;
+            UnitSelectionManager.OnUnitExit += OnUnitExit;
+        }
+
+        void OnEnterPlacementState()
+        {
+            EnableCellHighlight();
+            EnableTerritories();
+        }
+
+        void OnEnterTurnState()
+        {
+            EnableCellHighlight();
+            DisableTerritories();
+        }
+
+        public void OnUnitEnter(AbsUnit unit)
+        {
+            DisableCellHighlight();
+        }
+
+        public void OnUnitExit(AbsUnit unit)
+        {
+            EnableCellHighlight();
         }
 
         public static void SetColor(int cellIndex, Color color)

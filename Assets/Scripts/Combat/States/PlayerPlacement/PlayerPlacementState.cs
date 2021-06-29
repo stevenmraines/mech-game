@@ -1,12 +1,12 @@
-﻿using RainesGames.Grid;
-using RainesGames.Units.Selection;
+﻿using RainesGames.Units.Selection;
 
 namespace RainesGames.Combat.States.PlayerPlacement
 {
     public class PlayerPlacementState : AbsCombatState
     {
-        public delegate void StateTransitionDelegate();
-        public static event StateTransitionDelegate OnExitState;
+        public delegate void StateChangeDelegate();
+        public static event StateChangeDelegate OnEnterState;
+        public static event StateChangeDelegate OnExitState;
 
         protected override void Awake()
         {
@@ -19,8 +19,7 @@ namespace RainesGames.Combat.States.PlayerPlacement
         public override void EnterState()
         {
             base.EnterState();
-            GridWrapper.EnableCellHighlight();
-            GridWrapper.EnableTerritories();
+            OnEnterState?.Invoke();
         }
 
         public override void ExitState()

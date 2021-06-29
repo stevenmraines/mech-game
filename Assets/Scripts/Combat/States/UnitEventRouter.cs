@@ -8,12 +8,12 @@ namespace RainesGames.Combat.States
     {
         private CombatStateManager _manager;
 
-        public delegate void UnitClickDelegate(UnitController unit, int buttonIndex);
+        public delegate void UnitClickDelegate(AbsUnit unit, int buttonIndex);
         public static event UnitClickDelegate OnUnitClickReroute;
 
-        public delegate void UnitMouseEventDelegate(UnitController unit);
-        public static event UnitMouseEventDelegate OnUnitMouseEnterReroute;
-        public static event UnitMouseEventDelegate OnUnitMouseExitReroute;
+        public delegate void UnitMouseTransitEventsDelegate(AbsUnit unit);
+        public static event UnitMouseTransitEventsDelegate OnUnitEnterReroute;
+        public static event UnitMouseTransitEventsDelegate OnUnitExitReroute;
 
         public UnitEventRouter(CombatStateManager manager)
         {
@@ -23,21 +23,21 @@ namespace RainesGames.Combat.States
         public void DeregisterEventHandlers()
         {
             UnitSelectionManager.OnUnitClick -= OnUnitClick;
-            UnitSelectionManager.OnUnitMouseEnter -= OnUnitEnter;
-            UnitSelectionManager.OnUnitMouseExit -= OnUnitExit;
+            UnitSelectionManager.OnUnitEnter -= OnUnitEnter;
+            UnitSelectionManager.OnUnitExit -= OnUnitExit;
         }
 
-        public void OnUnitClick(UnitController unit, int buttonIndex)
+        public void OnUnitClick(AbsUnit unit, int buttonIndex)
         {
             _manager.CurrentState.UnitEventHandler.OnUnitClick(unit, buttonIndex);
         }
 
-        public void OnUnitEnter(UnitController unit)
+        public void OnUnitEnter(AbsUnit unit)
         {
             _manager.CurrentState.UnitEventHandler.OnUnitEnter(unit);
         }
 
-        public void OnUnitExit(UnitController unit)
+        public void OnUnitExit(AbsUnit unit)
         {
             _manager.CurrentState.UnitEventHandler.OnUnitExit(unit);
         }
@@ -45,23 +45,23 @@ namespace RainesGames.Combat.States
         public void RegisterEventHandlers()
         {
             UnitSelectionManager.OnUnitClick += OnUnitClick;
-            UnitSelectionManager.OnUnitMouseEnter += OnUnitEnter;
-            UnitSelectionManager.OnUnitMouseExit += OnUnitExit;
+            UnitSelectionManager.OnUnitEnter += OnUnitEnter;
+            UnitSelectionManager.OnUnitExit += OnUnitExit;
         }
 
-        public void RerouteUnitClick(UnitController unit, int buttonIndex)
+        public void RerouteUnitClick(AbsUnit unit, int buttonIndex)
         {
             OnUnitClickReroute?.Invoke(unit, buttonIndex);
         }
         
-        public void RerouteUnitMouseEnter(UnitController unit)
+        public void RerouteUnitMouseEnter(AbsUnit unit)
         {
-            OnUnitMouseEnterReroute?.Invoke(unit);
+            OnUnitEnterReroute?.Invoke(unit);
         }
         
-        public void RerouteUnitMouseExit(UnitController unit)
+        public void RerouteUnitMouseExit(AbsUnit unit)
         {
-            OnUnitMouseExitReroute?.Invoke(unit);
+            OnUnitExitReroute?.Invoke(unit);
         }
     }
 }

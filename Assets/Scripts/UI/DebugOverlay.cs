@@ -5,7 +5,7 @@ using RainesGames.Units.Abilities;
 using RainesGames.Units.Abilities.CancelReroutePower;
 using RainesGames.Units.Abilities.ReroutePower;
 using RainesGames.Units.Selection;
-using RainesGames.Units.States.ReroutePower;
+using RainesGames.Units.States;
 using UnityEngine;
 
 namespace RainesGames.UI
@@ -38,7 +38,7 @@ namespace RainesGames.UI
         {
             GUI.skin = null;
 
-            UnitController activeUnit = UnitSelectionManager.ActiveUnit;
+            AbsUnit activeUnit = UnitSelectionManager.ActiveUnit;
 
             if(activeUnit == null)
                 return;
@@ -54,7 +54,7 @@ namespace RainesGames.UI
             DrawBattery(activeUnit);
         }
 
-        void DrawAbilityButton(int i, AbsAbility[] abilities, UnitController activeUnit)
+        void DrawAbilityButton(int i, AbsAbility[] abilities, AbsUnit activeUnit)
         {
             AbsAbility ability = abilities[i];
 
@@ -81,8 +81,8 @@ namespace RainesGames.UI
             };
 
             bool isPowered = ability is IPowerContainerInteractable;
-            bool reroutingPower = activeUnit.CurrentStateIs(typeof(ReroutePowerState));
-            bool canEnterState = ability.State.CanEnterState(activeUnit);
+            bool reroutingPower = activeUnit.GetCurrentState() == UnitState.REROUTE_POWER;
+            bool canEnterState = activeUnit.CanEnterState(ability.State);
             bool canRerouteAbilityPower = reroutingPower && isPowered;
             bool abilityIsUsable = !reroutingPower && canEnterState;
 
@@ -119,7 +119,7 @@ namespace RainesGames.UI
             if(GUI.tooltip + "Ability" == ability.GetType().Name)
                 GUI.Label(tooltipPosition, GUI.tooltip);
 
-            if(activeUnit.CurrentStateIs(typeof(ReroutePowerState)))
+            if(activeUnit.GetCurrentState() == UnitState.REROUTE_POWER)
                 DrawReroutePowerButtons(activeUnit);
 
             if(!(ability is IPowerContainerInteractable))
@@ -157,7 +157,7 @@ namespace RainesGames.UI
             }
         }
 
-        void DrawBattery(UnitController activeUnit)
+        void DrawBattery(AbsUnit activeUnit)
         {
             GUIContent content = new GUIContent()
             {
@@ -174,7 +174,7 @@ namespace RainesGames.UI
 
             GUI.Label(labelPosition, content);
 
-            for(int i = 1; i <= activeUnit.PowerManager.MaxPower; i++)
+            for(int i = 1; i <= activeUnit.GetMaxPower(); i++)
             {
                 Rect powerBarPosition = new Rect()
                 {
@@ -184,13 +184,13 @@ namespace RainesGames.UI
                     height = 20
                 };
 
-                bool powered = i <= activeUnit.PowerManager.Power;
+                bool powered = i <= activeUnit.GetPower();
 
                 GUI.Toggle(powerBarPosition, powered, "");
             }
         }
 
-        void DrawReroutePowerButtons(UnitController activeUnit)
+        void DrawReroutePowerButtons(AbsUnit activeUnit)
         {
             int gutter = 10;
 
@@ -228,30 +228,30 @@ namespace RainesGames.UI
         {
             GUI.skin = _medTextLabel;
 
-            UnitController hoveredUnit = UnitSelectionManager.CurrentSelection;
-            UnitController activeUnit = UnitSelectionManager.ActiveUnit;
-            UnitController unit = hoveredUnit != null ? hoveredUnit : activeUnit;
+            AbsUnit hoveredUnit = UnitSelectionManager.CurrentSelection;
+            AbsUnit activeUnit = UnitSelectionManager.ActiveUnit;
+            AbsUnit unit = hoveredUnit != null ? hoveredUnit : activeUnit;
 
             if(unit == null)
                 return;
 
-            string unitInfo = unit.name + "  (" + unit.AbilityPoints + ")";
+            string unitInfo = unit.name + "  (" + unit.GetAbilityPoints() + ")";
 
-            string stateName = unit.CurrentState.GetType().Name;
-            unitInfo += "\nState: " + stateName.Substring(0, stateName.Length - 5);
+            string stateName = unit.GetCurrentState().ToString();
+            unitInfo += "\nState: " + stateName;
 
             if(unit.IsHacked() || unit.IsFactoryReset() || unit.IsUnderclocked())
             {
                 unitInfo += "\nStatus effects:";
 
                 if(unit.IsHacked())
-                    unitInfo += "\n\tHacked  (" + unit.HackStatusManager.TurnsRemaining + ")";
+                    unitInfo += "\n\tHacked  (" + unit.GetHackedTurnsRemaining() + ")";
 
                 if(unit.IsFactoryReset())
-                    unitInfo += "\n\tFactory Reset  (" + unit.FactoryResetStatusManager.TurnsRemaining + ")";
+                    unitInfo += "\n\tFactory Reset  (" + unit.GetFactoryResetTurnsRemaining() + ")";
 
                 if(unit.IsUnderclocked())
-                    unitInfo += "\n\tUnderclocked  (" + unit.UnderclockStatusManager.TurnsRemaining + ")";
+                    unitInfo += "\n\tUnderclocked  (" + unit.GetUnderclockedTurnsRemaining() + ")";
             }
 
             Rect labelPosition = new Rect()
@@ -282,7 +282,7 @@ namespace RainesGames.UI
             if(!(ability is IPowerContainerInteractable))
                 return 0;
 
-            return ((IPowerContainerInteractable)ability).MaxPower;
+            return ((IPowerContainerInteractable)ability).GetMaxPower();
         }
         
         int GetAbilityPower(AbsAbility ability)
@@ -290,7 +290,7 @@ namespace RainesGames.UI
             if(!(ability is IPowerContainerInteractable))
                 return 0;
 
-            return ((IPowerContainerInteractable)ability).Power;
+            return ((IPowerContainerInteractable)ability).GetPower();
         }
 
         int GetAbilityMinPower(AbsAbility ability)
@@ -298,27 +298,27 @@ namespace RainesGames.UI
             if(!(ability is IPoweredItem))
                 return 0;
 
-            return ((IPoweredItem)ability).MinPower;
+            return ((IPoweredItem)ability).GetMinPower();
         }
 
-        void HandlePowerReroute(UnitController activeUnit, AbsAbility ability)
+        void HandlePowerReroute(AbsUnit activeUnit, AbsAbility ability)
         {
             int power = Mathf.Max(1, GetAbilityMinPower(ability));
 
             if(Input.GetMouseButtonUp(0))
             {
-                activeUnit.PowerManager.TransferPowerTo(((IPowerContainerInteractable)ability), power);
+                activeUnit.TransferPowerTo(((IPowerContainerInteractable)ability), power);
             }
 
             if(Input.GetMouseButtonUp(1))
             {
-                activeUnit.PowerManager.TransferPowerFrom(((IPowerContainerInteractable)ability), power);
+                activeUnit.TransferPowerFrom(((IPowerContainerInteractable)ability), power);
             }
         }
 
-        void HandleUseAbility(UnitController activeUnit, AbsAbility ability)
+        void HandleUseAbility(AbsUnit activeUnit, AbsAbility ability)
         {
-            activeUnit.StateManager.TransitionToState(activeUnit, ability.State);
+            activeUnit.TransitionToState(ability.State);
         }
 
         void OnGUI()

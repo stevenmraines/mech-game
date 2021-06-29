@@ -8,13 +8,13 @@ namespace RainesGames.Units.Selection
         private UnityEngine.Camera _mainCamera;
         private Vector3 _oldCameraPosition;
         private Quaternion _oldCameraRotation;
-        private List<UnitController> _visibleUnits;
+        private List<AbsUnit> _visibleUnits;
         private bool _firstCheck => _oldCameraPosition == null || _oldCameraRotation == null;
 
         void Awake()
         {
             _mainCamera = UnityEngine.Camera.main;
-            _visibleUnits = new List<UnitController>();
+            _visibleUnits = new List<AbsUnit>();
         }
 
         private bool CameraMoved()
@@ -23,7 +23,7 @@ namespace RainesGames.Units.Selection
                 || _oldCameraRotation != _mainCamera.transform.rotation;
         }
 
-        public List<UnitController> GetSelectables()
+        public List<AbsUnit> GetSelectables()
         {
             bool updateNotNeeded = !_firstCheck && !CameraMoved();
 
@@ -32,12 +32,12 @@ namespace RainesGames.Units.Selection
             if(updateNotNeeded)
                 return _visibleUnits;
 
-            _visibleUnits = new List<UnitController>();
+            _visibleUnits = new List<AbsUnit>();
 
-            foreach(UnitController unit in AllUnitsManager.Units)
+            foreach(AbsUnit unit in AllUnitsManager.Units)
             {
                 //if(IsVisible(unit.Renderer))
-                    _visibleUnits.Add(unit);
+                _visibleUnits.Add(unit);
             }
 
             return _visibleUnits;

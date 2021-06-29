@@ -5,14 +5,14 @@ namespace RainesGames.Units.Selection
     // TODO Refactor this so that it's functionality is part of the current CombatState
     public class OutlineSelectionResponse : MonoBehaviour, ISelectionResponse
     {
-        public void OnDeselect(UnitController unit)
+        public void OnDeselect(AbsUnit unit)
         {
             Destroy(unit.GetComponent<Outline>());
         }
 
-        public void OnSelect(UnitController unit)
+        public void OnSelect(AbsUnit unit)
         {
-            Outline outline = unit.gameObject.AddComponent<Outline>() as Outline;
+            Outline outline = unit.gameObject.AddComponent<Outline>();// as Outline;
             outline.OutlineMode = UnitSelectionManager.OutlineMode;
             outline.OutlineWidth = UnitSelectionManager.OutlineWidth;
             outline.OutlineColor = UnitSelectionManager.EnemyColor;

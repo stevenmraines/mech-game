@@ -2,49 +2,52 @@ using UnityEngine;
 
 namespace RainesGames.Units.Abilities
 {
-    public class AbilityPointsManager : MonoBehaviour
+    [DisallowMultipleComponent]
+    public class AbilityPointsManager : MonoBehaviour, IAbilityPoints, IAbilityPointsConfig
     {
-        public delegate void AbilityPointsDelegate(UnitController unit);
-        public event AbilityPointsDelegate OnAbilityPointsDecrement;
-        public event AbilityPointsDelegate OnAbilityPointsIncrement;
-        
-        public delegate void AbilityPointsDelegateStatic();
-        public static event AbilityPointsDelegateStatic OnAbilityPointsDecrementStatic;
+        private int _abilityPoints;
+        public int AbilityPoints => _abilityPoints;
 
-        public void Decrement(UnitController unit, int points = 1)
+        private bool _firstAbilitySpent = false;
+        public bool FirstAbilitySpent => _firstAbilitySpent;
+
+        private int _startOfTurnAbilityPoints = 2;
+        public int StartOfTurnAbilityPoints => _startOfTurnAbilityPoints;
+
+        public delegate void AbilityPointsDelegate();
+        public event AbilityPointsDelegate OnDecrement;
+        public static event AbilityPointsDelegate OnDecrementStatic;
+        public event AbilityPointsDelegate OnForceSpendAll;
+        public event AbilityPointsDelegate OnIncrement;
+        public event AbilityPointsDelegate OnReset;
+
+        public void Decrement(int points)
         {
-            unit.AbilityPoints = Mathf.Max(0, unit.AbilityPoints - points);
-            unit.FirstAbilitySpent = true;
+            _abilityPoints = Mathf.Max(0, _abilityPoints - points);
+            _firstAbilitySpent = true;
 
-            OnAbilityPointsDecrement?.Invoke(unit);
-            OnAbilityPointsDecrementStatic?.Invoke();
+            OnDecrement?.Invoke();
+            OnDecrementStatic?.Invoke();
         }
 
-        public void ForceSpendAllAbilityPoints(UnitController unit)
+        public void ForceSpendAllAbilityPoints()
         {
-            unit.AbilityPoints = 0;
-            unit.FirstAbilitySpent = true;
+            _abilityPoints = 0;
+            _firstAbilitySpent = true;
+            OnForceSpendAll?.Invoke();
         }
 
-        public void Increment(UnitController unit, int points = 1)
+        public void Increment(int points)
         {
-            unit.AbilityPoints += points;
-            OnAbilityPointsIncrement?.Invoke(unit);
+            _abilityPoints += points;
+            OnIncrement?.Invoke();
         }
 
-        public void ResetAbilityPoints(UnitController unit)
+        public void ResetAbilityPoints(int points)
         {
-            if(unit.IsFactoryReset())
-                return;
-
-            int resetAmount = unit.StartOfTurnAbilityPoints;
-
-            // TODO move this to some kind of GetAbilityPointsResetAmount method
-            if(unit.IsUnderclocked())
-                resetAmount = Mathf.Max(0, unit.StartOfTurnAbilityPoints - 1);  // TODO Make this and overclock stackable?
-
-            unit.AbilityPoints = resetAmount;
-            unit.FirstAbilitySpent = false;
+            _abilityPoints = Mathf.Max(0, points);
+            _firstAbilitySpent = false;
+            OnReset?.Invoke();
         }
     }
 }

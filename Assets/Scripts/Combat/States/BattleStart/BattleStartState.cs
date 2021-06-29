@@ -1,5 +1,4 @@
-﻿using RainesGames.Grid;
-using RainesGames.UI;
+﻿using RainesGames.UI;
 using System.Collections;
 using UnityEngine;
 
@@ -7,6 +6,9 @@ namespace RainesGames.Combat.States.BattleStart
 {
     public class BattleStartState : AbsCombatState
     {
+        public delegate void StateChangeDelegate();
+        public static event StateChangeDelegate OnEnterState;
+
         protected override void Awake()
         {
             base.Awake();
@@ -16,7 +18,7 @@ namespace RainesGames.Combat.States.BattleStart
         public override void EnterState()
         {
             base.EnterState();
-            GridWrapper.DisableCellHighlight();
+            OnEnterState?.Invoke();
             StartCoroutine(ShowBattleStartMessage());
         }
 
@@ -28,6 +30,7 @@ namespace RainesGames.Combat.States.BattleStart
         IEnumerator ShowBattleStartMessage()
         {
             HudUiController hud = FindObjectOfType<HudUiController>();
+            // TODO Toggle message with some events instead of calling it directly
             hud.EnableBattleStartMessage();
 
             yield return new WaitForSecondsRealtime(2);

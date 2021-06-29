@@ -2,7 +2,7 @@
 {
     public interface ISelectionResponse
     {
-        void OnDeselect(UnitController selection);
-        void OnSelect(UnitController selection);
+        void OnDeselect(AbsUnit selection);
+        void OnSelect(AbsUnit selection);
     }
 }

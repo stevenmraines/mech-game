@@ -1,7 +1,5 @@
-﻿using RainesGames.Grid;
-using RainesGames.Units;
+﻿using RainesGames.Units;
 using RainesGames.Units.Selection;
-using RainesGames.Units.States;
 
 namespace RainesGames.Combat.States.EnemyTurn
 {
@@ -16,22 +14,21 @@ namespace RainesGames.Combat.States.EnemyTurn
 
         bool CanSetActiveUnit()
         {
-            UnitController activeUnit = UnitSelectionManager.ActiveUnit;
+            AbsUnit activeUnit = UnitSelectionManager.ActiveUnit;
 
             if(activeUnit == null)
                 return true;
 
             // TODO can't I just check if the active unit is in the noAP/move state?
-            IUnitState currentState = UnitSelectionManager.ActiveUnit.CurrentState;
-            bool activeUnitIsTargetingUnits = activeUnit.IsEnemy() && currentState is IUnitTargetState;
+            bool playerIsTargetingUnits = activeUnit.IsEnemy() && activeUnit.HasUnitEventHandler();
 
-            if(!activeUnitIsTargetingUnits)
+            if(!playerIsTargetingUnits)
                 return true;
 
             return false;
         }
 
-        public void OnUnitClick(UnitController unit, int buttonIndex)
+        public void OnUnitClick(AbsUnit unit, int buttonIndex)
         {
             if(CanSetActiveUnit())
             {
@@ -42,20 +39,16 @@ namespace RainesGames.Combat.States.EnemyTurn
             _state.Manager.UnitEventRouter.RerouteUnitClick(unit, buttonIndex);
         }
 
-        public void OnUnitEnter(UnitController unit)
+        public void OnUnitEnter(AbsUnit unit)
         {
-            GridWrapper.DisableCellHighlight();
-
             if(UnitSelectionManager.ActiveUnit == null)
                 return;
 
             _state.Manager.UnitEventRouter.RerouteUnitMouseEnter(unit);
         }
 
-        public void OnUnitExit(UnitController unit)
+        public void OnUnitExit(AbsUnit unit)
         {
-            GridWrapper.EnableCellHighlight();
-
             if(UnitSelectionManager.ActiveUnit == null)
                 return;
 

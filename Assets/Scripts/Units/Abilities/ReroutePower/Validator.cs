@@ -4,14 +4,9 @@ namespace RainesGames.Units.Abilities.ReroutePower
 {
     public class Validator : ITargetlessAbilityValidator
     {
-        public bool IsValid(UnitController parentUnit)
+        public bool IsValid(AbsUnit parentUnit)
         {
-            if(false)
-            {
-                Debug.Log("What do?");
-                return false;
-            }
-
+            // TODO How to validate this?
             return true;
         }
     }

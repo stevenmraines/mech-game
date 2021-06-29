@@ -7,12 +7,12 @@ namespace RainesGames.Units.Selection
     {
         [SerializeField] private float _threshold = 0.99f;
 
-        public UnitController MakeSelection(Ray ray, List<UnitController> selectables)
+        public AbsUnit MakeSelection(Ray ray, List<AbsUnit> selectables)
         {
-            UnitController selection = null;
+            AbsUnit selection = null;
             float closest = 0;
 
-            foreach(UnitController unit in selectables)
+            foreach(AbsUnit unit in selectables)
             {
                 Vector3 viewportDirection = ray.direction;
                 Vector3 directionToSelectable = unit.transform.position - ray.origin;

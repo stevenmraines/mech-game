@@ -1,4 +1,6 @@
 ﻿using RainesGames.Grid;
+using RainesGames.Units.Mechs;
+using RainesGames.Units.States;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,8 +20,9 @@ namespace RainesGames.Units.Abilities.Move
         public static event MoveAbilityDelegate OnMoveEnd;
         public static event MoveAbilityDelegate OnMoveStart;
 
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _firstAbilityCost = 1;
             _secondAbilityCost = 1;
             _showInTray = false;
@@ -73,7 +76,7 @@ namespace RainesGames.Units.Abilities.Move
                 yield return new WaitForSecondsRealtime(.05f);
             }
 
-            _controller.PositionManager.SetCell(path[path.Count - 1]);
+            _controller.SetCell(path[path.Count - 1]);
             DecrementAbilityPoints();
             TransitionToIdle();
             OnMoveEnd?.Invoke();
@@ -89,21 +92,20 @@ namespace RainesGames.Units.Abilities.Move
             _navMeshAgent.SetDestination(GridWrapper.GetCellPosition(cellIndex));
         }
 
-        protected override void Start()
+        void Start()
         {
-            base.Start();
-            _state = _controller.StateManager.Move;
-            _navMeshAgent = _controller.NavMeshAgent;
+            _state = UnitState.MOVE;
+            _navMeshAgent = ((MechController)_controller).NavMeshAgent;
         }
 
         void TransitionToIdle()
         {
-            _controller.Animator.SetBool(_runningHash, false);
+            ((MechController)_controller).Animator.SetBool(_runningHash, false);
         }
 
         void TransitionToRun()
         {
-            _controller.Animator.SetBool(_runningHash, true);
+            ((MechController)_controller).Animator.SetBool(_runningHash, true);
         }
     }
 }

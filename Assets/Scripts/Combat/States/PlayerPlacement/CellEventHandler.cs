@@ -21,7 +21,7 @@ namespace RainesGames.Combat.States.PlayerPlacement
             if(GridWrapper.IsBlocked(cellIndex))
                 return;
 
-            UnitSelectionManager.ActiveUnit.PositionManager.PlaceUnit(cellIndex);
+            UnitSelectionManager.ActiveUnit.PlaceOnCell(cellIndex);
 
             _state.Manager.AttemptTransition();
         }

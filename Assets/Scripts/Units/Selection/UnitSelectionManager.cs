@@ -1,5 +1,4 @@
-﻿using RainesGames.Common.States;
-using RainesGames.Combat.States.EnemyPlacement;
+﻿using RainesGames.Combat.States.EnemyPlacement;
 using RainesGames.Combat.States.EnemyTurn;
 using RainesGames.Combat.States.PlayerPlacement;
 using RainesGames.Combat.States.PlayerTurn;
@@ -18,16 +17,13 @@ namespace RainesGames.Units.Selection
         private static ISelectionResponse _selectionResponse;
         private static ISelector _selector;
 
-        private static UnitController _activeUnit;
-        public static UnitController ActiveUnit => _activeUnit;
+        private static AbsUnit _activeUnit;
+        public static AbsUnit ActiveUnit => _activeUnit;
 
-        private IStateEventRouter _cellEventRouter;
-        private IStateEventRouter _unitEventRouter;
+        private static AbsUnit _currentSelection;
+        public static AbsUnit CurrentSelection => _currentSelection;
 
-        private static UnitController _currentSelection;
-        public static UnitController CurrentSelection => _currentSelection;
-
-        private static UnitController _oldSelection;
+        private static AbsUnit _oldSelection;
         private static bool _differentSelection => _oldSelection != _currentSelection;
         private static bool _mouseEnter => _currentSelection != null && _differentSelection;
         private static bool _mouseExit => _currentSelection == null && _oldSelection != null;
@@ -37,12 +33,12 @@ namespace RainesGames.Units.Selection
         public static Color PlayerColor;
         public static Color EnemyColor;
 
-        public delegate void UnitClickDelegate(UnitController unit, int buttonIndex);
+        public delegate void UnitClickDelegate(AbsUnit unit, int buttonIndex);
         public static event UnitClickDelegate OnUnitClick;
 
-        public delegate void UnitDelegate(UnitController unit);
-        public static event UnitDelegate OnUnitMouseEnter;
-        public static event UnitDelegate OnUnitMouseExit;
+        public delegate void UnitTransitDelegate(AbsUnit unit);
+        public static event UnitTransitDelegate OnUnitEnter;
+        public static event UnitTransitDelegate OnUnitExit;
 
         void Awake()
         {
@@ -55,9 +51,6 @@ namespace RainesGames.Units.Selection
             OutlineWidth = 7f;
             PlayerColor = Color.green;
             EnemyColor = Color.red;
-
-            _cellEventRouter = new States.CellEventRouter();
-            _unitEventRouter = new States.UnitEventRouter();
         }
 
         static void DoSelectionResponse()
@@ -78,8 +71,6 @@ namespace RainesGames.Units.Selection
             EnemyPlacementState.OnExitState -= ResetActiveUnit;
             PlayerPlacementState.OnExitState -= ResetActiveUnit;
             PlayerTurnState.OnExitState -= ResetActiveUnit;
-            _cellEventRouter.DeregisterEventHandlers();
-            _unitEventRouter.DeregisterEventHandlers();
         }
 
         void OnEnable()
@@ -88,8 +79,6 @@ namespace RainesGames.Units.Selection
             EnemyPlacementState.OnExitState += ResetActiveUnit;
             PlayerPlacementState.OnExitState += ResetActiveUnit;
             PlayerTurnState.OnExitState += ResetActiveUnit;
-            _cellEventRouter.RegisterEventHandlers();
-            _unitEventRouter.RegisterEventHandlers();
         }
 
         void ResetActiveUnit()
@@ -97,7 +86,7 @@ namespace RainesGames.Units.Selection
             SetActiveUnit(null);
         }
 
-        public static void SetActiveUnit(UnitController unit)
+        public static void SetActiveUnit(AbsUnit unit)
         {
             _activeUnit = unit;
         }
@@ -105,10 +94,10 @@ namespace RainesGames.Units.Selection
         static void TriggerMouseEvents()
         {
             if(_mouseEnter)
-                OnUnitMouseEnter?.Invoke(_currentSelection);
+                OnUnitEnter?.Invoke(_currentSelection);
 
             if(_mouseExit)
-                OnUnitMouseExit?.Invoke(_oldSelection);
+                OnUnitExit?.Invoke(_oldSelection);
 
             // TODO use new input system
             if(_currentSelection != null && Input.GetMouseButtonUp(0))

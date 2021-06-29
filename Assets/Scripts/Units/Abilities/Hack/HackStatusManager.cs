@@ -1,40 +1,20 @@
-﻿using RainesGames.Combat.States.EnemyTurn;
-using RainesGames.Combat.States.PlayerTurn;
+﻿using UnityEngine;
 
 namespace RainesGames.Units.Abilities.Hack
 {
-    public class HackStatusManager : AbsStatusManager
+    [DisallowMultipleComponent]
+    public class HackStatusManager : AbsAbilityStatusManager
     {
-        public HackStatusManager(UnitController controller) : base(controller)
-        {
-            _statusDuration = 4;
-
-            EnemyTurnState.OnExitState += OnExitStateEnemyTurn;
-            PlayerTurnState.OnExitState += OnExitStatePlayerTurn;
-        }
-
-        ~HackStatusManager()
-        {
-            EnemyTurnState.OnExitState -= OnExitStateEnemyTurn;
-            PlayerTurnState.OnExitState -= OnExitStatePlayerTurn;
-        }
-
         public override void Activate()
         {
             base.Activate();
-            _controller.AbilityPointsManager.ForceSpendAllAbilityPoints(_controller);
+            _controller.ForceSpendAllAbilityPoints();
         }
-
-        void OnExitStateEnemyTurn()
+        
+        protected override void Awake()
         {
-            if(_controller.HasPlayerTag())
-                Countdown();
-        }
-
-        void OnExitStatePlayerTurn()
-        {
-            if(_controller.HasEnemyTag())
-                Countdown();
+            base.Awake();
+            _statusDuration = 4;
         }
     }
 }

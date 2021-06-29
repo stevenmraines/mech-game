@@ -1,4 +1,5 @@
 ﻿using RainesGames.Units.Abilities.ReroutePower;
+using RainesGames.Units.States;
 using UnityEngine;
 
 namespace RainesGames.Units.Abilities.CancelReroutePower
@@ -7,8 +8,10 @@ namespace RainesGames.Units.Abilities.CancelReroutePower
     [RequireComponent(typeof(ReroutePowerAbility))]
     public class CancelReroutePowerAbility : AbsAbility
     {
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+            // TODO Get these from a ScriptableObject
             _firstAbilityCost = 0;
             _secondAbilityCost = 0;
             _showInTray = false;
@@ -16,16 +19,15 @@ namespace RainesGames.Units.Abilities.CancelReroutePower
 
         public void Execute()
         {
-            _controller.PowerManager.RevertChanges();
+            _controller.RevertPowerState();
 
             // Cancelling a power reroute costs no AP, but calling this triggers the unit state change
             DecrementAbilityPoints();
         }
 
-        protected override void Start()
+        void Start()
         {
-            base.Start();
-            _state = _controller.StateManager.ReroutePower;
+            _state = UnitState.REROUTE_POWER;
         }
     }
 }

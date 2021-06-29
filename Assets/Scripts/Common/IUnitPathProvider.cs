@@ -6,6 +6,6 @@ namespace RainesGames.Common
 {
     public interface IUnitPathProvider
     {
-        List<int> GetPath(UnitController unit, List<int> waypoints, int cellIndex, TerrainGridSystem sender);
+        List<int> GetPath(AbsUnit unit, List<int> waypoints, int cellIndex, TerrainGridSystem sender);
     }
 }

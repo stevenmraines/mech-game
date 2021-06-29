@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxPower: 1
   MinPower: 1
+  SoundEffect: {fileID: 8300000, guid: db88017a85a7cdd4ca5dd5da20e05e61, type: 3}

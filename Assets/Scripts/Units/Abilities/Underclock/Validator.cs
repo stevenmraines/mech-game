@@ -4,7 +4,7 @@ namespace RainesGames.Units.Abilities.Underclock
 {
     public class Validator : IUnitTargetAbilityValidator
     {
-        public bool IsValid(UnitController parentUnit, UnitController targetUnit)
+        public bool IsValid(AbsUnit parentUnit, AbsUnit targetUnit)
         {
             if(parentUnit.SameTeamAs(targetUnit))
             {

@@ -1,11 +1,7 @@
 ﻿using RainesGames.Combat.States;
-using RainesGames.Combat.States.BattleStart;
-using RainesGames.Combat.States.EnemyTurn;
-using RainesGames.Combat.States.PlayerTurn;
 using RainesGames.Units.Abilities;
 using RainesGames.Units.Selection;
 using RainesGames.Units.States;
-using RainesGames.Units.States.ReroutePower;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,17 +9,17 @@ namespace RainesGames.Units
 {
     public class AllUnitsManager : MonoBehaviour
     {
-        private static UnitController[] _units;
-        public static UnitController[] Units => _units;
+        private static AbsUnit[] _units;
+        public static AbsUnit[] Units => _units;
 
         public const string ENEMY_TAG = "Enemy";
         public const string PLAYER_TAG = "Player";
 
-        static bool AllActionPointsSpent(List<UnitController> units)
+        static bool AllActionPointsSpent(List<AbsUnit> units)
         {
-            foreach(UnitController unit in units)
+            foreach(AbsUnit unit in units)
             {
-                if(unit.AbilityPoints > 0)
+                if(unit.GetAbilityPoints() > 0)
                     return false;
             }
 
@@ -50,11 +46,11 @@ namespace RainesGames.Units
             return AllUnitsPlaced(GetPlayerUnits());
         }
 
-        static bool AllUnitsPlaced(List<UnitController> units)
+        static bool AllUnitsPlaced(List<AbsUnit> units)
         {
-            foreach(UnitController unit in units)
+            foreach(AbsUnit unit in units)
             {
-                if(!unit.PositionManager.IsPlaced)
+                if(!unit.IsPlaced())
                     return false;
             }
 
@@ -63,14 +59,14 @@ namespace RainesGames.Units
 
         void Awake()
         {
-            _units = FindObjectsOfType<UnitController>();
+            _units = FindObjectsOfType<AbsUnit>();
         }
 
-        public static List<UnitController> GetEnemyUnits()
+        public static List<AbsUnit> GetEnemyUnits()
         {
-            List<UnitController> enemyUnits = new List<UnitController>();
+            List<AbsUnit> enemyUnits = new List<AbsUnit>();
 
-            foreach(UnitController unit in _units)
+            foreach(AbsUnit unit in _units)
             {
                 if(unit.IsEnemy())
                     enemyUnits.Add(unit);
@@ -79,11 +75,11 @@ namespace RainesGames.Units
             return enemyUnits;
         }
         
-        public static List<UnitController> GetPlayerUnits()
+        public static List<AbsUnit> GetPlayerUnits()
         {
-            List<UnitController> playerUnits = new List<UnitController>();
+            List<AbsUnit> playerUnits = new List<AbsUnit>();
 
-            foreach(UnitController unit in _units)
+            foreach(AbsUnit unit in _units)
             {
                 if(unit.IsPlayer())
                     playerUnits.Add(unit);
@@ -95,7 +91,7 @@ namespace RainesGames.Units
         void Update()
         {
             // TODO remove all this crap
-            UnitController activeUnit = UnitSelectionManager.ActiveUnit;
+            AbsUnit activeUnit = UnitSelectionManager.ActiveUnit;
 
             if(activeUnit == null)
                 return;
@@ -108,11 +104,10 @@ namespace RainesGames.Units
             if(combat.CurrentState == combat.EnemyTurn && activeUnit.IsPlayer())
                 return;
 
-            UnitStateManager stateManager = activeUnit.StateManager;
-            bool reroutingPower = activeUnit.CurrentStateIs(typeof(ReroutePowerState));
+            bool reroutingPower = activeUnit.GetCurrentState() == UnitState.REROUTE_POWER;
 
             if(!reroutingPower && Input.GetMouseButtonUp(1))
-                stateManager.TransitionToState(activeUnit, stateManager.Move);
+                activeUnit.TransitionToState(UnitState.MOVE);
 
             AbsAbility[] abilities = AbilityTraySort.GetSortedUnitAbilities(activeUnit);
 
@@ -136,7 +131,7 @@ namespace RainesGames.Units
             for(int i = 0; i < abilities.Length; i++)
             {
                 if(!reroutingPower && intKeyCodeMap.ContainsKey(i) && Input.GetKeyUp(intKeyCodeMap[i]))
-                    stateManager.TransitionToState(activeUnit, abilities[i].State);
+                    activeUnit.TransitionToState(abilities[i].State);
             }
         }
     }

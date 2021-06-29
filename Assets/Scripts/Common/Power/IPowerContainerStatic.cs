@@ -2,6 +2,6 @@
 {
     public interface IPowerContainerStatic
     {
-        int MaxPower { get; }
+        int GetMaxPower();
     }
 }

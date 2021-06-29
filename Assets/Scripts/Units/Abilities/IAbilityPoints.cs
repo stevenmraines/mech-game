@@ -2,7 +2,7 @@
 {
     public interface IAbilityPoints
     {
-        int AbilityPoints { get; set; }
-        bool FirstAbilitySpent { get; set; }
+        int AbilityPoints { get; }
+        bool FirstAbilitySpent { get; }
     }
 }

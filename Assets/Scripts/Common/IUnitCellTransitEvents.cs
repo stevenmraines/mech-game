@@ -5,7 +5,7 @@ namespace RainesGames.Common
 {
     public interface IUnitCellTransitEvents
     {
-        void OnUnitCellEnter(UnitController unit, int cellIndex, TerrainGridSystem sender);
-        void OnUnitCellExit(UnitController unit, int cellIndex, TerrainGridSystem sender);
+        void OnUnitCellEnter(AbsUnit unit, int cellIndex, TerrainGridSystem sender);
+        void OnUnitCellExit(AbsUnit unit, int cellIndex, TerrainGridSystem sender);
     }
 }

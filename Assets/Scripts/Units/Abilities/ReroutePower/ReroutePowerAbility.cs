@@ -1,4 +1,5 @@
 ﻿using RainesGames.Units.Abilities.CancelReroutePower;
+using RainesGames.Units.States;
 using UnityEngine;
 
 namespace RainesGames.Units.Abilities.ReroutePower
@@ -9,8 +10,9 @@ namespace RainesGames.Units.Abilities.ReroutePower
     {
         private Validator _validator;
 
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _firstAbilityCost = 1;
             _secondAbilityCost = 1;
             _validator = new Validator();
@@ -20,15 +22,14 @@ namespace RainesGames.Units.Abilities.ReroutePower
         {
             if(_validator.IsValid(_controller))
             {
-                _controller.PowerManager.DiscardOldState();
+                _controller.DiscardPowerState();
                 DecrementAbilityPoints();
             }
         }
 
-        protected override void Start()
+        void Start()
         {
-            base.Start();
-             _state = _controller.StateManager.ReroutePower;
+             _state = UnitState.REROUTE_POWER;
         }
     }
 }

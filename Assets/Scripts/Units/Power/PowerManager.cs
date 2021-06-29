@@ -5,41 +5,39 @@ using UnityEngine;
 
 namespace RainesGames.Units.Power
 {
-    public class PowerManager : IPowerContainer
+    public class PowerManager : MonoBehaviour, IPowerContainer
     {
-        private UnitController _controller;
-        public UnitController Controller => _controller;
-
         private int _maxPower = 7;
-        public int MaxPower => _maxPower;
-
-        private int _power = 7;
-        public int Power => _power;
-
         private Dictionary<IPowerContainerInteractable, int> _oldState;
+        private int _power = 7;
 
-        public PowerManager(UnitController controller)
-        {
-            _controller = controller;
-        }
-
-        public void DiscardOldState()
+        public void DiscardPowerState()
         {
             _oldState = null;
         }
 
-        public void RecordOldState()
+        public int GetMaxPower()
+        {
+            return _maxPower;
+        }
+
+        public int GetPower()
+        {
+            return _power;
+        }
+
+        public void RecordPowerState(AbsAbility[] abilities)
         {
             _oldState = new Dictionary<IPowerContainerInteractable, int>();
 
-            foreach(AbsAbility ability in _controller.GetPoweredAbilities())
+            foreach(AbsAbility ability in abilities)
             {
                 IPowerContainerInteractable container = (IPowerContainerInteractable)ability;
-                _oldState.Add(container, container.Power);
+                _oldState.Add(container, container.GetPower());
             }
         }
         
-        public void RevertChanges()
+        public void RevertPowerState()
         {
             if(_oldState == null)
                 return;
@@ -47,7 +45,7 @@ namespace RainesGames.Units.Power
             foreach(KeyValuePair<IPowerContainerInteractable, int> keyValuePair in _oldState)
             {
                 int oldPower = keyValuePair.Value;
-                int newPower = keyValuePair.Key.Power;
+                int newPower = keyValuePair.Key.GetPower();
 
                 if(newPower == oldPower)
                     continue;
@@ -64,16 +62,14 @@ namespace RainesGames.Units.Power
             }
         }
 
-        public void TransferPowerFrom(IPowerContainerInteractable container, int power = 1)
+        public void TransferPowerFrom(IPowerContainerInteractable container, int power)
         {
-            // If the container does not have the power to give
-            if(container.Power - power < 0)
+            if(container.GetPower() - power < 0)
             {
                 Debug.Log("Not enough power to give");
                 return;
             }
 
-            // If this cannot take on the given power
             if(_power == _maxPower)
             {
                 Debug.Log("Cannot take any more power");
@@ -84,16 +80,14 @@ namespace RainesGames.Units.Power
             _power += power;
         }
 
-        public void TransferPowerTo(IPowerContainerInteractable container, int power = 1)
+        public void TransferPowerTo(IPowerContainerInteractable container, int power)
         {
-            // If the container cannot take on the given power
-            if(container.Power + power > container.MaxPower)
+            if(container.GetPower() + power > container.GetMaxPower())
             {
                 Debug.Log("Cannot take any more power");
                 return;
             }
 
-            // If this does not have the power to give
             if(_power - power < 0)
             {
                 Debug.Log("Not enough power to give");

@@ -2,10 +2,14 @@
 
 namespace RainesGames.Units.Abilities
 {
-    public interface IAbility : IAbilityCost
+    public interface IAbility
     {
-        IUnitState State { get; }
+        int FirstAbilityCost { get; }
+        int SecondAbilityCost { get; }
+        bool ShowInTray { get; }
+        UnitState State { get; }
 
-        bool AbilityIsAffordable();
+        int GetAbilityCost();
+        bool IsAffordable();
     }
 }

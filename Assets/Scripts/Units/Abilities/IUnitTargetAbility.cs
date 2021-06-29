@@ -2,6 +2,6 @@
 {
     public interface IUnitTargetAbility
     {
-        void Execute(UnitController targetUnit);
+        void Execute(AbsUnit targetUnit);
     }
 }

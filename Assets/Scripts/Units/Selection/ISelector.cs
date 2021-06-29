@@ -5,6 +5,6 @@ namespace RainesGames.Units.Selection
 {
     public interface ISelector
     {
-        UnitController MakeSelection(Ray ray, List<UnitController> selectables);
+        AbsUnit MakeSelection(Ray ray, List<AbsUnit> selectables);
     }
 }

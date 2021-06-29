@@ -3,11 +3,14 @@ using UnityEngine;
 
 namespace RainesGames.Units.Abilities
 {
-    [RequireComponent(typeof(UnitController))]
+    [RequireComponent(typeof(AbsUnit))]
     public abstract class AbsAbility : MonoBehaviour, IAbility
     {
-        protected UnitController _controller;
-        public UnitController Controller => _controller;
+        /*
+         * Some tight coupling between abilities and units should be okay,
+         * since every ability will belong to a particular unit.
+         */
+        protected AbsUnit _controller;
 
         protected int _firstAbilityCost;
         public int FirstAbilityCost => _firstAbilityCost;
@@ -15,30 +18,32 @@ namespace RainesGames.Units.Abilities
         protected int _secondAbilityCost;
         public int SecondAbilityCost => _secondAbilityCost;
 
-        protected IUnitState _state;
-        public IUnitState State => _state;
-
         protected bool _showInTray = true;
         public bool ShowInTray => _showInTray;
 
-        public virtual bool AbilityIsAffordable()
+        protected AudioClip _soundEffect;
+
+        protected UnitState _state;
+        public UnitState State => _state;
+
+        protected virtual void Awake()
         {
-            return _controller.AbilityPoints >= GetAbilityPointCost();
+            _controller = GetComponent<AbsUnit>();
         }
 
         protected virtual void DecrementAbilityPoints()
         {
-            _controller.AbilityPointsManager.Decrement(_controller, GetAbilityPointCost());
+            _controller.DecrementAbilityPoints(GetAbilityCost());
         }
 
-        public virtual int GetAbilityPointCost()
+        public virtual int GetAbilityCost()
         {
-            return _controller.FirstAbilitySpent ? _secondAbilityCost : _firstAbilityCost;
+            return _controller.GetFirstAbilitySpent() ? _secondAbilityCost : _firstAbilityCost;
         }
-        
-        protected virtual void Start()
+
+        public virtual bool IsAffordable()
         {
-            _controller = GetComponent<UnitController>();
+            return _controller.GetAbilityPoints() >= GetAbilityCost();
         }
     }
 }

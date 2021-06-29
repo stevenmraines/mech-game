@@ -2,8 +2,7 @@
 {
     public interface IPoweredItem
     {
-        int MinPower { get; }
-
+        int GetMinPower();
         bool IsPowered();
     }
 }
