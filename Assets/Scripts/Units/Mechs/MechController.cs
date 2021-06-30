@@ -49,7 +49,7 @@ namespace RainesGames.Units.Mechs
             _stateEventHandlers = new StateEventHandlersMap();
             _transitionValidators = new StateTransitionValidatorMap();
 
-            _abilityPointsManager = FindObjectOfType<AbilityPointsManager>();
+            _abilityPointsManager = GetComponent<AbilityPointsManager>();
             _animator = GetComponent<Animator>();
             _factoryResetStatusManager = GetComponent<FactoryResetStatusManager>();
             _hackStatusManager = GetComponent<HackStatusManager>();
@@ -104,11 +104,6 @@ namespace RainesGames.Units.Mechs
 
             _stateManager.OnEnterState += OnEnterState;
             _stateManager.OnExitState += OnExitState;
-        }
-
-        void Start()
-        {
-            ResetAbilityPointsAndState();
         }
         #endregion
 

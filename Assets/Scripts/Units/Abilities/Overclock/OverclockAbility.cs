@@ -35,7 +35,10 @@ namespace RainesGames.Units.Abilities.Overclock
             if(_validator.IsValid(_controller, targetUnit))
             {
                 targetUnit.IncrementAbilityPoints();
-                DecrementAbilityPoints();
+
+                // Only decrement AP if the ability was used on an ally or hacked enemy unit
+                if(_controller != targetUnit)
+                    DecrementAbilityPoints();
 
                 if(Data.SoundEffect != null)
                     GlobalSoundEffectManager.Play(Data.SoundEffect);
