@@ -78,6 +78,9 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
             if(_moving)
                 return;
 
+            if(PathIsTooLong(unit, GetDrawPath(unit, cellIndex, sender)))
+                return;
+
             if(buttonIndex == 1)
             {
                 HandleWaypointClick(unit, cellIndex, sender);
@@ -92,10 +95,15 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
             if(_moving)
                 return;
 
+            List<int> drawPath = GetDrawPath(unit, cellIndex, sender);
+
+            if(PathIsTooLong(unit, drawPath))
+                return;
+
             _pathTransitResponse.OnPathEnter(
                 sender,
                 _waypointManager.GetWaypoints(),
-                GetDrawPath(unit, cellIndex, sender)
+                drawPath
             );
         }
 
@@ -104,10 +112,15 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
             if(_moving)
                 return;
 
+            List<int> drawPath = GetDrawPath(unit, cellIndex, sender);
+
+            if(PathIsTooLong(unit, drawPath))
+                return;
+
             _pathTransitResponse.OnPathExit(
                 sender,
                 _waypointManager.GetWaypoints(),
-                GetDrawPath(unit, cellIndex, sender)
+                drawPath
             );
         }
 
@@ -121,6 +134,11 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
         {
             MoveAbility.OnMoveEnd += EnableUserInteraction;
             MoveAbility.OnMoveStart += DisableUserInteraction;
+        }
+
+        bool PathIsTooLong(AbsUnit unit, ICollection<int> path)
+        {
+            return path.Count > unit.GetMovement();
         }
     }
 }

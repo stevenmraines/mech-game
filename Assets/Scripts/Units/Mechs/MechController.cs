@@ -6,6 +6,7 @@ using RainesGames.Units.Abilities;
 using RainesGames.Units.Abilities.FactoryReset;
 using RainesGames.Units.Abilities.Hack;
 using RainesGames.Units.Abilities.Underclock;
+using RainesGames.Units.Mechs.Classes;
 using RainesGames.Units.Mechs.States;
 using RainesGames.Units.Position;
 using RainesGames.Units.Power;
@@ -17,10 +18,11 @@ using UnityEngine.AI;
 
 namespace RainesGames.Units.Mechs
 {
+    [RequireComponent(typeof(AbsMechClass))]
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(NavMeshAgent))]
     [DisallowMultipleComponent]
-    public class MechController : AbsUnit
+    public sealed class MechController : AbsUnit
     {
         #region INSTANCE VARIABLES
         private AbilityPointsManager _abilityPointsManager;
@@ -36,10 +38,11 @@ namespace RainesGames.Units.Mechs
         private Animator _animator;
         public Animator Animator => _animator;
 
+        private AbsMechClass _mechClass;
+        public AbsMechClass MechClass => _mechClass;
+
         private NavMeshAgent _navMeshAgent;
         public NavMeshAgent NavMeshAgent => _navMeshAgent;
-
-        private int _baseMovement = 6;
         #endregion
 
 
@@ -48,6 +51,8 @@ namespace RainesGames.Units.Mechs
         {
             _stateEventHandlers = new StateEventHandlersMap();
             _transitionValidators = new StateTransitionValidatorMap();
+
+            _mechClass = GetComponent<AbsMechClass>();
 
             _abilityPointsManager = GetComponent<AbilityPointsManager>();
             _animator = GetComponent<Animator>();
@@ -111,7 +116,7 @@ namespace RainesGames.Units.Mechs
         #region MISC
         public override int GetMovement()
         {
-            return _baseMovement;
+            return MechClass.GetBaseMovement();
         }
 
         /*
