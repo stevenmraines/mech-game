@@ -16,6 +16,7 @@ namespace RainesGames.Units.Abilities.Underclock
         public DataAbility Data;
         public DataCooldownAbility CooldownData;
         public DataPoweredAbility PowerData;
+        public DataStatusAbility StatusData;
 
         public override bool CanBeUsed()
         {
@@ -26,7 +27,7 @@ namespace RainesGames.Units.Abilities.Underclock
         {
             if(_validator.IsValid(_parentUnit, targetUnit))
             {
-                targetUnit.Underclock();
+                targetUnit.Underclock(GetDuration());
                 DecrementAbilityPoints();
                 ResetCooldown();
             }
@@ -118,6 +119,14 @@ namespace RainesGames.Units.Abilities.Underclock
         public void RemovePower(int power)
         {
             _powerManager.RemovePower(power);
+        }
+        #endregion
+
+
+        #region STATUS
+        public int GetDuration()
+        {
+            return StatusData.Duration;
         }
         #endregion
     }

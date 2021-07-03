@@ -4,6 +4,6 @@ namespace RainesGames.Units.Abilities.Underclock
     {
         int GetUnderclockedTurnsRemaining();
         bool IsUnderclocked();
-        void Underclock();
+        void Underclock(int duration);
     }
 }

@@ -3,33 +3,15 @@
 namespace RainesGames.Units.Abilities
 {
     [RequireComponent(typeof(AbsUnit))]
-    public abstract class AbsAbilityStatusManager : MonoBehaviour, IAbilityStatusManager
+    public abstract class AbsAbilityStatusManager : IAbilityStatusManager
     {
-        /*
-         * Some tight coupling between ability status managers and units
-         * should be okay, since only units can have ability statuses.
-         */
-        protected AbsUnit _controller;
-
         protected bool _active = false;
-        public bool Active => _active;
-
-        // TODO StatusDuration should come from a scriptable object
-        protected int _statusDuration = 1;
-        public int StatusDuration => _statusDuration;
-
         protected int _turnsRemaining = 0;
-        public int TurnsRemaining => _turnsRemaining;
 
-        protected virtual void Awake()
-        {
-            _controller = GetComponent<AbsUnit>();
-        }
-
-        public virtual void Activate()
+        public virtual void Activate(int duration)
         {
             _active = true;
-            _turnsRemaining = _statusDuration;
+            _turnsRemaining = duration;
         }
 
         public virtual void Countdown()
@@ -41,6 +23,16 @@ namespace RainesGames.Units.Abilities
 
             if(_turnsRemaining == 0)
                 _active = false;
+        }
+
+        public virtual bool IsActive()
+        {
+            return _active;
+        }
+
+        public virtual int GetTurnsRemaining()
+        {
+            return _turnsRemaining;
         }
     }
 }

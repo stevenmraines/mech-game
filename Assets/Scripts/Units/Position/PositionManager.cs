@@ -4,13 +4,19 @@ using UnityEngine;
 
 namespace RainesGames.Units.Position
 {
-    [DisallowMultipleComponent]
-    public class PositionManager : MonoBehaviour
+    public class PositionManager
     {
         private Cell _position;
-        public Cell Position => _position;
 
-        public bool IsPlaced => _position != null;
+        public Cell GetPosition()
+        {
+            return _position;
+        }
+
+        public bool IsPlaced()
+        {
+            return _position != null;
+        }
 
         void MoveUnitToCellCenter(Transform transform)
         {

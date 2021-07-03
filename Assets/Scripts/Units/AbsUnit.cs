@@ -13,19 +13,31 @@ using UnityEngine;
 
 namespace RainesGames.Units
 {
-    [RequireComponent(typeof(AbilityPointsManager))]
-    [RequireComponent(typeof(FactoryResetStatusManager))]
-    [RequireComponent(typeof(HackStatusManager))]
-    [RequireComponent(typeof(PositionManager))]
-    [RequireComponent(typeof(PowerRerouteManager))]
-    [RequireComponent(typeof(UnderclockStatusManager))]
-    [RequireComponent(typeof(UnitStateManager))]
     public abstract class AbsUnit : MonoBehaviour, IUnit
     {
+        protected AbilityPointsManager _abilityPointsManager;
+        protected FactoryResetStatusManager _factoryResetStatusManager;
+        protected HackStatusManager _hackStatusManager;
+        protected PositionManager _positionManager;
+        protected PowerRerouteManager _powerManager;
+        protected UnitStateManager _stateManager;
+        protected UnderclockStatusManager _underclockStatusManager;
+
+        protected virtual void Awake()
+        {
+            _abilityPointsManager = new AbilityPointsManager();
+            _factoryResetStatusManager = new FactoryResetStatusManager();
+            _hackStatusManager = new HackStatusManager();
+            _positionManager = new PositionManager();
+            _powerManager = new PowerRerouteManager();
+            _stateManager = new UnitStateManager();
+            _underclockStatusManager = new UnderclockStatusManager();
+        }
+
         public abstract bool CanEnterState(UnitState state);
         public abstract void DecrementAbilityPoints(int points = 1);
         public abstract void DiscardPowerState();
-        public abstract void FactoryReset();
+        public abstract void FactoryReset(int duration);
         public abstract bool FirstAbilitySpent();
         public abstract void ForceSpendAllAbilityPoints();
         public abstract int GetAbilityPoints();
@@ -38,7 +50,7 @@ namespace RainesGames.Units
         public abstract int GetPower();
         public abstract int GetStartOfTurnAbilityPoints();
         public abstract int GetUnderclockedTurnsRemaining();
-        public abstract void Hack();
+        public abstract void Hack(int duration);
         public abstract bool HasCellEventHandler();
         public abstract bool HasCellEventHandler(UnitState state);
         public abstract bool HasUnitEventHandler();
@@ -61,7 +73,7 @@ namespace RainesGames.Units
         public abstract void TransferPowerFrom(IPowerContainerInteractable container, int power = 1);
         public abstract void TransferPowerTo(IPowerContainerInteractable container, int power = 1);
         public abstract void TransitionToState(UnitState state);
-        public abstract void Underclock();
+        public abstract void Underclock(int duration);
 
         public AbsAbility[] GetAbilities(bool filterShowInTray = true)
         {

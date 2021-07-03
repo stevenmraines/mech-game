@@ -7,7 +7,7 @@ namespace RainesGames.Units.Abilities.FactoryReset
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(ReroutePowerAbility))]
-    public class FactoryResetAbility : AbsAbility, ICooldownManagerClient, IFiniteUseManagerClient, IPowerManagerClient, IUnitTargetAbility
+    public class FactoryResetAbility : AbsAbility, ICooldownManagerClient, IFiniteUseManagerClient, IPowerManagerClient, IStatusAbility, IUnitTargetAbility
     {
         private CooldownManager _cooldownManager = new CooldownManager();
         private FiniteUseManager _finiteUseManager = new FiniteUseManager();
@@ -18,6 +18,7 @@ namespace RainesGames.Units.Abilities.FactoryReset
         public DataCooldownAbility CooldownData;
         public DataFiniteUseAbility FiniteUseData;
         public DataPoweredAbility PowerData;
+        public DataStatusAbility StatusData;
 
         protected override void Awake()
         {
@@ -34,7 +35,7 @@ namespace RainesGames.Units.Abilities.FactoryReset
         {
             if(_validator.IsValid(_parentUnit, targetUnit))
             {
-                targetUnit.FactoryReset();
+                targetUnit.FactoryReset(GetDuration());
                 DecrementAbilityPoints();
                 ResetCooldown();
                 DecrementUsesRemaining();
@@ -150,6 +151,14 @@ namespace RainesGames.Units.Abilities.FactoryReset
         public void RemovePower(int power)
         {
             _powerManager.RemovePower(power);
+        }
+        #endregion
+
+
+        #region STATUS
+        public int GetDuration()
+        {
+            return StatusData.Duration;
         }
         #endregion
     }

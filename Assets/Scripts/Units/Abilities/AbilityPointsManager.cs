@@ -2,17 +2,10 @@ using UnityEngine;
 
 namespace RainesGames.Units.Abilities
 {
-    [DisallowMultipleComponent]
-    public class AbilityPointsManager : MonoBehaviour, IAbilityPoints, IAbilityPointsConfig
+    public class AbilityPointsManager : IAbilityPoints
     {
         private int _abilityPoints;
-        public int AbilityPoints => _abilityPoints;
-
         private bool _firstAbilitySpent = false;
-        public bool FirstAbilitySpent => _firstAbilitySpent;
-
-        private int _startOfTurnAbilityPoints = 2;
-        public int StartOfTurnAbilityPoints => _startOfTurnAbilityPoints;
 
         public delegate void AbilityPointsDelegate();
         public event AbilityPointsDelegate OnDecrement;
@@ -30,11 +23,21 @@ namespace RainesGames.Units.Abilities
             OnDecrementStatic?.Invoke();
         }
 
+        public bool FirstAbilitySpent()
+        {
+            return _firstAbilitySpent;
+        }
+
         public void ForceSpendAllAbilityPoints()
         {
             _abilityPoints = 0;
             _firstAbilitySpent = true;
             OnForceSpendAll?.Invoke();
+        }
+
+        public int GetAbilityPoints()
+        {
+            return _abilityPoints;
         }
 
         public void Increment(int points)

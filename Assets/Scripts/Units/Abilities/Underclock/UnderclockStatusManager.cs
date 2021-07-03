@@ -1,10 +1,4 @@
-﻿using UnityEngine;
-
-namespace RainesGames.Units.Abilities.Underclock
+﻿namespace RainesGames.Units.Abilities.Underclock
 {
-    [DisallowMultipleComponent]
-    public class UnderclockStatusManager : AbsAbilityStatusManager
-    {
-        
-    }
+    public class UnderclockStatusManager : AbsAbilityStatusManager { }
 }

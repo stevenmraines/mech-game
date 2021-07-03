@@ -5,7 +5,6 @@
      */
     public interface IPowerContainer
     {
-        int GetMaxPower();
         int GetPower();
     }
 }

@@ -1,20 +1,14 @@
-﻿using UnityEngine;
-
-namespace RainesGames.Units.Abilities.Hack
+﻿namespace RainesGames.Units.Abilities.Hack
 {
-    [DisallowMultipleComponent]
     public class HackStatusManager : AbsAbilityStatusManager
     {
-        public override void Activate()
+        public delegate void AbilityStatusDelegate();
+        public event AbilityStatusDelegate OnActivate;
+
+        public override void Activate(int duration)
         {
-            base.Activate();
-            _controller.ForceSpendAllAbilityPoints();
-        }
-        
-        protected override void Awake()
-        {
-            base.Awake();
-            _statusDuration = 4;
+            base.Activate(duration);
+            OnActivate?.Invoke();
         }
     }
 }

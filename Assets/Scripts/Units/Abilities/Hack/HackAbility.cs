@@ -18,6 +18,7 @@ namespace RainesGames.Units.Abilities.Hack
         public DataCooldownAbility CooldownData;
         public DataFiniteUseAbility FiniteUseData;
         public DataPoweredAbility PowerData;
+        public DataStatusAbility StatusData;
 
         protected override void Awake()
         {
@@ -34,7 +35,7 @@ namespace RainesGames.Units.Abilities.Hack
         {
             if(_validator.IsValid(_parentUnit, targetUnit))
             {
-                targetUnit.Hack();
+                targetUnit.Hack(GetDuration());
                 DecrementAbilityPoints();
                 ResetCooldown();
                 DecrementUsesRemaining();
@@ -150,6 +151,14 @@ namespace RainesGames.Units.Abilities.Hack
         public void RemovePower(int power)
         {
             _powerManager.RemovePower(power);
+        }
+        #endregion
+
+
+        #region STATUS
+        public int GetDuration()
+        {
+            return StatusData.Duration;
         }
         #endregion
     }

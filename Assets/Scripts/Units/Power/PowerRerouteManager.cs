@@ -5,20 +5,14 @@ using UnityEngine;
 
 namespace RainesGames.Units.Power
 {
-    public class PowerRerouteManager : MonoBehaviour, IPowerContainer
+    public class PowerRerouteManager : IPowerContainer
     {
-        private int _maxPower = 7;
         private Dictionary<IPowerContainerInteractable, int> _oldState;
-        private int _power = 7;
+        private int _power = 0;
 
         public void DiscardPowerState()
         {
             _oldState = null;
-        }
-
-        public int GetMaxPower()
-        {
-            return _maxPower;
         }
 
         public int GetPower()
@@ -37,7 +31,7 @@ namespace RainesGames.Units.Power
             }
         }
         
-        public void RevertPowerState()
+        public void RevertPowerState(int maxPower)
         {
             if(_oldState == null)
                 return;
@@ -58,11 +52,16 @@ namespace RainesGames.Units.Power
                     continue;
                 }
 
-                TransferPowerFrom(keyValuePair.Key, Mathf.Abs(difference));
+                TransferPowerFrom(keyValuePair.Key, Mathf.Abs(difference), maxPower);
             }
         }
 
-        public void TransferPowerFrom(IPowerContainerInteractable container, int power)
+        public void SetPower(int power)
+        {
+            _power = power;
+        }
+
+        public void TransferPowerFrom(IPowerContainerInteractable container, int power, int maxPower)
         {
             if(container.GetPower() - power < 0)
             {
@@ -70,7 +69,7 @@ namespace RainesGames.Units.Power
                 return;
             }
 
-            if(_power == _maxPower)
+            if(_power == maxPower)
             {
                 Debug.Log("Cannot take any more power");
                 return;

@@ -9,10 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f44fd365d130dc74580d5bc3887e671c, type: 3}
-  m_Name: DataRhinoMechClass
+  m_Script: {fileID: 11500000, guid: e0f08e2f7aa75a94f86029bd4f7fa85c, type: 3}
+  m_Name: HackStatusData
   m_EditorClassIdentifier: 
-  BaseMovement: 5
-  ClassName: 
-  MaxPower: 7
-  StartOfTurnAbilityPoints: 2
+  Duration: 4

@@ -15,5 +15,15 @@ namespace RainesGames.Units.Mechs.Classes
         {
             return GetData().ClassName;
         }
+
+        public int GetMaxPower()
+        {
+            return GetData().MaxPower;
+        }
+
+        public virtual int GetStartOfTurnAbilityPoints()
+        {
+            return GetData().StartOfTurnAbilityPoints;
+        }
     }
 }

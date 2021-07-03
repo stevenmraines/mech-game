@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BaseMovement: 8
   ClassName: Cloudwalker
+  MaxPower: 12
+  StartOfTurnAbilityPoints: 3

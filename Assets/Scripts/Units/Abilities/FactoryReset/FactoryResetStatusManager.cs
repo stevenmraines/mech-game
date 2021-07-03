@@ -1,14 +1,14 @@
-﻿using UnityEngine;
-
-namespace RainesGames.Units.Abilities.FactoryReset
+﻿namespace RainesGames.Units.Abilities.FactoryReset
 {
-    [DisallowMultipleComponent]
     public class FactoryResetStatusManager : AbsAbilityStatusManager
     {
-        public override void Activate()
+        public delegate void AbilityStatusDelegate();
+        public event AbilityStatusDelegate OnActivate;
+
+        public override void Activate(int duration)
         {
-            base.Activate();
-            _controller.ForceSpendAllAbilityPoints();
+            base.Activate(duration);
+            OnActivate?.Invoke();
         }
     }
 }

@@ -3,13 +3,8 @@ using RainesGames.Combat.States.EnemyTurn;
 using RainesGames.Combat.States.PlayerTurn;
 using RainesGames.Common.Power;
 using RainesGames.Units.Abilities;
-using RainesGames.Units.Abilities.FactoryReset;
-using RainesGames.Units.Abilities.Hack;
-using RainesGames.Units.Abilities.Underclock;
 using RainesGames.Units.Mechs.Classes;
 using RainesGames.Units.Mechs.States;
-using RainesGames.Units.Position;
-using RainesGames.Units.Power;
 using RainesGames.Units.Selection;
 using RainesGames.Units.States;
 using TGS;
@@ -25,15 +20,8 @@ namespace RainesGames.Units.Mechs
     public sealed class MechController : AbsUnit
     {
         #region INSTANCE VARIABLES
-        private AbilityPointsManager _abilityPointsManager;
-        private FactoryResetStatusManager _factoryResetStatusManager;
-        private HackStatusManager _hackStatusManager;
-        private PositionManager _positionManager;
-        private PowerRerouteManager _powerManager;
         private StateEventHandlersMap _stateEventHandlers;
-        private UnitStateManager _stateManager;
         private StateTransitionValidatorMap _transitionValidators;
-        private UnderclockStatusManager _underclockStatusManager;
 
         private Animator _animator;
         public Animator Animator => _animator;
@@ -47,22 +35,18 @@ namespace RainesGames.Units.Mechs
 
 
         #region MONOBEHAVIOUR METHODS
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             _stateEventHandlers = new StateEventHandlersMap();
             _transitionValidators = new StateTransitionValidatorMap();
 
-            _mechClass = GetComponent<AbsMechClass>();
-
-            _abilityPointsManager = GetComponent<AbilityPointsManager>();
             _animator = GetComponent<Animator>();
-            _factoryResetStatusManager = GetComponent<FactoryResetStatusManager>();
-            _hackStatusManager = GetComponent<HackStatusManager>();
+            _mechClass = GetComponent<AbsMechClass>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
-            _positionManager = GetComponent<PositionManager>();
-            _powerManager = GetComponent<PowerRerouteManager>();
-            _stateManager = GetComponent<UnitStateManager>();
-            _underclockStatusManager = GetComponent<UnderclockStatusManager>();
+            
+            _powerManager.SetPower(GetMaxPower());
         }
 
         void OnDisable()
@@ -83,6 +67,9 @@ namespace RainesGames.Units.Mechs
             _abilityPointsManager.OnForceSpendAll -= OnAbilityPointsChange;
             _abilityPointsManager.OnIncrement -= OnAbilityPointsChange;
             _abilityPointsManager.OnReset -= OnAbilityPointsChange;
+
+            _factoryResetStatusManager.OnActivate -= ForceSpendAllAbilityPoints;
+            _hackStatusManager.OnActivate -= ForceSpendAllAbilityPoints;
 
             _stateManager.OnEnterState -= OnEnterState;
             _stateManager.OnExitState -= OnExitState;
@@ -106,6 +93,9 @@ namespace RainesGames.Units.Mechs
             _abilityPointsManager.OnForceSpendAll += OnAbilityPointsChange;
             _abilityPointsManager.OnIncrement += OnAbilityPointsChange;
             _abilityPointsManager.OnReset += OnAbilityPointsChange;
+
+            _factoryResetStatusManager.OnActivate += ForceSpendAllAbilityPoints;
+            _hackStatusManager.OnActivate += ForceSpendAllAbilityPoints;
 
             _stateManager.OnEnterState += OnEnterState;
             _stateManager.OnExitState += OnExitState;
@@ -194,7 +184,7 @@ namespace RainesGames.Units.Mechs
         }
         #endregion
 
-
+        // TODO All this ability points, unit state, power, etc. manager stuff could be moved to AbsUnit
         #region ABILITY POINTS MANAGER
         public override void DecrementAbilityPoints(int points = 1)
         {
@@ -203,7 +193,7 @@ namespace RainesGames.Units.Mechs
 
         public override bool FirstAbilitySpent()
         {
-            return _abilityPointsManager.FirstAbilitySpent;
+            return _abilityPointsManager.FirstAbilitySpent();
         }
 
         public override void ForceSpendAllAbilityPoints()
@@ -213,20 +203,20 @@ namespace RainesGames.Units.Mechs
 
         public override int GetAbilityPoints()
         {
-            return _abilityPointsManager.AbilityPoints;
+            return _abilityPointsManager.GetAbilityPoints();
         }
 
         int GetAbilityPointsResetAmount()
         {
             if(IsUnderclocked())
-                return Mathf.Max(0, _abilityPointsManager.StartOfTurnAbilityPoints - 1);  // TODO Make this and overclock stackable?
+                return Mathf.Max(0, _mechClass.GetStartOfTurnAbilityPoints() - 1);  // TODO Make this and overclock stackable?
 
-            return _abilityPointsManager.StartOfTurnAbilityPoints;
+            return _mechClass.GetStartOfTurnAbilityPoints();
         }
 
         public override int GetStartOfTurnAbilityPoints()
         {
-            return _abilityPointsManager.StartOfTurnAbilityPoints;
+            return _mechClass.GetStartOfTurnAbilityPoints();
         }
 
         public override void IncrementAbilityPoints(int points = 1)
@@ -237,49 +227,49 @@ namespace RainesGames.Units.Mechs
 
 
         #region ABILITY STATUS MANAGERS
-        public override void FactoryReset()
+        public override void FactoryReset(int duration)
         {
-            _factoryResetStatusManager.Activate();
+            _factoryResetStatusManager.Activate(duration);
         }
 
         public override int GetFactoryResetTurnsRemaining()
         {
-            return _factoryResetStatusManager.TurnsRemaining;
+            return _factoryResetStatusManager.GetTurnsRemaining();
         }
 
         public override int GetHackedTurnsRemaining()
         {
-            return _hackStatusManager.TurnsRemaining;
+            return _hackStatusManager.GetTurnsRemaining();
         }
 
         public override int GetUnderclockedTurnsRemaining()
         {
-            return _underclockStatusManager.TurnsRemaining;
+            return _underclockStatusManager.GetTurnsRemaining();
         }
 
-        public override void Hack()
+        public override void Hack(int duration)
         {
-            _hackStatusManager.Activate();
+            _hackStatusManager.Activate(duration);
         }
 
         public override bool IsFactoryReset()
         {
-            return _factoryResetStatusManager.Active;
+            return _factoryResetStatusManager.IsActive();
         }
 
         public override bool IsHacked()
         {
-            return _hackStatusManager.Active;
+            return _hackStatusManager.IsActive();
         }
 
         public override bool IsUnderclocked()
         {
-            return _underclockStatusManager.Active;
+            return _underclockStatusManager.IsActive();
         }
 
-        public override void Underclock()
+        public override void Underclock(int duration)
         {
-            _underclockStatusManager.Activate();
+            _underclockStatusManager.Activate(duration);
         }
         #endregion
 
@@ -308,12 +298,12 @@ namespace RainesGames.Units.Mechs
         #region POSITION MANAGER
         public override Cell GetPosition()
         {
-            return _positionManager.Position;
+            return _positionManager.GetPosition();
         }
 
         public override bool IsPlaced()
         {
-            return _positionManager.IsPlaced;
+            return _positionManager.IsPlaced();
         }
 
         public override void PlaceOnCell(int cellIndex)
@@ -336,7 +326,7 @@ namespace RainesGames.Units.Mechs
 
         public override int GetMaxPower()
         {
-            return _powerManager.GetMaxPower();
+            return _mechClass.GetMaxPower();
         }
 
         public override int GetPower()
@@ -351,12 +341,12 @@ namespace RainesGames.Units.Mechs
 
         public override void RevertPowerState()
         {
-            _powerManager.RevertPowerState();
+            _powerManager.RevertPowerState(GetMaxPower());
         }
 
         public override void TransferPowerFrom(IPowerContainerInteractable container, int power = 1)
         {
-            _powerManager.TransferPowerFrom(container, power);
+            _powerManager.TransferPowerFrom(container, power, GetMaxPower());
         }
 
         public override void TransferPowerTo(IPowerContainerInteractable container, int power = 1)
@@ -375,7 +365,7 @@ namespace RainesGames.Units.Mechs
 
         public override UnitState GetCurrentState()
         {
-            return _stateManager.CurrentState;
+            return _stateManager.GetCurrentState();
         }
 
         UnitState GetFallbackState()

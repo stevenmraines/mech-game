@@ -1,16 +1,17 @@
-using UnityEngine;
-
 namespace RainesGames.Units.States
 {
-    [DisallowMultipleComponent]
-    public class UnitStateManager : MonoBehaviour
+    public class UnitStateManager
     {
         private UnitState _currentState = UnitState.IDLE;
-        public UnitState CurrentState => _currentState;
 
         public delegate void StateChangeDelegate(UnitState state);
         public event StateChangeDelegate OnEnterState;
         public event StateChangeDelegate OnExitState;
+
+        public UnitState GetCurrentState()
+        {
+            return _currentState;
+        }
 
         public void TransitionToState(UnitState state)
         {

@@ -2,11 +2,9 @@ namespace RainesGames.Units.Abilities
 {
     public interface IAbilityStatusManager
     {
-        bool Active { get; }
-        int StatusDuration { get; }
-        int TurnsRemaining { get; }
-
-        void Activate();
+        void Activate(int duration);
         void Countdown();
+        bool IsActive();
+        int GetTurnsRemaining();
     }
 }
