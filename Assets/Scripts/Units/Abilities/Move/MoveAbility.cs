@@ -95,9 +95,9 @@ namespace RainesGames.Units.Abilities.Move
             }
 
             _parentUnit.SetCell(path[path.Count - 1]);
-            DecrementAbilityPoints();
             TransitionToIdle();
             OnMoveEnd?.Invoke();
+            DecrementAbilityPoints();
         }
 
         void ResetPathIndex()
