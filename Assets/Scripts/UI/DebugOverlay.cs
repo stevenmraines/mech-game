@@ -82,7 +82,7 @@ namespace RainesGames.UI
 
             bool isPowered = ability is IPowerContainerInteractable;
             bool reroutingPower = activeUnit.GetCurrentState() == UnitState.REROUTE_POWER;
-            bool canEnterState = activeUnit.CanEnterState(ability.State);
+            bool canEnterState = activeUnit.CanEnterState(ability.GetState());
             bool canRerouteAbilityPower = reroutingPower && isPowered;
             bool abilityIsUsable = !reroutingPower && canEnterState;
 
@@ -103,10 +103,33 @@ namespace RainesGames.UI
 
             GUI.enabled = true;
 
+            int tooltipHeightIncrement = 20;
             int tooltipWidth = 90;
-            int tooltipHeight = 20;
+            int tooltipHeight = tooltipHeightIncrement;
             int tooltipX = buttonX + (buttonWidth / 2) - (tooltipWidth / 2);
             int tooltipY = buttonY - tooltipHeight;
+            string tooltip = GUI.tooltip;
+
+            if(ability is IFiniteUseManagerClient)
+            {
+                IFiniteUseManagerClient finiteUseAbility = ((IFiniteUseManagerClient)ability);
+
+                tooltipHeight += tooltipHeightIncrement;
+                tooltipY -= tooltipHeightIncrement;
+                tooltip += "\nUses: " + finiteUseAbility.GetUsesRemaining();
+            }
+
+            if(ability is ICooldownManagerClient)
+            {
+                ICooldownManagerClient cooldownAbility = ((ICooldownManagerClient)ability);
+
+                if(cooldownAbility.NeedsCooldown())
+                {
+                    tooltipHeight += tooltipHeightIncrement;
+                    tooltipY -= tooltipHeightIncrement;
+                    tooltip += "\nCooldown: " + cooldownAbility.GetCooldown();
+                }
+            }
 
             Rect tooltipPosition = new Rect()
             {
@@ -117,7 +140,7 @@ namespace RainesGames.UI
             };
 
             if(GUI.tooltip + "Ability" == ability.GetType().Name)
-                GUI.Label(tooltipPosition, GUI.tooltip);
+                GUI.Label(tooltipPosition, tooltip);
 
             if(activeUnit.GetCurrentState() == UnitState.REROUTE_POWER)
                 DrawReroutePowerButtons(activeUnit);
@@ -318,7 +341,7 @@ namespace RainesGames.UI
 
         void HandleUseAbility(AbsUnit activeUnit, AbsAbility ability)
         {
-            activeUnit.TransitionToState(ability.State);
+            activeUnit.TransitionToState(ability.GetState());
         }
 
         void OnGUI()

@@ -8,28 +8,47 @@ namespace RainesGames.Units.Abilities.ReroutePower
     [RequireComponent(typeof(CancelReroutePowerAbility))]
     public class ReroutePowerAbility : AbsAbility, ITargetlessAbility
     {
-        private Validator _validator;
+        private Validator _validator = new Validator();
 
-        protected override void Awake()
+        public DataAbility Data;
+
+        public override bool CanBeUsed()
         {
-            base.Awake();
-            _firstAbilityCost = 1;
-            _secondAbilityCost = 1;
-            _validator = new Validator();
+            return IsAffordable() && _parentUnit.HasAbility<CancelReroutePowerAbility>();
         }
 
         public void Execute()
         {
-            if(_validator.IsValid(_controller))
+            if(_validator.IsValid(_parentUnit))
             {
-                _controller.DiscardPowerState();
+                _parentUnit.DiscardPowerState();
                 DecrementAbilityPoints();
             }
         }
 
-        void Start()
+        public override int GetFirstAbilityCost()
         {
-             _state = UnitState.REROUTE_POWER;
+            return Data.FirstAbilityCost;
+        }
+
+        public override int GetSecondAbilityCost()
+        {
+            return Data.SecondAbilityCost;
+        }
+
+        public override AudioClip GetSoundEffect()
+        {
+            return Data.SoundEffect;
+        }
+
+        public override UnitState GetState()
+        {
+            return Data.State;
+        }
+
+        public override bool ShowInTray()
+        {
+            return Data.ShowInTray;
         }
     }
 }

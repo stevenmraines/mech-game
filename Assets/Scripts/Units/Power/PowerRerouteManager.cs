@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RainesGames.Units.Power
 {
-    public class PowerManager : MonoBehaviour, IPowerContainer
+    public class PowerRerouteManager : MonoBehaviour, IPowerContainer
     {
         private int _maxPower = 7;
         private Dictionary<IPowerContainerInteractable, int> _oldState;

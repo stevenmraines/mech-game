@@ -17,7 +17,7 @@ namespace RainesGames.Units
     [RequireComponent(typeof(FactoryResetStatusManager))]
     [RequireComponent(typeof(HackStatusManager))]
     [RequireComponent(typeof(PositionManager))]
-    [RequireComponent(typeof(PowerManager))]
+    [RequireComponent(typeof(PowerRerouteManager))]
     [RequireComponent(typeof(UnderclockStatusManager))]
     [RequireComponent(typeof(UnitStateManager))]
     public abstract class AbsUnit : MonoBehaviour, IUnit
@@ -26,11 +26,11 @@ namespace RainesGames.Units
         public abstract void DecrementAbilityPoints(int points = 1);
         public abstract void DiscardPowerState();
         public abstract void FactoryReset();
+        public abstract bool FirstAbilitySpent();
         public abstract void ForceSpendAllAbilityPoints();
         public abstract int GetAbilityPoints();
         public abstract UnitState GetCurrentState();
         public abstract int GetFactoryResetTurnsRemaining();
-        public abstract bool GetFirstAbilitySpent();
         public abstract int GetHackedTurnsRemaining();
         public abstract int GetMaxPower();
         public abstract int GetMovement();
@@ -74,7 +74,7 @@ namespace RainesGames.Units
 
             foreach(AbsAbility ability in abilities)
             {
-                if(ability.ShowInTray)
+                if(ability.ShowInTray())
                     filteredAbilities.Add(ability);
             }
 
@@ -86,10 +86,16 @@ namespace RainesGames.Units
             return GetComponent<T>();
         }
 
+        public AbsAbility[] GetCooldownAbilities()
+        {
+            AbsAbility[] abilities = gameObject.GetComponents<AbsAbility>();
+            return abilities.Where(ability => ability is ICooldownManagerClient).ToArray();
+        }
+
         public AbsAbility[] GetPoweredAbilities()
         {
             AbsAbility[] abilities = gameObject.GetComponents<AbsAbility>();
-            return abilities.Where(ability => ability is IPowerContainerInteractable).ToArray();
+            return abilities.Where(ability => ability is IPowerManagerClient).ToArray();
         }
 
         public bool HasAbility<T>() where T : AbsAbility

@@ -14,21 +14,19 @@ namespace RainesGames.Units.Abilities.Move
         private NavMeshAgent _navMeshAgent;
         private int _pathIndex = 0;
         private int _runningHash = Animator.StringToHash("Running");
-        private Validator _validator;
+        private Validator _validator = new Validator();
+
+        public DataAbility Data;
 
         public delegate void MoveAbilityDelegate();
         public static event MoveAbilityDelegate OnMoveEnd;
         public static event MoveAbilityDelegate OnMoveStart;
 
-        protected override void Awake()
+        public override bool CanBeUsed()
         {
-            base.Awake();
-            _firstAbilityCost = 1;
-            _secondAbilityCost = 1;
-            _showInTray = false;
-            _validator = new Validator();
+            return IsAffordable();
         }
-        
+
         // TODO Move all this NavMeshAgent helper stuff into some separate class
         bool DestinationReached()
         {
@@ -42,7 +40,7 @@ namespace RainesGames.Units.Abilities.Move
 
         public void Execute(List<int> path)
         {
-            if(_validator.IsValid(_controller, path))
+            if(_validator.IsValid(_parentUnit, path))
             {
                 ResetPathIndex();
                 StartCoroutine(Move(path));
@@ -57,6 +55,26 @@ namespace RainesGames.Units.Abilities.Move
         bool FinalDestinationIsSet(List<int> path)
         {
             return _pathIndex == path.Count - 1;
+        }
+
+        public override int GetFirstAbilityCost()
+        {
+            return Data.FirstAbilityCost;
+        }
+
+        public override int GetSecondAbilityCost()
+        {
+            return Data.SecondAbilityCost;
+        }
+
+        public override AudioClip GetSoundEffect()
+        {
+            return Data.SoundEffect;
+        }
+
+        public override UnitState GetState()
+        {
+            return Data.State;
         }
 
         IEnumerator Move(List<int> path)
@@ -76,7 +94,7 @@ namespace RainesGames.Units.Abilities.Move
                 yield return new WaitForSecondsRealtime(.05f);
             }
 
-            _controller.SetCell(path[path.Count - 1]);
+            _parentUnit.SetCell(path[path.Count - 1]);
             DecrementAbilityPoints();
             TransitionToIdle();
             OnMoveEnd?.Invoke();
@@ -92,20 +110,24 @@ namespace RainesGames.Units.Abilities.Move
             _navMeshAgent.SetDestination(GridWrapper.GetCellPosition(cellIndex));
         }
 
+        public override bool ShowInTray()
+        {
+            return Data.ShowInTray;
+        }
+
         void Start()
         {
-            _state = UnitState.MOVE;
-            _navMeshAgent = ((MechController)_controller).NavMeshAgent;
+            _navMeshAgent = ((MechController)_parentUnit).NavMeshAgent;
         }
 
         void TransitionToIdle()
         {
-            ((MechController)_controller).Animator.SetBool(_runningHash, false);
+            ((MechController)_parentUnit).Animator.SetBool(_runningHash, false);
         }
 
         void TransitionToRun()
         {
-            ((MechController)_controller).Animator.SetBool(_runningHash, true);
+            ((MechController)_parentUnit).Animator.SetBool(_runningHash, true);
         }
     }
 }

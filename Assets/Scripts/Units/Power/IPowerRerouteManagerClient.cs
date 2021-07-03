@@ -2,7 +2,7 @@ using RainesGames.Common.Power;
 
 namespace RainesGames.Units.Power
 {
-    public interface IPowerManagerClient
+    public interface IPowerRerouteManagerClient
     {
         void DiscardPowerState();
         int GetMaxPower();

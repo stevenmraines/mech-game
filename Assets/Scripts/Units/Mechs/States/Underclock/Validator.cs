@@ -7,7 +7,7 @@ namespace RainesGames.Units.Mechs.States.Underclock
         public bool CanEnterState(MechController mech)
         {
             UnderclockAbility ability = mech.GetAbility<UnderclockAbility>();
-            return ability != null && ability.IsAffordable() && ability.IsPowered();
+            return ability != null && ability.CanBeUsed();
         }
     }
 }

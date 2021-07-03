@@ -10,10 +10,11 @@ using RainesGames.Units.States;
 namespace RainesGames.Units
 {
     public interface IUnit : IAbilityPointsManagerClient, ICellEvents, IFactoryResetClient, IHackClient,
-        IPositionManagerClient, IPowerManagerClient, IUnderclockClient, IUnitEvents, IUnitStateManagerClient
+        IPositionManagerClient, IPowerRerouteManagerClient, IUnderclockClient, IUnitEvents, IUnitStateManagerClient
     {
         T GetAbility<T>() where T : AbsAbility;
         AbsAbility[] GetAbilities(bool filterShowInTray = true);
+        AbsAbility[] GetCooldownAbilities();
         AbsAbility[] GetPoweredAbilities();
         bool HasAbility<T>() where T : AbsAbility;
         bool HasEnemyTag();

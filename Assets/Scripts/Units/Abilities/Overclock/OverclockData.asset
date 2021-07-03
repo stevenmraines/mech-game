@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96c3d0529a60cb949a4cd4e01565d7f3, type: 3}
   m_Name: OverclockData
   m_EditorClassIdentifier: 
+  cooldownDuration: 2
+  FirstAbilityCost: 2
   MaxPower: 1
   MinPower: 1
+  SecondAbilityCost: 1
+  ShowInTray: 1
   SoundEffect: {fileID: 8300000, guid: db88017a85a7cdd4ca5dd5da20e05e61, type: 3}
+  State: 5

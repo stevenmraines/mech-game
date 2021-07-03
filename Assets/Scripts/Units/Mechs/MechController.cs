@@ -27,7 +27,7 @@ namespace RainesGames.Units.Mechs
         private FactoryResetStatusManager _factoryResetStatusManager;
         private HackStatusManager _hackStatusManager;
         private PositionManager _positionManager;
-        private PowerManager _powerManager;
+        private PowerRerouteManager _powerManager;
         private StateEventHandlersMap _stateEventHandlers;
         private UnitStateManager _stateManager;
         private StateTransitionValidatorMap _transitionValidators;
@@ -55,7 +55,7 @@ namespace RainesGames.Units.Mechs
             _hackStatusManager = GetComponent<HackStatusManager>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _positionManager = GetComponent<PositionManager>();
-            _powerManager = GetComponent<PowerManager>();
+            _powerManager = GetComponent<PowerRerouteManager>();
             _stateManager = GetComponent<UnitStateManager>();
             _underclockStatusManager = GetComponent<UnderclockStatusManager>();
         }
@@ -119,6 +119,12 @@ namespace RainesGames.Units.Mechs
          * because if a unit is in the noAP state and another unit uses
          * Overclock on them, we want them to transition to Idle/Move.
          */
+        void CooldownAbilities()
+        {
+            foreach(AbsAbility ability in GetCooldownAbilities())
+                ((ICooldownManagerClient)ability).Cooldown();
+        }
+
         void OnAbilityPointsChange()
         {
             _stateManager.TransitionToState(GetFallbackState());
@@ -137,7 +143,10 @@ namespace RainesGames.Units.Mechs
         void OnEnterStateEnemyTurn()
         {
             if(IsEnemy())
+            {
                 ResetAbilityPointsAndState();
+                CooldownAbilities();
+            }
         }
 
         void OnExitStateEnemyTurn()
@@ -155,7 +164,10 @@ namespace RainesGames.Units.Mechs
         void OnEnterStatePlayerTurn()
         {
             if(IsPlayer())
+            {
                 ResetAbilityPointsAndState();
+                CooldownAbilities();
+            }
         }
 
         void OnExitStatePlayerTurn()
@@ -184,6 +196,11 @@ namespace RainesGames.Units.Mechs
             _abilityPointsManager.Decrement(points);
         }
 
+        public override bool FirstAbilitySpent()
+        {
+            return _abilityPointsManager.FirstAbilitySpent;
+        }
+
         public override void ForceSpendAllAbilityPoints()
         {
             _abilityPointsManager.ForceSpendAllAbilityPoints();
@@ -200,11 +217,6 @@ namespace RainesGames.Units.Mechs
                 return Mathf.Max(0, _abilityPointsManager.StartOfTurnAbilityPoints - 1);  // TODO Make this and overclock stackable?
 
             return _abilityPointsManager.StartOfTurnAbilityPoints;
-        }
-
-        public override bool GetFirstAbilitySpent()
-        {
-            return _abilityPointsManager.FirstAbilitySpent;
         }
 
         public override int GetStartOfTurnAbilityPoints()

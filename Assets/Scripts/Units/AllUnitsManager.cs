@@ -131,7 +131,7 @@ namespace RainesGames.Units
             for(int i = 0; i < abilities.Length; i++)
             {
                 if(!reroutingPower && intKeyCodeMap.ContainsKey(i) && Input.GetKeyUp(intKeyCodeMap[i]))
-                    activeUnit.TransitionToState(abilities[i].State);
+                    activeUnit.TransitionToState(abilities[i].GetState());
             }
         }
     }

@@ -7,7 +7,7 @@ namespace RainesGames.Units.Mechs.States.Overclock
         public bool CanEnterState(MechController mech)
         {
             OverclockAbility ability = mech.GetAbility<OverclockAbility>();
-            return ability != null && ability.IsAffordable() && ability.IsPowered();
+            return ability != null && ability.CanBeUsed();
         }
     }
 }

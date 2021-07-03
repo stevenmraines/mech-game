@@ -10,40 +10,38 @@ namespace RainesGames.Units.Abilities
          * Some tight coupling between abilities and units should be okay,
          * since every ability will belong to a particular unit.
          */
-        protected AbsUnit _controller;
-
-        protected int _firstAbilityCost;
-        public int FirstAbilityCost => _firstAbilityCost;
-
-        protected int _secondAbilityCost;
-        public int SecondAbilityCost => _secondAbilityCost;
-
-        protected bool _showInTray = true;
-        public bool ShowInTray => _showInTray;
-
-        protected AudioClip _soundEffect;
-
-        protected UnitState _state;
-        public UnitState State => _state;
+        protected AbsUnit _parentUnit;
 
         protected virtual void Awake()
         {
-            _controller = GetComponent<AbsUnit>();
+            _parentUnit = GetComponent<AbsUnit>();
         }
+
+        public abstract bool CanBeUsed();
 
         protected virtual void DecrementAbilityPoints()
         {
-            _controller.DecrementAbilityPoints(GetAbilityCost());
+            _parentUnit.DecrementAbilityPoints(GetAbilityCost());
         }
-
+        
         public virtual int GetAbilityCost()
         {
-            return _controller.GetFirstAbilitySpent() ? _secondAbilityCost : _firstAbilityCost;
+            return _parentUnit.FirstAbilitySpent() ? GetSecondAbilityCost() : GetFirstAbilityCost();
         }
+
+        public abstract int GetFirstAbilityCost();
+
+        public abstract int GetSecondAbilityCost();
+
+        public abstract AudioClip GetSoundEffect();
+
+        public abstract UnitState GetState();
 
         public virtual bool IsAffordable()
         {
-            return _controller.GetAbilityPoints() >= GetAbilityCost();
+            return _parentUnit.GetAbilityPoints() >= GetAbilityCost();
         }
+
+        public abstract bool ShowInTray();
     }
 }

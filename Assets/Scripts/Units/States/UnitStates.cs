@@ -1,5 +1,6 @@
 namespace RainesGames.Units.States
 {
+    // TODO Pair states with their associated abilities?
     public enum UnitState
     {
         FACTORY_RESET,

@@ -12,5 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96c3d0529a60cb949a4cd4e01565d7f3, type: 3}
   m_Name: HackData
   m_EditorClassIdentifier: 
+  cooldownDuration: 3
+  FirstAbilityCost: 2
   MaxPower: 3
   MinPower: 3
+  SecondAbilityCost: 1
+  ShowInTray: 1
+  SoundEffect: {fileID: 0}
+  State: 1

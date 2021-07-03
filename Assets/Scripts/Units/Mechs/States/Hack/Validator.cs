@@ -7,7 +7,7 @@ namespace RainesGames.Units.Mechs.States.Hack
         public bool CanEnterState(MechController mech)
         {
             HackAbility ability = mech.GetAbility<HackAbility>();
-            return ability != null && ability.IsAffordable() && ability.IsPowered();
+            return ability != null && ability.CanBeUsed();
         }
     }
 }

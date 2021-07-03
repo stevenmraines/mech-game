@@ -7,7 +7,7 @@ namespace RainesGames.Units.Mechs.States.Move
         public bool CanEnterState(MechController mech)
         {
             MoveAbility ability = mech.GetAbility<MoveAbility>();
-            return ability != null && ability.IsAffordable();  // && ability.IsPowered();
+            return ability != null && ability.CanBeUsed();
         }
     }
 }
