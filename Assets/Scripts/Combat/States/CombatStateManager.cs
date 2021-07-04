@@ -8,6 +8,7 @@ using RainesGames.Combat.States.PlayerWon;
 using RainesGames.Combat.States.StateGraphs.PreemptiveStrike;
 using RainesGames.Common.States;
 using RainesGames.Units.Abilities;
+using RainesGames.Units.Usables.Abilities;
 using UnityEngine;
 
 namespace RainesGames.Combat.States

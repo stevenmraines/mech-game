@@ -1,6 +1,7 @@
 ﻿using RainesGames.Common.Power;
 using RainesGames.Units.Abilities;
 using System.Collections.Generic;
+using RainesGames.Units.Usables.Abilities;
 using UnityEngine;
 
 namespace RainesGames.Units.Power

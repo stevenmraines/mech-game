@@ -6,6 +6,7 @@ using RainesGames.Units.Abilities.CancelReroutePower;
 using RainesGames.Units.Abilities.ReroutePower;
 using RainesGames.Units.Selection;
 using RainesGames.Units.States;
+using RainesGames.Units.Usables.Abilities;
 using UnityEngine;
 
 namespace RainesGames.UI
