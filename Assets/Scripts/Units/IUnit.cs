@@ -1,29 +1,29 @@
 using RainesGames.Grid;
-using RainesGames.Units.Abilities;
-using RainesGames.Units.Abilities.FactoryReset;
-using RainesGames.Units.Abilities.Hack;
-using RainesGames.Units.Abilities.Underclock;
 using RainesGames.Units.Position;
 using RainesGames.Units.Power;
 using RainesGames.Units.States;
 using RainesGames.Units.Usables.Abilities;
+using RainesGames.Units.Usables.Abilities.FactoryReset;
+using RainesGames.Units.Usables.Abilities.Hack;
+using RainesGames.Units.Usables.Abilities.Underclock;
+using System.Collections.Generic;
 
 namespace RainesGames.Units
 {
     public interface IUnit : IAbilityPointsManagerClient, ICellEvents, IFactoryResetClient, IHackClient,
         IPositionManagerClient, IPowerRerouteManagerClient, IUnderclockClient, IUnitEvents, IUnitStateManagerClient
     {
-        T GetAbility<T>() where T : AbsAbility;
-        AbsAbility[] GetAbilities(bool filterShowInTray = true);
-        AbsAbility[] GetCooldownAbilities();
-        AbsAbility[] GetPoweredAbilities();
-        bool HasAbility<T>() where T : AbsAbility;
+        T GetAbility<T>() where T : IAbility;
+        IList<IAbility> GetAbilities(bool filterShowInTray = true);
+        IList<IAbility> GetCooldownAbilities();
+        IList<IAbility> GetPoweredAbilities();
+        bool HasAbility<T>() where T : IAbility;
         bool HasEnemyTag();
         bool HasPlayerTag();
         bool HasTag(string tag);
         bool IsEnemy();
         bool IsPlayer();
-        bool SameTagAs(AbsUnit unit);
-        bool SameTeamAs(AbsUnit unit);
+        bool SameTagAs(IUnit unit);
+        bool SameTeamAs(IUnit unit);
     }
 }

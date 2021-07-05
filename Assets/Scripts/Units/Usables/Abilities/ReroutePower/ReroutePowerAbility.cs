@@ -1,55 +1,65 @@
-﻿using RainesGames.Units.Abilities.CancelReroutePower;
-using RainesGames.Units.States;
-using RainesGames.Units.Usables.Abilities;
+﻿using RainesGames.Units.States;
+using RainesGames.Units.Usables.Abilities.CancelReroutePower;
 using UnityEngine;
 
-namespace RainesGames.Units.Abilities.ReroutePower
+namespace RainesGames.Units.Usables.Abilities.ReroutePower
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(CancelReroutePowerAbility))]
-    public class ReroutePowerAbility : AbsAbility, ITargetlessAbility
+    public class ReroutePowerAbility : AbsUsable, IAbility, ITargetlessAbility
     {
         private Validator _validator = new Validator();
 
-        public DataAbility Data;
+        public DataAbility AbilityData;
+        public DataUsable UsableData;
 
         public override bool CanBeUsed()
         {
-            return IsAffordable() && _parentUnit.HasAbility<CancelReroutePowerAbility>();
+            return IsAffordable() && _unit.HasAbility<CancelReroutePowerAbility>();
         }
 
         public void Execute()
         {
-            if(_validator.IsValid(_parentUnit))
+            if(_validator.IsValid(_unit))
             {
-                _parentUnit.DiscardPowerState();
-                DecrementAbilityPoints();
+                _unit.DiscardPowerState();
+                DecrementActionPoints();
             }
         }
 
-        public override int GetFirstAbilityCost()
+        #region ABILITY DATA METHODS
+        public AudioClip GetSoundEffect()
         {
-            return Data.FirstAbilityCost;
+            return AbilityData.SoundEffect;
+        }
+        #endregion
+
+
+        #region USABLE DATA METHODS
+        public override int GetFirstActionCost()
+        {
+            return UsableData.FirstActionCost;
         }
 
-        public override int GetSecondAbilityCost()
+        public override string GetName()
         {
-            return Data.SecondAbilityCost;
+            return UsableData.UsableName;
         }
 
-        public override AudioClip GetSoundEffect()
+        public override int GetSecondActionCost()
         {
-            return Data.SoundEffect;
+            return UsableData.SecondActionCost;
         }
 
         public override UnitState GetState()
         {
-            return Data.State;
+            return UsableData.State;
         }
 
         public override bool ShowInTray()
         {
-            return Data.ShowInTray;
+            return UsableData.ShowInTray;
         }
+        #endregion
     }
 }

@@ -12,14 +12,14 @@ namespace RainesGames.Combat.States.EnemyPlacement
             _state = enemyPlacementState;
         }
 
-        public void OnUnitClick(AbsUnit unit, int buttonIndex)
+        public void OnUnitClick(IUnit unit, int buttonIndex)
         {
             if(unit.IsEnemy())
                 UnitSelectionManager.SetActiveUnit(unit);
         }
 
-        public void OnUnitEnter(AbsUnit unit) { }
+        public void OnUnitEnter(IUnit unit) { }
 
-        public void OnUnitExit(AbsUnit unit) { }
+        public void OnUnitExit(IUnit unit) { }
     }
 }

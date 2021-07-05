@@ -1,5 +1,4 @@
 ﻿using RainesGames.Combat.States;
-using RainesGames.Units.Abilities;
 using RainesGames.Units.Selection;
 using RainesGames.Units.States;
 using System.Collections.Generic;
@@ -10,15 +9,15 @@ namespace RainesGames.Units
 {
     public class AllUnitsManager : MonoBehaviour
     {
-        private static AbsUnit[] _units;
-        public static AbsUnit[] Units => _units;
+        private static IList<IUnit> _units;
+        public static IList<IUnit> Units => _units;
 
         public const string ENEMY_TAG = "Enemy";
         public const string PLAYER_TAG = "Player";
 
-        static bool AllActionPointsSpent(List<AbsUnit> units)
+        static bool AllActionPointsSpent(IList<IUnit> units)
         {
-            foreach(AbsUnit unit in units)
+            foreach(IUnit unit in units)
             {
                 if(unit.GetAbilityPoints() > 0)
                     return false;
@@ -47,9 +46,9 @@ namespace RainesGames.Units
             return AllUnitsPlaced(GetPlayerUnits());
         }
 
-        static bool AllUnitsPlaced(List<AbsUnit> units)
+        static bool AllUnitsPlaced(IList<IUnit> units)
         {
-            foreach(AbsUnit unit in units)
+            foreach(IUnit unit in units)
             {
                 if(!unit.IsPlaced())
                     return false;
@@ -63,11 +62,11 @@ namespace RainesGames.Units
             _units = FindObjectsOfType<AbsUnit>();
         }
 
-        public static List<AbsUnit> GetEnemyUnits()
+        public static IList<IUnit> GetEnemyUnits()
         {
-            List<AbsUnit> enemyUnits = new List<AbsUnit>();
+            IList<IUnit> enemyUnits = new List<IUnit>();
 
-            foreach(AbsUnit unit in _units)
+            foreach(IUnit unit in _units)
             {
                 if(unit.IsEnemy())
                     enemyUnits.Add(unit);
@@ -76,11 +75,11 @@ namespace RainesGames.Units
             return enemyUnits;
         }
         
-        public static List<AbsUnit> GetPlayerUnits()
+        public static IList<IUnit> GetPlayerUnits()
         {
-            List<AbsUnit> playerUnits = new List<AbsUnit>();
+            IList<IUnit> playerUnits = new List<IUnit>();
 
-            foreach(AbsUnit unit in _units)
+            foreach(IUnit unit in _units)
             {
                 if(unit.IsPlayer())
                     playerUnits.Add(unit);
@@ -92,7 +91,7 @@ namespace RainesGames.Units
         void Update()
         {
             // TODO remove all this crap
-            AbsUnit activeUnit = UnitSelectionManager.ActiveUnit;
+            IUnit activeUnit = UnitSelectionManager.ActiveUnit;
 
             if(activeUnit == null)
                 return;
@@ -110,9 +109,9 @@ namespace RainesGames.Units
             if(!reroutingPower && Input.GetMouseButtonUp(1))
                 activeUnit.TransitionToState(UnitState.MOVE);
 
-            AbsAbility[] abilities = AbilityTraySort.GetSortedUnitAbilities(activeUnit);
+            IList<IAbility> abilities = AbilityTraySort.GetSortedUnitAbilities(activeUnit);
 
-            if(abilities.Length == 0)
+            if(abilities.Count == 0)
                 return;
 
             Dictionary<int, KeyCode> intKeyCodeMap = new Dictionary<int, KeyCode>()
@@ -129,7 +128,7 @@ namespace RainesGames.Units
                 { 9, KeyCode.Alpha0 }
             };
 
-            for(int i = 0; i < abilities.Length; i++)
+            for(int i = 0; i < abilities.Count; i++)
             {
                 if(!reroutingPower && intKeyCodeMap.ContainsKey(i) && Input.GetKeyUp(intKeyCodeMap[i]))
                     activeUnit.TransitionToState(abilities[i].GetState());

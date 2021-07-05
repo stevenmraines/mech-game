@@ -1,64 +1,44 @@
 ﻿using RainesGames.Common.Power;
-using RainesGames.Units.Abilities.ReroutePower;
 using RainesGames.Units.States;
-using RainesGames.Units.Usables.Abilities;
+using RainesGames.Units.Usables.Abilities.ReroutePower;
 using UnityEngine;
 
-namespace RainesGames.Units.Abilities.Underclock
+namespace RainesGames.Units.Usables.Abilities.Underclock
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(ReroutePowerAbility))]
-    public class UnderclockAbility : AbsAbility, ICooldownManagerClient, IPowerManagerClient, IUnitTargetAbility
+    public class UnderclockAbility : AbsUsable, IAbility, ICooldownManagerClient, IPowerManagerClient, IUnitTargetAbility
     {
         private CooldownManager _cooldownManager = new CooldownManager();
         private PowerManager _powerManager = new PowerManager();
         private Validator _validator = new Validator();
 
-        public DataAbility Data;
+        public DataAbility AbilityData;
         public DataCooldownAbility CooldownData;
         public DataPoweredAbility PowerData;
         public DataStatusAbility StatusData;
+        public DataUsable UsableData;
 
         public override bool CanBeUsed()
         {
             return IsAffordable() && IsPowered() && !NeedsCooldown();
         }
 
-        public void Execute(AbsUnit targetUnit)
+        public void Execute(IUnit targetUnit)
         {
-            if(_validator.IsValid(_parentUnit, targetUnit))
+            if(_validator.IsValid(_unit, targetUnit))
             {
                 targetUnit.Underclock(GetDuration());
-                DecrementAbilityPoints();
+                DecrementActionPoints();
                 ResetCooldown();
             }
         }
 
 
         #region ABILITY DATA METHODS
-        public override int GetFirstAbilityCost()
+        public AudioClip GetSoundEffect()
         {
-            return Data.FirstAbilityCost;
-        }
-
-        public override int GetSecondAbilityCost()
-        {
-            return Data.SecondAbilityCost;
-        }
-
-        public override AudioClip GetSoundEffect()
-        {
-            return Data.SoundEffect;
-        }
-
-        public override UnitState GetState()
-        {
-            return Data.State;
-        }
-
-        public override bool ShowInTray()
-        {
-            return Data.ShowInTray;
+            return AbilityData.SoundEffect;
         }
         #endregion
 
@@ -128,6 +108,34 @@ namespace RainesGames.Units.Abilities.Underclock
         public int GetDuration()
         {
             return StatusData.Duration;
+        }
+        #endregion
+
+
+        #region USABLE DATA METHODS
+        public override int GetFirstActionCost()
+        {
+            return UsableData.FirstActionCost;
+        }
+
+        public override string GetName()
+        {
+            return UsableData.UsableName;
+        }
+
+        public override int GetSecondActionCost()
+        {
+            return UsableData.SecondActionCost;
+        }
+
+        public override UnitState GetState()
+        {
+            return UsableData.State;
+        }
+
+        public override bool ShowInTray()
+        {
+            return UsableData.ShowInTray;
         }
         #endregion
     }

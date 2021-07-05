@@ -2,7 +2,7 @@ namespace RainesGames.Units
 {
     public interface IUnitTransitEvents
     {
-        void OnUnitEnter(AbsUnit unit);
-        void OnUnitExit(AbsUnit unit);
+        void OnUnitEnter(IUnit unit);
+        void OnUnitExit(IUnit unit);
     }
 }

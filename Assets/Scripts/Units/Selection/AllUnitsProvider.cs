@@ -5,9 +5,9 @@ namespace RainesGames.Units.Selection
 {
     public class AllUnitsProvider : MonoBehaviour, ISelectablesProvider
     {
-        public List<AbsUnit> GetSelectables()
+        public IList<IUnit> GetSelectables()
         {
-            return new List<AbsUnit>(AllUnitsManager.Units);
+            return new List<IUnit>(AllUnitsManager.Units);
         }
     }
 }

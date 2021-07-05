@@ -1,4 +1,4 @@
-using RainesGames.Units.Abilities.FactoryReset;
+using RainesGames.Units.Usables.Abilities.FactoryReset;
 
 namespace RainesGames.Units.Mechs.States.FactoryReset
 {

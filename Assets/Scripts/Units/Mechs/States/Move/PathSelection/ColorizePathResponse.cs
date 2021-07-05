@@ -8,19 +8,19 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
 {
     public class ColorizePathResponse : MonoBehaviour, IPathTransitEvents
     {
-        void ColorizeCells(TerrainGridSystem sender, List<int> cells, Color color)
+        void ColorizeCells(TerrainGridSystem sender, IList<int> cells, Color color)
         {
             foreach(int cellIndex in cells)
                 GridWrapper.SetColor(cellIndex, color);
         }
 
-        public void OnPathEnter(TerrainGridSystem sender, List<int> waypoints, List<int> path)
+        public void OnPathEnter(TerrainGridSystem sender, IList<int> waypoints, IList<int> path)
         {
             ColorizeCells(sender, path, Color.blue);
             ColorizeCells(sender, waypoints, Color.cyan);
         }
 
-        public void OnPathExit(TerrainGridSystem sender, List<int> waypoints, List<int> path)
+        public void OnPathExit(TerrainGridSystem sender, IList<int> waypoints, IList<int> path)
         {
             ColorizeCells(sender, path, CellSelectionManager.DefaultCellColor);
         }

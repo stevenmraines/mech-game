@@ -53,7 +53,7 @@ namespace RainesGames.Grid
             ShowTerritories(true);
         }
 
-        public static List<int> FindPath(int startCellIndex, int endCellIndex, bool unblockStartCell = false)
+        public static IList<int> FindPath(int startCellIndex, int endCellIndex, bool unblockStartCell = false)
         {
             return FindPath(GetCell(startCellIndex), GetCell(endCellIndex), unblockStartCell);
         }
@@ -62,12 +62,12 @@ namespace RainesGames.Grid
          * Return a path between two cells, optionally temporarily unblocking the
          * starting cell to allow paths which begin at some unit's current position.
          */
-        public static List<int> FindPath(Cell startCell, Cell endCell, bool unblockStartCell = false)
+        public static IList<int> FindPath(Cell startCell, Cell endCell, bool unblockStartCell = false)
         {
             if(unblockStartCell)
                 UnblockCell(startCell);
 
-            List<int> path = _terrainGridSystem.FindPath(startCell.index, endCell.index);
+            IList<int> path = _terrainGridSystem.FindPath(startCell.index, endCell.index);
 
             if(unblockStartCell)
                 BlockCell(startCell);
@@ -139,12 +139,12 @@ namespace RainesGames.Grid
             DisableTerritories();
         }
 
-        public void OnUnitEnter(AbsUnit unit)
+        public void OnUnitEnter(IUnit unit)
         {
             DisableCellHighlight();
         }
 
-        public void OnUnitExit(AbsUnit unit)
+        public void OnUnitExit(IUnit unit)
         {
             EnableCellHighlight();
         }

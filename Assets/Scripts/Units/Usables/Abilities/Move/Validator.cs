@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using RainesGames.Units.Usables.Abilities;
+using RainesGames.Units.Mechs;
 using UnityEngine;
 
-namespace RainesGames.Units.Abilities.Move
+namespace RainesGames.Units.Usables.Abilities.Move
 {
     public class Validator : IPathTargetAbilityValidator
     {
-        public bool IsValid(AbsUnit parentUnit, List<int> path)
+        public bool IsValid(IUnit parentUnit, IList<int> path)
         {
             if(path.Count == 0)
             {
@@ -14,7 +14,7 @@ namespace RainesGames.Units.Abilities.Move
                 return false;
             }
 
-            if(parentUnit.GetMovement() < path.Count)
+            if(((MechController)parentUnit).GetMovement() < path.Count)
             {
                 Debug.Log("Cannot move that far");
                 return false;

@@ -1,25 +1,25 @@
 ﻿using RainesGames.Common.Power;
-using RainesGames.Units.Abilities.ReroutePower;
 using RainesGames.Units.States;
-using RainesGames.Units.Usables.Abilities;
+using RainesGames.Units.Usables.Abilities.ReroutePower;
 using UnityEngine;
 
-namespace RainesGames.Units.Abilities.FactoryReset
+namespace RainesGames.Units.Usables.Abilities.FactoryReset
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(ReroutePowerAbility))]
-    public class FactoryResetAbility : AbsAbility, ICooldownManagerClient, IFiniteUseManagerClient, IPowerManagerClient, IStatusAbility, IUnitTargetAbility
+    public class FactoryResetAbility : AbsUsable, IAbility, ICooldownManagerClient, IFiniteUseManagerClient, IPowerManagerClient, IStatusAbility, IUnitTargetAbility
     {
         private CooldownManager _cooldownManager = new CooldownManager();
         private FiniteUseManager _finiteUseManager = new FiniteUseManager();
         private PowerManager _powerManager = new PowerManager();
         private Validator _validator = new Validator();
 
-        public DataAbility Data;
+        public DataAbility AbilityData;
         public DataCooldownAbility CooldownData;
         public DataFiniteUseAbility FiniteUseData;
         public DataPoweredAbility PowerData;
         public DataStatusAbility StatusData;
+        public DataUsable UsableData;
 
         protected override void Awake()
         {
@@ -32,42 +32,22 @@ namespace RainesGames.Units.Abilities.FactoryReset
             return IsAffordable() && IsPowered() && HasMoreUses() && !NeedsCooldown();
         }
 
-        public void Execute(AbsUnit targetUnit)
+        public void Execute(IUnit targetUnit)
         {
-            if(_validator.IsValid(_parentUnit, targetUnit))
-            {
-                targetUnit.FactoryReset(GetDuration());
-                DecrementAbilityPoints();
-                ResetCooldown();
-                DecrementUsesRemaining();
-            }
+            if(!_validator.IsValid(_unit, targetUnit))
+                return;
+
+            targetUnit.FactoryReset(GetDuration());
+            DecrementActionPoints();
+            ResetCooldown();
+            DecrementUsesRemaining();
         }
 
 
         #region ABILITY DATA METHODS
-        public override int GetFirstAbilityCost()
+        public AudioClip GetSoundEffect()
         {
-            return Data.FirstAbilityCost;
-        }
-
-        public override int GetSecondAbilityCost()
-        {
-            return Data.SecondAbilityCost;
-        }
-
-        public override AudioClip GetSoundEffect()
-        {
-            return Data.SoundEffect;
-        }
-
-        public override UnitState GetState()
-        {
-            return Data.State;
-        }
-
-        public override bool ShowInTray()
-        {
-            return Data.ShowInTray;
+            return AbilityData.SoundEffect;
         }
         #endregion
 
@@ -160,6 +140,34 @@ namespace RainesGames.Units.Abilities.FactoryReset
         public int GetDuration()
         {
             return StatusData.Duration;
+        }
+        #endregion
+
+
+        #region USABLE DATA METHODS
+        public override int GetFirstActionCost()
+        {
+            return UsableData.FirstActionCost;
+        }
+
+        public override string GetName()
+        {
+            return UsableData.UsableName;
+        }
+
+        public override int GetSecondActionCost()
+        {
+            return UsableData.SecondActionCost;
+        }
+
+        public override UnitState GetState()
+        {
+            return UsableData.State;
+        }
+
+        public override bool ShowInTray()
+        {
+            return UsableData.ShowInTray;
         }
         #endregion
     }

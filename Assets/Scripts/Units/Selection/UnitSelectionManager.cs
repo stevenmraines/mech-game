@@ -17,13 +17,13 @@ namespace RainesGames.Units.Selection
         private static ISelectionResponse _selectionResponse;
         private static ISelector _selector;
 
-        private static AbsUnit _activeUnit;
-        public static AbsUnit ActiveUnit => _activeUnit;
+        private static IUnit _activeUnit;
+        public static IUnit ActiveUnit => _activeUnit;
 
-        private static AbsUnit _currentSelection;
-        public static AbsUnit CurrentSelection => _currentSelection;
+        private static IUnit _currentSelection;
+        public static IUnit CurrentSelection => _currentSelection;
 
-        private static AbsUnit _oldSelection;
+        private static IUnit _oldSelection;
         private static bool _differentSelection => _oldSelection != _currentSelection;
         private static bool _mouseEnter => _currentSelection != null && _differentSelection;
         private static bool _mouseExit => _currentSelection == null && _oldSelection != null;
@@ -33,10 +33,10 @@ namespace RainesGames.Units.Selection
         public static Color PlayerColor;
         public static Color EnemyColor;
 
-        public delegate void UnitClickDelegate(AbsUnit unit, int buttonIndex);
+        public delegate void UnitClickDelegate(IUnit unit, int buttonIndex);
         public static event UnitClickDelegate OnUnitClick;
 
-        public delegate void UnitTransitDelegate(AbsUnit unit);
+        public delegate void UnitTransitDelegate(IUnit unit);
         public static event UnitTransitDelegate OnUnitEnter;
         public static event UnitTransitDelegate OnUnitExit;
 
@@ -86,7 +86,7 @@ namespace RainesGames.Units.Selection
             SetActiveUnit(null);
         }
 
-        public static void SetActiveUnit(AbsUnit unit)
+        public static void SetActiveUnit(IUnit unit)
         {
             _activeUnit = unit;
         }

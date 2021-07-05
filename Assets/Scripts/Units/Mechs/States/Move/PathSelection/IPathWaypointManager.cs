@@ -6,7 +6,7 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
     {
         void AddWaypoint(int cellIndex);
         void ClearWaypoints();
-        List<int> GetWaypoints();
+        IList<int> GetWaypoints();
         void RemoveWaypoint(int cellIndex);
         bool WaypointIsSet(int cellIndex);
     }

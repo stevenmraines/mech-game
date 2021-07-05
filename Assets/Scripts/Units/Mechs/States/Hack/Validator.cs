@@ -1,4 +1,4 @@
-using RainesGames.Units.Abilities.Hack;
+using RainesGames.Units.Usables.Abilities.Hack;
 
 namespace RainesGames.Units.Mechs.States.Hack
 {

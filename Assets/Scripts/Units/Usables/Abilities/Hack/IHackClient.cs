@@ -1,4 +1,4 @@
-namespace RainesGames.Units.Abilities.Hack
+namespace RainesGames.Units.Usables.Abilities.Hack
 {
     public interface IHackClient
     {

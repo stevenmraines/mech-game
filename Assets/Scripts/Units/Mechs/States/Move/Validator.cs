@@ -1,4 +1,4 @@
-using RainesGames.Units.Abilities.Move;
+using RainesGames.Units.Usables.Abilities.Move;
 
 namespace RainesGames.Units.Mechs.States.Move
 {

@@ -2,7 +2,6 @@
 using RainesGames.Combat.States.EnemyTurn;
 using RainesGames.Combat.States.PlayerTurn;
 using RainesGames.Common.Power;
-using RainesGames.Units.Abilities;
 using RainesGames.Units.Mechs.Classes;
 using RainesGames.Units.Mechs.States;
 using RainesGames.Units.Selection;
@@ -117,7 +116,7 @@ namespace RainesGames.Units.Mechs
          */
         void CooldownAbilities()
         {
-            foreach(AbsAbility ability in GetCooldownAbilities())
+            foreach(IAbility ability in GetCooldownAbilities())
                 ((ICooldownManagerClient)ability).Cooldown();
         }
 
@@ -278,19 +277,19 @@ namespace RainesGames.Units.Mechs
         #region CELL EVENTS
         public override void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
         {
-            if(UnitSelectionManager.ActiveUnit == this)
+            if((Object)UnitSelectionManager.ActiveUnit == this)
                 _stateEventHandlers.GetCellHandler(GetCurrentState())?.OnCellClick(sender, cellIndex, buttonIndex);
         }
 
         public override void OnCellEnter(TerrainGridSystem sender, int cellIndex)
         {
-            if(UnitSelectionManager.ActiveUnit == this)
+            if((Object)UnitSelectionManager.ActiveUnit == this)
                 _stateEventHandlers.GetCellHandler(GetCurrentState())?.OnCellEnter(sender, cellIndex);
         }
 
         public override void OnCellExit(TerrainGridSystem sender, int cellIndex)
         {
-            if(UnitSelectionManager.ActiveUnit == this)
+            if((Object)UnitSelectionManager.ActiveUnit == this)
                 _stateEventHandlers.GetCellHandler(GetCurrentState())?.OnCellExit(sender, cellIndex);
         }
         #endregion
@@ -407,21 +406,21 @@ namespace RainesGames.Units.Mechs
 
 
         #region UNIT EVENTS
-        public override void OnUnitClick(AbsUnit unit, int buttonIndex)
+        public override void OnUnitClick(IUnit unit, int buttonIndex)
         {
-            if(UnitSelectionManager.ActiveUnit == this)
+            if((Object)UnitSelectionManager.ActiveUnit == this)
                 _stateEventHandlers.GetUnitHandler(GetCurrentState())?.OnUnitClick(unit, buttonIndex);
         }
 
-        public override void OnUnitEnter(AbsUnit unit)
+        public override void OnUnitEnter(IUnit unit)
         {
-            if(UnitSelectionManager.ActiveUnit == this)
+            if((Object)UnitSelectionManager.ActiveUnit == this)
                 _stateEventHandlers.GetUnitHandler(GetCurrentState())?.OnUnitEnter(unit);
         }
 
-        public override void OnUnitExit(AbsUnit unit)
+        public override void OnUnitExit(IUnit unit)
         {
-            if(UnitSelectionManager.ActiveUnit == this)
+            if((Object)UnitSelectionManager.ActiveUnit == this)
                 _stateEventHandlers.GetUnitHandler(GetCurrentState())?.OnUnitExit(unit);
         }
         #endregion

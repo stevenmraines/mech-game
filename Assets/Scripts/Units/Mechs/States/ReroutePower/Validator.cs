@@ -1,4 +1,4 @@
-using RainesGames.Units.Abilities.ReroutePower;
+using RainesGames.Units.Usables.Abilities.ReroutePower;
 
 namespace RainesGames.Units.Mechs.States.ReroutePower
 {

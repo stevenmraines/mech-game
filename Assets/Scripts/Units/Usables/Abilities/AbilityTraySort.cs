@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using RainesGames.Units.Abilities.FactoryReset;
-using RainesGames.Units.Abilities.Hack;
-using RainesGames.Units.Abilities.Overclock;
-using RainesGames.Units.Abilities.ReroutePower;
-using RainesGames.Units.Abilities.Underclock;
+using RainesGames.Units.Usables.Abilities.FactoryReset;
+using RainesGames.Units.Usables.Abilities.Hack;
+using RainesGames.Units.Usables.Abilities.Overclock;
+using RainesGames.Units.Usables.Abilities.ReroutePower;
+using RainesGames.Units.Usables.Abilities.Underclock;
 
 namespace RainesGames.Units.Usables.Abilities
 {
@@ -21,26 +21,26 @@ namespace RainesGames.Units.Usables.Abilities
 
         public static Type[] SortedAbilityTypes => _sortedAbilityTypes;
 
-        public static AbsAbility[] GetSortedUnitAbilities(AbsUnit unit)
+        public static IList<IAbility> GetSortedUnitAbilities(IUnit unit)
         {
-            AbsAbility[] abilities = unit.GetAbilities();
+            IList<IAbility> abilities = unit.GetAbilities();
 
-            if(abilities.Length == 0)
+            if(abilities.Count == 0)
                 return abilities;
 
-            List<AbsAbility> sortedAbilities = new List<AbsAbility>();
+            IList<IAbility> sortedAbilities = new List<IAbility>();
 
             // TODO Nested loops seems kind of hacky, even if this won't hurt performance by any noticeable degree
             foreach(Type abilityType in _sortedAbilityTypes)
             {
-                foreach(AbsAbility ability in abilities)
+                foreach(IAbility ability in abilities)
                 {
                     if(abilityType == ability.GetType() && !sortedAbilities.Contains(ability))
                         sortedAbilities.Add(ability);
                 }
             }
 
-            return sortedAbilities.ToArray();
+            return sortedAbilities;
         }
     }
 }

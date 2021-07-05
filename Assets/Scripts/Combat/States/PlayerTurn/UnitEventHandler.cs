@@ -14,7 +14,7 @@ namespace RainesGames.Combat.States.PlayerTurn
 
         bool CanSetActiveUnit()
         {
-            AbsUnit activeUnit = UnitSelectionManager.ActiveUnit;
+            IUnit activeUnit = UnitSelectionManager.ActiveUnit;
 
             if(activeUnit == null)
                 return true;
@@ -27,7 +27,7 @@ namespace RainesGames.Combat.States.PlayerTurn
             return false;
         }
 
-        public void OnUnitClick(AbsUnit unit, int buttonIndex)
+        public void OnUnitClick(IUnit unit, int buttonIndex)
         {
             if(CanSetActiveUnit())
             {
@@ -38,7 +38,7 @@ namespace RainesGames.Combat.States.PlayerTurn
             _state.Manager.UnitEventRouter.RerouteUnitClick(unit, buttonIndex);
         }
 
-        public void OnUnitEnter(AbsUnit unit)
+        public void OnUnitEnter(IUnit unit)
         {
             if(UnitSelectionManager.ActiveUnit == null)
                 return;
@@ -46,7 +46,7 @@ namespace RainesGames.Combat.States.PlayerTurn
             _state.Manager.UnitEventRouter.RerouteUnitMouseEnter(unit);
         }
 
-        public void OnUnitExit(AbsUnit unit)
+        public void OnUnitExit(IUnit unit)
         {
             if(UnitSelectionManager.ActiveUnit == null)
                 return;

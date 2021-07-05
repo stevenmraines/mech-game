@@ -5,6 +5,6 @@ namespace RainesGames.Grid
 {
     public interface IPathCondenser
     {
-        List<int> GetCondensedPath(TerrainGridSystem sender, List<int> path);
+        IList<int> GetCondensedPath(TerrainGridSystem sender, IList<int> path);
     }
 }

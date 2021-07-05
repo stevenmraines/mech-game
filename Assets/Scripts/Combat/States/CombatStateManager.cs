@@ -7,7 +7,6 @@ using RainesGames.Combat.States.PlayerTurn;
 using RainesGames.Combat.States.PlayerWon;
 using RainesGames.Combat.States.StateGraphs.PreemptiveStrike;
 using RainesGames.Common.States;
-using RainesGames.Units.Abilities;
 using RainesGames.Units.Usables.Abilities;
 using UnityEngine;
 
@@ -100,6 +99,7 @@ namespace RainesGames.Combat.States
             AttemptTransition();
         }
 
+        // TODO Should accept an IState or ICombatState interface instead
         void TransitionToState(AbsCombatState state)
         {
             if(_currentState != null)

@@ -108,7 +108,7 @@ namespace TGS_Editor {
 				}
 				bakedVoronoi = tgs.hasBakedVoronoi;
 				GUI.enabled = bakedVoronoi && !Application.isPlaying;
-				if (GUILayout.Button ("Clear Baked Data")) {
+				if (GUILayout.Button ("Clear Baked AbilityData")) {
 					tgs.voronoiSerializationData = null;
 				}
 				GUI.enabled = true;

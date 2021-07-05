@@ -1,5 +1,4 @@
 ﻿using RainesGames.Common.Power;
-using RainesGames.Units.Abilities;
 using System.Collections.Generic;
 using RainesGames.Units.Usables.Abilities;
 using UnityEngine;
@@ -21,11 +20,11 @@ namespace RainesGames.Units.Power
             return _power;
         }
 
-        public void RecordPowerState(AbsAbility[] abilities)
+        public void RecordPowerState(IList<IAbility> abilities)
         {
             _oldState = new Dictionary<IPowerContainerInteractable, int>();
 
-            foreach(AbsAbility ability in abilities)
+            foreach(IAbility ability in abilities)
             {
                 IPowerContainerInteractable container = (IPowerContainerInteractable)ability;
                 _oldState.Add(container, container.GetPower());

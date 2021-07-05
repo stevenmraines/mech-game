@@ -71,12 +71,12 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
             return AdjacentCellConfiguration.NOT_ADJACENT;
         }
 
-        public List<int> GetCondensedPath(TerrainGridSystem sender, List<int> path)
+        public IList<int> GetCondensedPath(TerrainGridSystem sender, IList<int> path)
         {
             if(path.Count < 2)
                 return path;
 
-            List<int> condensedPath = new List<int>();
+            IList<int> condensedPath = new List<int>();
 
             AdjacentCellConfiguration configuration = GetCellConfiguration(sender, path[0], path[1]);
 

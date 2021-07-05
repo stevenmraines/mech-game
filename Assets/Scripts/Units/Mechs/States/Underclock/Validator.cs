@@ -1,4 +1,4 @@
-using RainesGames.Units.Abilities.Underclock;
+using RainesGames.Units.Usables.Abilities.Underclock;
 
 namespace RainesGames.Units.Mechs.States.Underclock
 {

@@ -5,7 +5,7 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
 {
     public class WaypointManager : MonoBehaviour, IPathWaypointManager
     {
-        private List<int> _waypoints = new List<int>();
+        private IList<int> _waypoints = new List<int>();
 
         public void AddWaypoint(int cellIndex)
         {
@@ -17,7 +17,7 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
             _waypoints = new List<int>();
         }
 
-        public List<int> GetWaypoints()
+        public IList<int> GetWaypoints()
         {
             return _waypoints;
         }

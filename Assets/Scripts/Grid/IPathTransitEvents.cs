@@ -5,7 +5,7 @@ namespace RainesGames.Grid
 {
     public interface IPathTransitEvents
     {
-        void OnPathEnter(TerrainGridSystem sender, List<int> waypoints, List<int> path);
-        void OnPathExit(TerrainGridSystem sender, List<int> waypoints, List<int> path);
+        void OnPathEnter(TerrainGridSystem sender, IList<int> waypoints, IList<int> path);
+        void OnPathExit(TerrainGridSystem sender, IList<int> waypoints, IList<int> path);
     }
 }

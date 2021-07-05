@@ -1,4 +1,4 @@
-using RainesGames.Units.Abilities.Overclock;
+using RainesGames.Units.Usables.Abilities.Overclock;
 
 namespace RainesGames.Units.Mechs.States.Overclock
 {

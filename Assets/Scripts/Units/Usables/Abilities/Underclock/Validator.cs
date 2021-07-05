@@ -1,11 +1,10 @@
-﻿using RainesGames.Units.Usables.Abilities;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace RainesGames.Units.Abilities.Underclock
+namespace RainesGames.Units.Usables.Abilities.Underclock
 {
     public class Validator : IUnitTargetAbilityValidator
     {
-        public bool IsValid(AbsUnit parentUnit, AbsUnit targetUnit)
+        public bool IsValid(IUnit parentUnit, IUnit targetUnit)
         {
             if(parentUnit.SameTeamAs(targetUnit))
             {

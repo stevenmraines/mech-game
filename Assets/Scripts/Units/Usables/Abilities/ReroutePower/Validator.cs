@@ -1,11 +1,8 @@
-﻿using RainesGames.Units.Usables.Abilities;
-using UnityEngine;
-
-namespace RainesGames.Units.Abilities.ReroutePower
+﻿namespace RainesGames.Units.Usables.Abilities.ReroutePower
 {
     public class Validator : ITargetlessAbilityValidator
     {
-        public bool IsValid(AbsUnit parentUnit)
+        public bool IsValid(IUnit parentUnit)
         {
             // TODO How to validate this?
             return true;

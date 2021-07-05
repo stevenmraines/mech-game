@@ -1,11 +1,10 @@
-﻿using RainesGames.Units.Usables.Abilities;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace RainesGames.Units.Abilities.Hack
+namespace RainesGames.Units.Usables.Abilities.Hack
 {
     public class Validator : IUnitTargetAbilityValidator
     {
-        public bool IsValid(AbsUnit parentUnit, AbsUnit targetUnit)
+        public bool IsValid(IUnit parentUnit, IUnit targetUnit)
         {
             if(targetUnit.IsHacked())
             {

@@ -1,6 +1,4 @@
-﻿using RainesGames.Units.Usables.Abilities;
-
-namespace RainesGames.Units.Abilities.Underclock
+﻿namespace RainesGames.Units.Usables.Abilities.Underclock
 {
     public class UnderclockStatusManager : AbsAbilityStatusManager { }
 }

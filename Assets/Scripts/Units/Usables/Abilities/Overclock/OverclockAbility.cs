@@ -1,38 +1,38 @@
 ﻿using RainesGames.Audio;
 using RainesGames.Common.Power;
-using RainesGames.Units.Abilities.ReroutePower;
 using RainesGames.Units.States;
-using RainesGames.Units.Usables.Abilities;
+using RainesGames.Units.Usables.Abilities.ReroutePower;
 using UnityEngine;
 
-namespace RainesGames.Units.Abilities.Overclock
+namespace RainesGames.Units.Usables.Abilities.Overclock
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(ReroutePowerAbility))]
-    public class OverclockAbility : AbsAbility, ICooldownManagerClient, IPowerManagerClient, IUnitTargetAbility
+    public class OverclockAbility : AbsUsable, IAbility, ICooldownManagerClient, IPowerManagerClient, IUnitTargetAbility
     {
         private CooldownManager _cooldownManager = new CooldownManager();
         private PowerManager _powerManager = new PowerManager();
         private Validator _validator = new Validator();
 
-        public DataAbility Data;
+        public DataAbility AbilityData;
         public DataCooldownAbility CooldownData;
         public DataPoweredAbility PowerData;
+        public DataUsable UsableData;
 
         public override bool CanBeUsed()
         {
             return IsAffordable() && IsPowered() && !NeedsCooldown();
         }
 
-        public void Execute(AbsUnit targetUnit)
+        public void Execute(IUnit targetUnit)
         {
-            if(_validator.IsValid(_parentUnit, targetUnit))
+            if(_validator.IsValid(_unit, targetUnit))
             {
                 targetUnit.IncrementAbilityPoints();
 
                 // Only decrement AP if the ability was used on an ally or hacked enemy unit
-                if(_parentUnit != targetUnit)
-                    DecrementAbilityPoints();
+                if(_unit != targetUnit)
+                    DecrementActionPoints();
 
                 ResetCooldown();
 
@@ -43,29 +43,9 @@ namespace RainesGames.Units.Abilities.Overclock
 
 
         #region ABILITY DATA METHODS
-        public override int GetFirstAbilityCost()
+        public AudioClip GetSoundEffect()
         {
-            return Data.FirstAbilityCost;
-        }
-
-        public override int GetSecondAbilityCost()
-        {
-            return Data.SecondAbilityCost;
-        }
-
-        public override AudioClip GetSoundEffect()
-        {
-            return Data.SoundEffect;
-        }
-
-        public override UnitState GetState()
-        {
-            return Data.State;
-        }
-
-        public override bool ShowInTray()
-        {
-            return Data.ShowInTray;
+            return AbilityData.SoundEffect;
         }
         #endregion
 
@@ -127,6 +107,34 @@ namespace RainesGames.Units.Abilities.Overclock
         public void RemovePower(int power)
         {
             _powerManager.RemovePower(power);
+        }
+        #endregion
+
+
+        #region USABLE DATA METHODS
+        public override int GetFirstActionCost()
+        {
+            return UsableData.FirstActionCost;
+        }
+
+        public override string GetName()
+        {
+            return UsableData.UsableName;
+        }
+
+        public override int GetSecondActionCost()
+        {
+            return UsableData.SecondActionCost;
+        }
+
+        public override UnitState GetState()
+        {
+            return UsableData.State;
+        }
+
+        public override bool ShowInTray()
+        {
+            return UsableData.ShowInTray;
         }
         #endregion
     }

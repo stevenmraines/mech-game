@@ -1,6 +1,4 @@
-﻿using RainesGames.Units.Usables.Abilities;
-
-namespace RainesGames.Units.Abilities.FactoryReset
+﻿namespace RainesGames.Units.Usables.Abilities.FactoryReset
 {
     public class FactoryResetStatusManager : AbsAbilityStatusManager
     {

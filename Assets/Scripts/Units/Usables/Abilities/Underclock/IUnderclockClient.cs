@@ -1,4 +1,4 @@
-namespace RainesGames.Units.Abilities.Underclock
+namespace RainesGames.Units.Usables.Abilities.Underclock
 {
     public interface IUnderclockClient
     {

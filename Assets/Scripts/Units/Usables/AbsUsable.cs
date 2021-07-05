@@ -3,8 +3,13 @@ using UnityEngine;
 
 namespace RainesGames.Units.Usables
 {
+    [RequireComponent(typeof(AbsUnit))]
     public abstract class AbsUsable : MonoBehaviour, IUsable
     {
+        /*
+         * Some tight coupling between usables and units should be okay,
+         * since every usable will belong to a particular unit.
+         */
         protected IUnit _unit;
 
         public abstract bool CanBeUsed();
@@ -13,6 +18,11 @@ namespace RainesGames.Units.Usables
         public abstract int GetSecondActionCost();
         public abstract UnitState GetState();
         public abstract bool ShowInTray();
+
+        protected virtual void Awake()
+        {
+            _unit = GetComponent<IUnit>();
+        }
 
         protected virtual void DecrementActionPoints()
         {

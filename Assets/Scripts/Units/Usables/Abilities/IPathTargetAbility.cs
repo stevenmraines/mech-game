@@ -4,6 +4,6 @@ namespace RainesGames.Units.Usables.Abilities
 {
     public interface IPathTargetAbility
     {
-        void Execute(List<int> path);
+        void Execute(IList<int> path);
     }
 }

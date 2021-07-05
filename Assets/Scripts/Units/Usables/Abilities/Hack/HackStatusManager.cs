@@ -1,6 +1,4 @@
-﻿using RainesGames.Units.Usables.Abilities;
-
-namespace RainesGames.Units.Abilities.Hack
+﻿namespace RainesGames.Units.Usables.Abilities.Hack
 {
     public class HackStatusManager : AbsAbilityStatusManager
     {

@@ -1,4 +1,4 @@
-namespace RainesGames.Units.Abilities.FactoryReset
+namespace RainesGames.Units.Usables.Abilities.FactoryReset
 {
     public interface IFactoryResetClient
     {

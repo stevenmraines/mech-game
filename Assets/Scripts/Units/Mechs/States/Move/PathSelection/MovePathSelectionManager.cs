@@ -1,7 +1,7 @@
 using RainesGames.Common;
 using RainesGames.Grid;
-using RainesGames.Units.Abilities.Move;
 using System.Collections.Generic;
+using RainesGames.Units.Usables.Abilities.Move;
 using TGS;
 using UnityEngine;
 
@@ -37,7 +37,7 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
         /**
          * Returns the complete, uncondensed path used for drawing/painting cells on the grid.
          */
-        List<int> GetDrawPath(AbsUnit unit, int cellIndex, TerrainGridSystem sender)
+        IList<int> GetDrawPath(IUnit unit, int cellIndex, TerrainGridSystem sender)
         {
             return _pathProvider.GetPath(unit, _waypointManager.GetWaypoints(), cellIndex, sender);
         }
@@ -45,13 +45,13 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
         /**
          * Returns the condensed path that the unit's NavMeshAgent will actually take when moving.
          */
-        List<int> GetMovePath(AbsUnit unit, int cellIndex, TerrainGridSystem sender)
+        IList<int> GetMovePath(IUnit unit, int cellIndex, TerrainGridSystem sender)
         {
-            List<int> rawPath = _pathProvider.GetPath(unit, _waypointManager.GetWaypoints(), cellIndex, sender);
+            IList<int> rawPath = _pathProvider.GetPath(unit, _waypointManager.GetWaypoints(), cellIndex, sender);
             return _pathCondenser.GetCondensedPath(sender, rawPath);
         }
 
-        void HandleMoveClick(AbsUnit unit, int cellIndex, TerrainGridSystem sender)
+        void HandleMoveClick(IUnit unit, int cellIndex, TerrainGridSystem sender)
         {
             OnUnitCellExit(unit, cellIndex, sender);
 
@@ -60,7 +60,7 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
             _waypointManager.ClearWaypoints();
         }
 
-        void HandleWaypointClick(AbsUnit unit, int cellIndex, TerrainGridSystem sender)
+        void HandleWaypointClick(IUnit unit, int cellIndex, TerrainGridSystem sender)
         {
             if(_waypointManager.WaypointIsSet(cellIndex))
             {
@@ -73,7 +73,7 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
             _waypointManager.AddWaypoint(cellIndex);
         }
 
-        public void OnUnitCellClick(AbsUnit unit, int cellIndex, TerrainGridSystem sender, int buttonIndex)
+        public void OnUnitCellClick(IUnit unit, int cellIndex, TerrainGridSystem sender, int buttonIndex)
         {
             if(_moving)
                 return;
@@ -90,12 +90,12 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
             HandleMoveClick(unit, cellIndex, sender);
         }
 
-        public void OnUnitCellEnter(AbsUnit unit, int cellIndex, TerrainGridSystem sender)
+        public void OnUnitCellEnter(IUnit unit, int cellIndex, TerrainGridSystem sender)
         {
             if(_moving)
                 return;
 
-            List<int> drawPath = GetDrawPath(unit, cellIndex, sender);
+            IList<int> drawPath = GetDrawPath(unit, cellIndex, sender);
 
             if(PathIsTooLong(unit, drawPath))
                 return;
@@ -107,12 +107,12 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
             );
         }
 
-        public void OnUnitCellExit(AbsUnit unit, int cellIndex, TerrainGridSystem sender)
+        public void OnUnitCellExit(IUnit unit, int cellIndex, TerrainGridSystem sender)
         {
             if(_moving)
                 return;
 
-            List<int> drawPath = GetDrawPath(unit, cellIndex, sender);
+            IList<int> drawPath = GetDrawPath(unit, cellIndex, sender);
 
             if(PathIsTooLong(unit, drawPath))
                 return;
@@ -136,9 +136,9 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
             MoveAbility.OnMoveStart += DisableUserInteraction;
         }
 
-        bool PathIsTooLong(AbsUnit unit, ICollection<int> path)
+        bool PathIsTooLong(IUnit unit, ICollection<int> path)
         {
-            return path.Count > unit.GetMovement();
+            return path.Count > ((MechController)unit).GetMovement();
         }
     }
 }

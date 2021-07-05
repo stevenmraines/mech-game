@@ -1,14 +1,13 @@
 using RainesGames.Common.Power;
-using RainesGames.Units.Abilities;
-using RainesGames.Units.Abilities.FactoryReset;
-using RainesGames.Units.Abilities.Hack;
-using RainesGames.Units.Abilities.Underclock;
 using RainesGames.Units.Position;
 using RainesGames.Units.Power;
 using RainesGames.Units.States;
 using System.Collections.Generic;
 using System.Linq;
 using RainesGames.Units.Usables.Abilities;
+using RainesGames.Units.Usables.Abilities.FactoryReset;
+using RainesGames.Units.Usables.Abilities.Hack;
+using RainesGames.Units.Usables.Abilities.Underclock;
 using TGS;
 using UnityEngine;
 
@@ -64,9 +63,9 @@ namespace RainesGames.Units
         public abstract void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex);
         public abstract void OnCellEnter(TerrainGridSystem sender, int cellIndex);
         public abstract void OnCellExit(TerrainGridSystem sender, int cellIndex);
-        public abstract void OnUnitClick(AbsUnit unit, int buttonIndex);
-        public abstract void OnUnitEnter(AbsUnit unit);
-        public abstract void OnUnitExit(AbsUnit unit);
+        public abstract void OnUnitClick(IUnit unit, int buttonIndex);
+        public abstract void OnUnitEnter(IUnit unit);
+        public abstract void OnUnitExit(IUnit unit);
         public abstract void PlaceOnCell(int cellIndex);
         public abstract void RecordPowerState();
         public abstract void RevertPowerState();
@@ -76,42 +75,42 @@ namespace RainesGames.Units
         public abstract void TransitionToState(UnitState state);
         public abstract void Underclock(int duration);
 
-        public AbsAbility[] GetAbilities(bool filterShowInTray = true)
+        public IList<IAbility> GetAbilities(bool filterShowInTray = true)
         {
-            AbsAbility[] abilities = gameObject.GetComponents<AbsAbility>();
+            IList<IAbility> abilities = gameObject.GetComponents<IAbility>();
 
             if(!filterShowInTray)
                 return abilities;
 
-            List<AbsAbility> filteredAbilities = new List<AbsAbility>();
+            IList<IAbility> filteredAbilities = new List<IAbility>();
 
-            foreach(AbsAbility ability in abilities)
+            foreach(IAbility ability in abilities)
             {
                 if(ability.ShowInTray())
                     filteredAbilities.Add(ability);
             }
 
-            return filteredAbilities.ToArray();
+            return filteredAbilities;
         }
 
-        public T GetAbility<T>() where T : AbsAbility
+        public T GetAbility<T>() where T : IAbility
         {
             return GetComponent<T>();
         }
 
-        public AbsAbility[] GetCooldownAbilities()
+        public IList<IAbility> GetCooldownAbilities()
         {
-            AbsAbility[] abilities = gameObject.GetComponents<AbsAbility>();
+            IList<IAbility> abilities = gameObject.GetComponents<IAbility>();
             return abilities.Where(ability => ability is ICooldownManagerClient).ToArray();
         }
 
-        public AbsAbility[] GetPoweredAbilities()
+        public IList<IAbility> GetPoweredAbilities()
         {
-            AbsAbility[] abilities = gameObject.GetComponents<AbsAbility>();
+            IList<IAbility> abilities = gameObject.GetComponents<IAbility>();
             return abilities.Where(ability => ability is IPowerManagerClient).ToArray();
         }
 
-        public bool HasAbility<T>() where T : AbsAbility
+        public bool HasAbility<T>() where T : IAbility
         {
             return GetAbility<T>() != null;
         }
@@ -141,12 +140,12 @@ namespace RainesGames.Units
             return HasPlayerTag() && !IsHacked() || HasEnemyTag() && IsHacked();
         }
 
-        public bool SameTagAs(AbsUnit unit)
+        public bool SameTagAs(IUnit unit)
         {
-            return HasTag(unit.gameObject.tag);
+            return HasTag(((MonoBehaviour)unit).gameObject.tag);
         }
 
-        public bool SameTeamAs(AbsUnit unit)
+        public bool SameTeamAs(IUnit unit)
         {
             return IsPlayer() && unit.IsPlayer() || IsEnemy() && unit.IsEnemy();
         }

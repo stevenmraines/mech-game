@@ -4,6 +4,6 @@ namespace RainesGames.Units.Selection
 {
     public interface ISelectablesProvider
     {
-        List<AbsUnit> GetSelectables();
+        IList<IUnit> GetSelectables();
     }
 }

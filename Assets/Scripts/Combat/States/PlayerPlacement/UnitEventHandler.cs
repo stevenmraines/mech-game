@@ -12,14 +12,14 @@ namespace RainesGames.Combat.States.PlayerPlacement
             _state = playerPlacementState;
         }
 
-        public void OnUnitClick(AbsUnit unit, int buttonIndex)
+        public void OnUnitClick(IUnit unit, int buttonIndex)
         {
             if(unit.IsPlayer())
                 UnitSelectionManager.SetActiveUnit(unit);
         }
 
-        public void OnUnitEnter(AbsUnit unit) { }
+        public void OnUnitEnter(IUnit unit) { }
 
-        public void OnUnitExit(AbsUnit unit) { }
+        public void OnUnitExit(IUnit unit) { }
     }
 }

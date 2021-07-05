@@ -1,17 +1,9 @@
-﻿using RainesGames.Units.States;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RainesGames.Units.Usables.Abilities
 {
-    public interface IAbility
+    public interface IAbility : IUsable
     {
-        bool CanBeUsed();
-        int GetAbilityCost();
-        int GetFirstAbilityCost();
-        int GetSecondAbilityCost();
         AudioClip GetSoundEffect();
-        UnitState GetState();
-        bool IsAffordable();
-        bool ShowInTray();
     }
 }

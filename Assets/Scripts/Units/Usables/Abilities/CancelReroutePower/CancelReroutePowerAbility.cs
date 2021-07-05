@@ -1,52 +1,63 @@
-﻿using RainesGames.Units.Abilities.ReroutePower;
-using RainesGames.Units.States;
-using RainesGames.Units.Usables.Abilities;
+﻿using RainesGames.Units.States;
+using RainesGames.Units.Usables.Abilities.ReroutePower;
 using UnityEngine;
 
-namespace RainesGames.Units.Abilities.CancelReroutePower
+namespace RainesGames.Units.Usables.Abilities.CancelReroutePower
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(ReroutePowerAbility))]
-    public class CancelReroutePowerAbility : AbsAbility
+    public class CancelReroutePowerAbility : AbsUsable, IAbility
     {
-        public DataAbility Data;
+        public DataAbility AbilityData;
+        public DataUsable UsableData;
 
         public override bool CanBeUsed()
         {
-            return IsAffordable() && _parentUnit.HasAbility<ReroutePowerAbility>();
+            return IsAffordable() && _unit.HasAbility<ReroutePowerAbility>();
         }
 
         public void Execute()
         {
-            _parentUnit.RevertPowerState();
+            _unit.RevertPowerState();
 
             // Cancelling a power reroute costs no AP, but calling this triggers the unit state change
-            DecrementAbilityPoints();
+            DecrementActionPoints();
         }
 
-        public override int GetFirstAbilityCost()
+
+        #region ABILITY DATA METHODS
+        public AudioClip GetSoundEffect()
         {
-            return Data.FirstAbilityCost;
+            return AbilityData.SoundEffect;
+        }
+        #endregion
+
+
+        #region USABLE DATA METHODS
+        public override int GetFirstActionCost()
+        {
+            return UsableData.FirstActionCost;
         }
 
-        public override int GetSecondAbilityCost()
+        public override string GetName()
         {
-            return Data.SecondAbilityCost;
+            return UsableData.UsableName;
         }
 
-        public override AudioClip GetSoundEffect()
+        public override int GetSecondActionCost()
         {
-            return Data.SoundEffect;
+            return UsableData.SecondActionCost;
         }
 
         public override UnitState GetState()
         {
-            return Data.State;
+            return UsableData.State;
         }
 
         public override bool ShowInTray()
         {
-            return Data.ShowInTray;
+            return UsableData.ShowInTray;
         }
+        #endregion
     }
 }

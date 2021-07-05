@@ -8,10 +8,10 @@ namespace RainesGames.Combat.States
     {
         private CombatStateManager _manager;
 
-        public delegate void UnitClickDelegate(AbsUnit unit, int buttonIndex);
+        public delegate void UnitClickDelegate(IUnit unit, int buttonIndex);
         public static event UnitClickDelegate OnUnitClickReroute;
 
-        public delegate void UnitMouseTransitEventsDelegate(AbsUnit unit);
+        public delegate void UnitMouseTransitEventsDelegate(IUnit unit);
         public static event UnitMouseTransitEventsDelegate OnUnitEnterReroute;
         public static event UnitMouseTransitEventsDelegate OnUnitExitReroute;
 
@@ -27,17 +27,17 @@ namespace RainesGames.Combat.States
             UnitSelectionManager.OnUnitExit -= OnUnitExit;
         }
 
-        public void OnUnitClick(AbsUnit unit, int buttonIndex)
+        public void OnUnitClick(IUnit unit, int buttonIndex)
         {
             _manager.CurrentState.UnitEventHandler.OnUnitClick(unit, buttonIndex);
         }
 
-        public void OnUnitEnter(AbsUnit unit)
+        public void OnUnitEnter(IUnit unit)
         {
             _manager.CurrentState.UnitEventHandler.OnUnitEnter(unit);
         }
 
-        public void OnUnitExit(AbsUnit unit)
+        public void OnUnitExit(IUnit unit)
         {
             _manager.CurrentState.UnitEventHandler.OnUnitExit(unit);
         }
@@ -49,17 +49,17 @@ namespace RainesGames.Combat.States
             UnitSelectionManager.OnUnitExit += OnUnitExit;
         }
 
-        public void RerouteUnitClick(AbsUnit unit, int buttonIndex)
+        public void RerouteUnitClick(IUnit unit, int buttonIndex)
         {
             OnUnitClickReroute?.Invoke(unit, buttonIndex);
         }
         
-        public void RerouteUnitMouseEnter(AbsUnit unit)
+        public void RerouteUnitMouseEnter(IUnit unit)
         {
             OnUnitEnterReroute?.Invoke(unit);
         }
         
-        public void RerouteUnitMouseExit(AbsUnit unit)
+        public void RerouteUnitMouseExit(IUnit unit)
         {
             OnUnitExitReroute?.Invoke(unit);
         }

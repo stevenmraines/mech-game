@@ -2,6 +2,6 @@
 {
     public interface IUnitTargetAbilityValidator
     {
-        bool IsValid(AbsUnit parentUnit, AbsUnit targetUnit);
+        bool IsValid(IUnit parentUnit, IUnit targetUnit);
     }
 }

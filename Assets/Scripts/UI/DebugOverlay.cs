@@ -1,12 +1,12 @@
-﻿using RainesGames.Combat.States;
+﻿using System.Collections.Generic;
+using RainesGames.Combat.States;
 using RainesGames.Common.Power;
 using RainesGames.Units;
-using RainesGames.Units.Abilities;
-using RainesGames.Units.Abilities.CancelReroutePower;
-using RainesGames.Units.Abilities.ReroutePower;
 using RainesGames.Units.Selection;
 using RainesGames.Units.States;
 using RainesGames.Units.Usables.Abilities;
+using RainesGames.Units.Usables.Abilities.CancelReroutePower;
+using RainesGames.Units.Usables.Abilities.ReroutePower;
 using UnityEngine;
 
 namespace RainesGames.UI
@@ -39,27 +39,27 @@ namespace RainesGames.UI
         {
             GUI.skin = null;
 
-            AbsUnit activeUnit = UnitSelectionManager.ActiveUnit;
+            IUnit activeUnit = UnitSelectionManager.ActiveUnit;
 
             if(activeUnit == null)
                 return;
 
-            AbsAbility[] abilities = AbilityTraySort.GetSortedUnitAbilities(activeUnit);
+            IList<IAbility> abilities = AbilityTraySort.GetSortedUnitAbilities(activeUnit);
 
-            if(abilities.Length == 0)
+            if(abilities.Count == 0)
                 return;
 
-            for(int i = 0; i < abilities.Length; i++)
+            for(int i = 0; i < abilities.Count; i++)
                 DrawAbilityButton(i, abilities, activeUnit);
 
             DrawBattery(activeUnit);
         }
 
-        void DrawAbilityButton(int i, AbsAbility[] abilities, AbsUnit activeUnit)
+        void DrawAbilityButton(int i, IList<IAbility> abilities, IUnit activeUnit)
         {
-            AbsAbility ability = abilities[i];
+            IAbility ability = abilities[i];
 
-            int buttonX = GetAbilityButtonX(i, abilities.Length);
+            int buttonX = GetAbilityButtonX(i, abilities.Count);
             int buttonY = Screen.height - 110;
             int buttonWidth = 50;
             int buttonHeight = buttonWidth;
@@ -152,7 +152,7 @@ namespace RainesGames.UI
             DrawAbilityPower(ability, buttonPosition);
         }
 
-        void DrawAbilityPower(AbsAbility ability, Rect buttonPosition)
+        void DrawAbilityPower(IAbility ability, Rect buttonPosition)
         {
             int power = GetAbilityPower(ability);
             int maxPower = GetAbilityMaxPower(ability);
@@ -181,7 +181,7 @@ namespace RainesGames.UI
             }
         }
 
-        void DrawBattery(AbsUnit activeUnit)
+        void DrawBattery(IUnit activeUnit)
         {
             GUIContent content = new GUIContent()
             {
@@ -214,7 +214,7 @@ namespace RainesGames.UI
             }
         }
 
-        void DrawReroutePowerButtons(AbsUnit activeUnit)
+        void DrawReroutePowerButtons(IUnit activeUnit)
         {
             int gutter = 10;
 
@@ -252,14 +252,14 @@ namespace RainesGames.UI
         {
             GUI.skin = _medTextLabel;
 
-            AbsUnit hoveredUnit = UnitSelectionManager.CurrentSelection;
-            AbsUnit activeUnit = UnitSelectionManager.ActiveUnit;
-            AbsUnit unit = hoveredUnit != null ? hoveredUnit : activeUnit;
+            IUnit hoveredUnit = UnitSelectionManager.CurrentSelection;
+            IUnit activeUnit = UnitSelectionManager.ActiveUnit;
+            IUnit unit = hoveredUnit != null ? hoveredUnit : activeUnit;
 
             if(unit == null)
                 return;
 
-            string unitInfo = unit.name + "  (" + unit.GetAbilityPoints() + ")";
+            string unitInfo = ((MonoBehaviour)unit).name + "  (" + unit.GetAbilityPoints() + ")";
 
             string stateName = unit.GetCurrentState().ToString();
             unitInfo += "\nState: " + stateName;
@@ -301,7 +301,7 @@ namespace RainesGames.UI
             return (xPositionInTray + center) - (buttonTrayWidth / 2);
         }
 
-        int GetAbilityMaxPower(AbsAbility ability)
+        int GetAbilityMaxPower(IAbility ability)
         {
             if(!(ability is IPowerContainerInteractable))
                 return 0;
@@ -309,7 +309,7 @@ namespace RainesGames.UI
             return ((IPowerContainerInteractable)ability).GetMaxPower();
         }
         
-        int GetAbilityPower(AbsAbility ability)
+        int GetAbilityPower(IAbility ability)
         {
             if(!(ability is IPowerContainerInteractable))
                 return 0;
@@ -317,7 +317,7 @@ namespace RainesGames.UI
             return ((IPowerContainerInteractable)ability).GetPower();
         }
 
-        int GetAbilityMinPower(AbsAbility ability)
+        int GetAbilityMinPower(IAbility ability)
         {
             if(!(ability is IPoweredItem))
                 return 0;
@@ -325,7 +325,7 @@ namespace RainesGames.UI
             return ((IPoweredItem)ability).GetMinPower();
         }
 
-        void HandlePowerReroute(AbsUnit activeUnit, AbsAbility ability)
+        void HandlePowerReroute(IUnit activeUnit, IAbility ability)
         {
             int power = Mathf.Max(1, GetAbilityMinPower(ability));
 
@@ -340,7 +340,7 @@ namespace RainesGames.UI
             }
         }
 
-        void HandleUseAbility(AbsUnit activeUnit, AbsAbility ability)
+        void HandleUseAbility(IUnit activeUnit, IAbility ability)
         {
             activeUnit.TransitionToState(ability.GetState());
         }
