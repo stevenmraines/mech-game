@@ -1,11 +1,10 @@
-using RainesGames.Grid;
 using System.Collections.Generic;
 using TGS;
 using UnityEngine;
 
 namespace RainesGames.Units.Mechs.States.Move.PathSelection
 {
-    public class FewestStopsPathCondenser : MonoBehaviour, IPathCondenser
+    public class FewestStopsPathCondenser : MonoBehaviour, IUnitPathCondenser
     {
         public enum AdjacentCellConfiguration
         {
@@ -71,24 +70,22 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
             return AdjacentCellConfiguration.NOT_ADJACENT;
         }
 
-        public IList<int> GetCondensedPath(TerrainGridSystem sender, IList<int> path)
+        public IList<int> GetCondensedPath(IUnit unit, IList<int> path, TerrainGridSystem sender)
         {
             if(path.Count < 2)
                 return path;
 
             IList<int> condensedPath = new List<int>();
 
-            AdjacentCellConfiguration configuration = GetCellConfiguration(sender, path[0], path[1]);
+            AdjacentCellConfiguration configuration = GetCellConfiguration(sender, unit.GetPosition().index, path[0]);
 
             // Something went wrong, just return the original path and get out of here
             if(configuration == AdjacentCellConfiguration.NOT_ADJACENT)
                 return path;
 
-            AdjacentCellConfiguration previousConfiguration;
-
-            for(int i = 1; i < path.Count - 1; i++)
+            for(int i = 0; i < path.Count - 1; i++)
             {
-                previousConfiguration = configuration;
+                AdjacentCellConfiguration previousConfiguration = configuration;
                 configuration = GetCellConfiguration(sender, path[i], path[i + 1]);
 
                 if(configuration == AdjacentCellConfiguration.NOT_ADJACENT)

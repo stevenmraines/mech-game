@@ -9,7 +9,7 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
 {
     public class MovePathSelectionManager : MonoBehaviour, IUnitCellEvents
     {
-        private IPathCondenser _pathCondenser;
+        private IUnitPathCondenser _pathCondenser;
         private IUnitPathProvider _pathProvider;
         private IPathTransitEvents _pathTransitResponse;
         private IPathWaypointManager _waypointManager;
@@ -18,7 +18,7 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
 
         void Awake()
         {
-            _pathCondenser = GetComponent<IPathCondenser>();
+            _pathCondenser = GetComponent<IUnitPathCondenser>();
             _pathProvider = GetComponent<IUnitPathProvider>();
             _pathTransitResponse = GetComponent<IPathTransitEvents>();
             _waypointManager = GetComponent<IPathWaypointManager>();
@@ -48,14 +48,14 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
         IList<int> GetMovePath(IUnit unit, int cellIndex, TerrainGridSystem sender)
         {
             IList<int> rawPath = _pathProvider.GetPath(unit, _waypointManager.GetWaypoints(), cellIndex, sender);
-            return _pathCondenser.GetCondensedPath(sender, rawPath);
+            return _pathCondenser.GetCondensedPath(unit, rawPath, sender);
         }
 
         void HandleMoveClick(IUnit unit, int cellIndex, TerrainGridSystem sender)
         {
             OnUnitCellExit(unit, cellIndex, sender);
 
-            unit.GetAbility<MoveAbility>().Execute(GetMovePath(unit, cellIndex, sender));
+            unit.GetAbility<MoveAbility>().Use(GetMovePath(unit, cellIndex, sender));
 
             _waypointManager.ClearWaypoints();
         }

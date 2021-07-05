@@ -7,7 +7,7 @@ namespace RainesGames.Units.Mechs.States.FactoryReset
     {
         public void OnUnitClick(IUnit unit, int buttonIndex)
         {
-            UnitSelectionManager.ActiveUnit.GetAbility<FactoryResetAbility>().Execute(unit);
+            UnitSelectionManager.ActiveUnit.GetAbility<FactoryResetAbility>().Use(unit);
         }
 
         public void OnUnitEnter(IUnit unit) { }

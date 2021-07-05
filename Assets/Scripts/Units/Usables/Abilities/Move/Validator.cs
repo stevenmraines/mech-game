@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace RainesGames.Units.Usables.Abilities.Move
 {
-    public class Validator : IPathTargetAbilityValidator
+    public class Validator : IPathTargetUsableValidator
     {
-        public bool IsValid(IUnit parentUnit, IList<int> path)
+        public bool IsValidTarget(IUnit parentUnit, IList<int> path)
         {
             if(path.Count == 0)
             {

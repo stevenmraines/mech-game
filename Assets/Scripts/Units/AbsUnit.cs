@@ -4,6 +4,7 @@ using RainesGames.Units.Power;
 using RainesGames.Units.States;
 using System.Collections.Generic;
 using System.Linq;
+using RainesGames.Units.Usables;
 using RainesGames.Units.Usables.Abilities;
 using RainesGames.Units.Usables.Abilities.FactoryReset;
 using RainesGames.Units.Usables.Abilities.Hack;
@@ -15,7 +16,7 @@ namespace RainesGames.Units
 {
     public abstract class AbsUnit : MonoBehaviour, IUnit
     {
-        protected AbilityPointsManager _abilityPointsManager;
+        protected ActionPointsManager _actionPointsManager;
         protected FactoryResetStatusManager _factoryResetStatusManager;
         protected HackStatusManager _hackStatusManager;
         protected PositionManager _positionManager;
@@ -25,7 +26,7 @@ namespace RainesGames.Units
 
         protected virtual void Awake()
         {
-            _abilityPointsManager = new AbilityPointsManager();
+            _actionPointsManager = new ActionPointsManager();
             _factoryResetStatusManager = new FactoryResetStatusManager();
             _hackStatusManager = new HackStatusManager();
             _positionManager = new PositionManager();
@@ -35,12 +36,12 @@ namespace RainesGames.Units
         }
 
         public abstract bool CanEnterState(UnitState state);
-        public abstract void DecrementAbilityPoints(int points = 1);
+        public abstract void DecrementActionPoints(int points = 1);
         public abstract void DiscardPowerState();
         public abstract void FactoryReset(int duration);
-        public abstract bool FirstAbilitySpent();
-        public abstract void ForceSpendAllAbilityPoints();
-        public abstract int GetAbilityPoints();
+        public abstract bool FirstActionSpent();
+        public abstract void ForceSpendAllActionPoints();
+        public abstract int GetActionPoints();
         public abstract UnitState GetCurrentState();
         public abstract int GetFactoryResetTurnsRemaining();
         public abstract int GetHackedTurnsRemaining();
@@ -48,14 +49,14 @@ namespace RainesGames.Units
         public abstract int GetMovement();
         public abstract Cell GetPosition();
         public abstract int GetPower();
-        public abstract int GetStartOfTurnAbilityPoints();
+        public abstract int GetStartOfTurnActionPoints();
         public abstract int GetUnderclockedTurnsRemaining();
         public abstract void Hack(int duration);
         public abstract bool HasCellEventHandler();
         public abstract bool HasCellEventHandler(UnitState state);
         public abstract bool HasUnitEventHandler();
         public abstract bool HasUnitEventHandler(UnitState state);
-        public abstract void IncrementAbilityPoints(int points = 1);
+        public abstract void IncrementActionPoints(int points = 1);
         public abstract bool IsFactoryReset();
         public abstract bool IsHacked();
         public abstract bool IsPlaced();
@@ -75,12 +76,11 @@ namespace RainesGames.Units
         public abstract void TransitionToState(UnitState state);
         public abstract void Underclock(int duration);
 
-        public IList<IAbility> GetAbilities(bool filterShowInTray = true)
+        // TODO Get rid of the duplication between these two methods
+        protected IList<IAbility> FilterShowInTrayAbilities(IList<IAbility> abilities)
         {
-            IList<IAbility> abilities = gameObject.GetComponents<IAbility>();
-
-            if(!filterShowInTray)
-                return abilities;
+            if(abilities.Count == 0)
+                return new List<IAbility>();
 
             IList<IAbility> filteredAbilities = new List<IAbility>();
 
@@ -91,6 +91,32 @@ namespace RainesGames.Units
             }
 
             return filteredAbilities;
+        }
+
+        protected IList<IUsable> FilterShowInTrayUsables(IList<IUsable> usables)
+        {
+            if(usables.Count == 0)
+                return new List<IUsable>();
+
+            IList<IUsable> filteredUsables = new List<IUsable>();
+
+            foreach(IUsable usable in usables)
+            {
+                if(usable.ShowInTray())
+                    filteredUsables.Add(usable);
+            }
+
+            return filteredUsables;
+        }
+
+        public IList<IAbility> GetAbilities(bool filterShowInTray = true)
+        {
+            IList<IAbility> abilities = gameObject.GetComponents<IAbility>();
+
+            if(!filterShowInTray)
+                return abilities;
+
+            return FilterShowInTrayAbilities(abilities);
         }
 
         public T GetAbility<T>() where T : IAbility
@@ -108,6 +134,16 @@ namespace RainesGames.Units
         {
             IList<IAbility> abilities = gameObject.GetComponents<IAbility>();
             return abilities.Where(ability => ability is IPowerManagerClient).ToArray();
+        }
+
+        public IList<IUsable> GetUsables(bool filterShowInTray = true)
+        {
+            IList<IUsable> usables = gameObject.GetComponents<IUsable>();
+
+            if(!filterShowInTray)
+                return usables;
+
+            return FilterShowInTrayUsables(usables);
         }
 
         public bool HasAbility<T>() where T : IAbility

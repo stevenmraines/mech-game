@@ -6,6 +6,6 @@ namespace RainesGames.Units.Mechs.Classes
     {
         int GetBaseMovement();
         string GetClassName();
-        int GetStartOfTurnAbilityPoints();
+        int GetStartOfTurnActionPoints();
     }
 }

@@ -7,6 +7,7 @@ using RainesGames.Combat.States.PlayerTurn;
 using RainesGames.Combat.States.PlayerWon;
 using RainesGames.Combat.States.StateGraphs.PreemptiveStrike;
 using RainesGames.Common.States;
+using RainesGames.Units.Usables;
 using RainesGames.Units.Usables.Abilities;
 using UnityEngine;
 
@@ -84,14 +85,14 @@ namespace RainesGames.Combat.States
         {
             _cellEventRouter.DeregisterEventHandlers();
             _unitEventRouter.DeregisterEventHandlers();
-            AbilityPointsManager.OnDecrementStatic -= AttemptTransition;
+            ActionPointsManager.OnDecrementStatic -= AttemptTransition;
         }
 
         void OnEnable()
         {
             _cellEventRouter.RegisterEventHandlers();
             _unitEventRouter.RegisterEventHandlers();
-            AbilityPointsManager.OnDecrementStatic += AttemptTransition;
+            ActionPointsManager.OnDecrementStatic += AttemptTransition;
         }
 
         void Start()

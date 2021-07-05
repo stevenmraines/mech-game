@@ -9,7 +9,7 @@ using UnityEngine.AI;
 namespace RainesGames.Units.Usables.Abilities.Move
 {
     [DisallowMultipleComponent]
-    public class MoveAbility : AbsUsable, IAbility, IPathTargetAbility
+    public class MoveAbility : AbsUsable, IAbility, IPathTargetUsable
     {
         private NavMeshAgent _navMeshAgent;
         private int _pathIndex = 0;
@@ -28,9 +28,9 @@ namespace RainesGames.Units.Usables.Abilities.Move
             return IsAffordable();
         }
 
-        public void Execute(IList<int> path)
+        public void Use(IList<int> path)
         {
-            if(_validator.IsValid(_unit, path))
+            if(_validator.IsValidTarget(_unit, path))
             {
                 ResetPathIndex();
                 StartCoroutine(Move(path));

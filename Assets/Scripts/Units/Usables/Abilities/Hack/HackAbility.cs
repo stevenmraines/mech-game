@@ -7,7 +7,7 @@ namespace RainesGames.Units.Usables.Abilities.Hack
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(ReroutePowerAbility))]
-    public class HackAbility : AbsUsable, IAbility, ICooldownManagerClient, IFiniteUseManagerClient, IPowerManagerClient, IUnitTargetAbility
+    public class HackAbility : AbsUsable, IAbility, ICooldownManagerClient, IFiniteUseManagerClient, IPowerManagerClient, IUnitTargetUsable
     {
         private CooldownManager _cooldownManager = new CooldownManager();
         private FiniteUseManager _finiteUseManager = new FiniteUseManager();
@@ -32,9 +32,9 @@ namespace RainesGames.Units.Usables.Abilities.Hack
             return IsAffordable() && IsPowered() && HasMoreUses() && !NeedsCooldown();
         }
 
-        public void Execute(IUnit targetUnit)
+        public void Use(IUnit targetUnit)
         {
-            if(!_validator.IsValid(_unit, targetUnit))
+            if(!_validator.IsValidTarget(_unit, targetUnit))
                 return;
 
             targetUnit.Hack(GetDuration());

@@ -2,6 +2,7 @@
 using RainesGames.Units.Selection;
 using RainesGames.Units.States;
 using System.Collections.Generic;
+using RainesGames.Units.Usables;
 using RainesGames.Units.Usables.Abilities;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ namespace RainesGames.Units
         {
             foreach(IUnit unit in units)
             {
-                if(unit.GetAbilityPoints() > 0)
+                if(unit.GetActionPoints() > 0)
                     return false;
             }
 
@@ -109,7 +110,7 @@ namespace RainesGames.Units
             if(!reroutingPower && Input.GetMouseButtonUp(1))
                 activeUnit.TransitionToState(UnitState.MOVE);
 
-            IList<IAbility> abilities = AbilityTraySort.GetSortedUnitAbilities(activeUnit);
+            IList<IAbility> abilities = UsableTraySort.GetSortedAbilities(activeUnit);
 
             if(abilities.Count == 0)
                 return;

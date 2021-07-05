@@ -26,17 +26,17 @@ namespace RainesGames.Units.Usables
 
         protected virtual void DecrementActionPoints()
         {
-            _unit.DecrementAbilityPoints(GetActionCost());
+            _unit.DecrementActionPoints(GetActionCost());
         }
 
         public virtual int GetActionCost()
         {
-            return _unit.FirstAbilitySpent() ? GetSecondActionCost() : GetFirstActionCost();
+            return _unit.FirstActionSpent() ? GetSecondActionCost() : GetFirstActionCost();
         }
 
         public virtual bool IsAffordable()
         {
-            return _unit.GetAbilityPoints() >= GetActionCost();
+            return _unit.GetActionPoints() >= GetActionCost();
         }
     }
 }

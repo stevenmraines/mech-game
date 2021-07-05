@@ -7,7 +7,7 @@ namespace RainesGames.Units.Mechs.States.Hack
     {
         public void OnUnitClick(IUnit unit, int buttonIndex)
         {
-            UnitSelectionManager.ActiveUnit.GetAbility<HackAbility>().Execute(unit);
+            UnitSelectionManager.ActiveUnit.GetAbility<HackAbility>().Use(unit);
         }
 
         public void OnUnitEnter(IUnit unit) { }

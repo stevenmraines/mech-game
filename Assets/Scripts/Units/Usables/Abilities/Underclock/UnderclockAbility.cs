@@ -7,7 +7,7 @@ namespace RainesGames.Units.Usables.Abilities.Underclock
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(ReroutePowerAbility))]
-    public class UnderclockAbility : AbsUsable, IAbility, ICooldownManagerClient, IPowerManagerClient, IUnitTargetAbility
+    public class UnderclockAbility : AbsUsable, IAbility, ICooldownManagerClient, IPowerManagerClient, IUnitTargetUsable
     {
         private CooldownManager _cooldownManager = new CooldownManager();
         private PowerManager _powerManager = new PowerManager();
@@ -24,9 +24,9 @@ namespace RainesGames.Units.Usables.Abilities.Underclock
             return IsAffordable() && IsPowered() && !NeedsCooldown();
         }
 
-        public void Execute(IUnit targetUnit)
+        public void Use(IUnit targetUnit)
         {
-            if(_validator.IsValid(_unit, targetUnit))
+            if(_validator.IsValidTarget(_unit, targetUnit))
             {
                 targetUnit.Underclock(GetDuration());
                 DecrementActionPoints();

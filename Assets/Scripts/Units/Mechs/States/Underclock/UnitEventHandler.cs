@@ -7,7 +7,7 @@ namespace RainesGames.Units.Mechs.States.Underclock
     {
         public void OnUnitClick(IUnit unit, int buttonIndex)
         {
-            UnitSelectionManager.ActiveUnit.GetAbility<UnderclockAbility>().Execute(unit);
+            UnitSelectionManager.ActiveUnit.GetAbility<UnderclockAbility>().Use(unit);
         }
 
         public void OnUnitEnter(IUnit unit) { }

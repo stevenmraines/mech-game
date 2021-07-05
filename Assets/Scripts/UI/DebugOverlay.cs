@@ -4,6 +4,7 @@ using RainesGames.Common.Power;
 using RainesGames.Units;
 using RainesGames.Units.Selection;
 using RainesGames.Units.States;
+using RainesGames.Units.Usables;
 using RainesGames.Units.Usables.Abilities;
 using RainesGames.Units.Usables.Abilities.CancelReroutePower;
 using RainesGames.Units.Usables.Abilities.ReroutePower;
@@ -44,7 +45,7 @@ namespace RainesGames.UI
             if(activeUnit == null)
                 return;
 
-            IList<IAbility> abilities = AbilityTraySort.GetSortedUnitAbilities(activeUnit);
+            IList<IAbility> abilities = UsableTraySort.GetSortedAbilities(activeUnit);
 
             if(abilities.Count == 0)
                 return;
@@ -232,7 +233,7 @@ namespace RainesGames.UI
             };
 
             if(GUI.Button(confirmButtonPosition, content))
-                activeUnit.GetAbility<ReroutePowerAbility>().Execute();
+                activeUnit.GetAbility<ReroutePowerAbility>().Use();
 
             Rect cancelButtonPosition = new Rect()
             {
@@ -259,7 +260,7 @@ namespace RainesGames.UI
             if(unit == null)
                 return;
 
-            string unitInfo = ((MonoBehaviour)unit).name + "  (" + unit.GetAbilityPoints() + ")";
+            string unitInfo = ((MonoBehaviour)unit).name + "  (" + unit.GetActionPoints() + ")";
 
             string stateName = unit.GetCurrentState().ToString();
             unitInfo += "\nState: " + stateName;

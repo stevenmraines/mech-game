@@ -7,7 +7,7 @@ namespace RainesGames.Units.Usables.Abilities.FactoryReset
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(ReroutePowerAbility))]
-    public class FactoryResetAbility : AbsUsable, IAbility, ICooldownManagerClient, IFiniteUseManagerClient, IPowerManagerClient, IStatusAbility, IUnitTargetAbility
+    public class FactoryResetAbility : AbsUsable, IAbility, ICooldownManagerClient, IFiniteUseManagerClient, IPowerManagerClient, IStatusAbility, IUnitTargetUsable
     {
         private CooldownManager _cooldownManager = new CooldownManager();
         private FiniteUseManager _finiteUseManager = new FiniteUseManager();
@@ -32,9 +32,9 @@ namespace RainesGames.Units.Usables.Abilities.FactoryReset
             return IsAffordable() && IsPowered() && HasMoreUses() && !NeedsCooldown();
         }
 
-        public void Execute(IUnit targetUnit)
+        public void Use(IUnit targetUnit)
         {
-            if(!_validator.IsValid(_unit, targetUnit))
+            if(!_validator.IsValidTarget(_unit, targetUnit))
                 return;
 
             targetUnit.FactoryReset(GetDuration());

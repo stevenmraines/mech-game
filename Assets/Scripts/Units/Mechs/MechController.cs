@@ -63,13 +63,13 @@ namespace RainesGames.Units.Mechs
             UnitEventRouter.OnUnitEnterReroute -= OnUnitEnter;
             UnitEventRouter.OnUnitExitReroute -= OnUnitExit;
 
-            _abilityPointsManager.OnDecrement -= OnAbilityPointsChange;
-            _abilityPointsManager.OnForceSpendAll -= OnAbilityPointsChange;
-            _abilityPointsManager.OnIncrement -= OnAbilityPointsChange;
-            _abilityPointsManager.OnReset -= OnAbilityPointsChange;
+            _actionPointsManager.OnDecrement -= OnActionPointsChange;
+            _actionPointsManager.OnForceSpendAll -= OnActionPointsChange;
+            _actionPointsManager.OnIncrement -= OnActionPointsChange;
+            _actionPointsManager.OnReset -= OnActionPointsChange;
 
-            _factoryResetStatusManager.OnActivate -= ForceSpendAllAbilityPoints;
-            _hackStatusManager.OnActivate -= ForceSpendAllAbilityPoints;
+            _factoryResetStatusManager.OnActivate -= ForceSpendAllActionPoints;
+            _hackStatusManager.OnActivate -= ForceSpendAllActionPoints;
 
             _stateManager.OnEnterState -= OnEnterState;
             _stateManager.OnExitState -= OnExitState;
@@ -89,13 +89,13 @@ namespace RainesGames.Units.Mechs
             UnitEventRouter.OnUnitEnterReroute += OnUnitEnter;
             UnitEventRouter.OnUnitExitReroute += OnUnitExit;
 
-            _abilityPointsManager.OnDecrement += OnAbilityPointsChange;
-            _abilityPointsManager.OnForceSpendAll += OnAbilityPointsChange;
-            _abilityPointsManager.OnIncrement += OnAbilityPointsChange;
-            _abilityPointsManager.OnReset += OnAbilityPointsChange;
+            _actionPointsManager.OnDecrement += OnActionPointsChange;
+            _actionPointsManager.OnForceSpendAll += OnActionPointsChange;
+            _actionPointsManager.OnIncrement += OnActionPointsChange;
+            _actionPointsManager.OnReset += OnActionPointsChange;
 
-            _factoryResetStatusManager.OnActivate += ForceSpendAllAbilityPoints;
-            _hackStatusManager.OnActivate += ForceSpendAllAbilityPoints;
+            _factoryResetStatusManager.OnActivate += ForceSpendAllActionPoints;
+            _hackStatusManager.OnActivate += ForceSpendAllActionPoints;
 
             _stateManager.OnEnterState += OnEnterState;
             _stateManager.OnExitState += OnExitState;
@@ -120,7 +120,7 @@ namespace RainesGames.Units.Mechs
                 ((ICooldownManagerClient)ability).Cooldown();
         }
 
-        void OnAbilityPointsChange()
+        void OnActionPointsChange()
         {
             _stateManager.TransitionToState(GetFallbackState());
         }
@@ -139,7 +139,7 @@ namespace RainesGames.Units.Mechs
         {
             if(IsEnemy())
             {
-                ResetAbilityPointsAndState();
+                ResetActionPointsAndState();
                 CooldownAbilities();
             }
         }
@@ -160,7 +160,7 @@ namespace RainesGames.Units.Mechs
         {
             if(IsPlayer())
             {
-                ResetAbilityPointsAndState();
+                ResetActionPointsAndState();
                 CooldownAbilities();
             }
         }
@@ -177,51 +177,51 @@ namespace RainesGames.Units.Mechs
                 _hackStatusManager.Countdown();
         }
 
-        void ResetAbilityPointsAndState()
+        void ResetActionPointsAndState()
         {
             if(!IsFactoryReset())
-                _abilityPointsManager.ResetAbilityPoints(GetAbilityPointsResetAmount());
+                _actionPointsManager.ResetActionPoints(GetActionPointsResetAmount());
         }
         #endregion
 
         // TODO All this ability points, unit state, power, etc. manager stuff could be moved to AbsUnit
-        #region ABILITY POINTS MANAGER
-        public override void DecrementAbilityPoints(int points = 1)
+        #region ACTION POINTS MANAGER
+        public override void DecrementActionPoints(int points = 1)
         {
-            _abilityPointsManager.Decrement(points);
+            _actionPointsManager.Decrement(points);
         }
 
-        public override bool FirstAbilitySpent()
+        public override bool FirstActionSpent()
         {
-            return _abilityPointsManager.FirstAbilitySpent();
+            return _actionPointsManager.FirstActionSpent();
         }
 
-        public override void ForceSpendAllAbilityPoints()
+        public override void ForceSpendAllActionPoints()
         {
-            _abilityPointsManager.ForceSpendAllAbilityPoints();
+            _actionPointsManager.ForceSpendAllActionPoints();
         }
 
-        public override int GetAbilityPoints()
+        public override int GetActionPoints()
         {
-            return _abilityPointsManager.GetAbilityPoints();
+            return _actionPointsManager.GetActionPoints();
         }
 
-        int GetAbilityPointsResetAmount()
+        int GetActionPointsResetAmount()
         {
             if(IsUnderclocked())
-                return Mathf.Max(0, _mechClass.GetStartOfTurnAbilityPoints() - 1);  // TODO Make this and overclock stackable?
+                return Mathf.Max(0, _mechClass.GetStartOfTurnActionPoints() - 1);  // TODO Make this and overclock stackable?
 
-            return _mechClass.GetStartOfTurnAbilityPoints();
+            return _mechClass.GetStartOfTurnActionPoints();
         }
 
-        public override int GetStartOfTurnAbilityPoints()
+        public override int GetStartOfTurnActionPoints()
         {
-            return _mechClass.GetStartOfTurnAbilityPoints();
+            return _mechClass.GetStartOfTurnActionPoints();
         }
 
-        public override void IncrementAbilityPoints(int points = 1)
+        public override void IncrementActionPoints(int points = 1)
         {
-            _abilityPointsManager.Increment(points);
+            _actionPointsManager.Increment(points);
         }
         #endregion
 

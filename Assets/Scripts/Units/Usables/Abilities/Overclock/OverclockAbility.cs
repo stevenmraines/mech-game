@@ -8,7 +8,7 @@ namespace RainesGames.Units.Usables.Abilities.Overclock
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(ReroutePowerAbility))]
-    public class OverclockAbility : AbsUsable, IAbility, ICooldownManagerClient, IPowerManagerClient, IUnitTargetAbility
+    public class OverclockAbility : AbsUsable, IAbility, ICooldownManagerClient, IPowerManagerClient, IUnitTargetUsable
     {
         private CooldownManager _cooldownManager = new CooldownManager();
         private PowerManager _powerManager = new PowerManager();
@@ -24,11 +24,11 @@ namespace RainesGames.Units.Usables.Abilities.Overclock
             return IsAffordable() && IsPowered() && !NeedsCooldown();
         }
 
-        public void Execute(IUnit targetUnit)
+        public void Use(IUnit targetUnit)
         {
-            if(_validator.IsValid(_unit, targetUnit))
+            if(_validator.IsValidTarget(_unit, targetUnit))
             {
-                targetUnit.IncrementAbilityPoints();
+                targetUnit.IncrementActionPoints();
 
                 // Only decrement AP if the ability was used on an ally or hacked enemy unit
                 if(_unit != targetUnit)

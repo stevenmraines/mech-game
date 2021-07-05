@@ -4,7 +4,7 @@ namespace RainesGames.Units.Mechs.States.NoAbilityPoints
     {
         public bool CanEnterState(MechController mech)
         {
-            return mech.GetAbilityPoints() == 0;
+            return mech.GetActionPoints() == 0;
         }
     }
 }
