@@ -7,7 +7,8 @@ namespace RainesGames.Units.Usables.Abilities.Hack
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(ReroutePowerAbility))]
-    public class HackAbility : AbsUsable, IAbility, ICooldownManagerClient, IFiniteUseManagerClient, IPowerManagerClient, IUnitTargetUsable
+    public class HackAbility : AbsUsable, IAbility, ICooldownManagerClient, IFiniteUseManagerClient,
+        IPowerManagerClient, IStatusAbility, IUnitTargetUsable
     {
         private CooldownManager _cooldownManager = new CooldownManager();
         private FiniteUseManager _finiteUseManager = new FiniteUseManager();
@@ -136,7 +137,7 @@ namespace RainesGames.Units.Usables.Abilities.Hack
         #endregion
 
 
-        #region STATUS
+        #region STATUS DATA METHODS
         public int GetDuration()
         {
             return StatusData.Duration;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "AbilityData", menuName = "Scriptable Objects/Mechs/Classes/Mech Class AbilityData", order = 1)]
+[CreateAssetMenu(fileName = "ClassData", menuName = "Scriptable Objects/Units/Mechs/Classes/Class Data", order = 1)]
 public class DataMechClass : ScriptableObject
 {
 	[Range(5, 8)] public int BaseMovement = 6;

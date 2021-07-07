@@ -1,7 +1,7 @@
 using RainesGames.Units.States;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "UsableData", menuName = "Scriptable Objects/Units/Usable/Usable AbilityData", order = 1)]
+[CreateAssetMenu(fileName = "UsableData", menuName = "Scriptable Objects/Units/Usables/Usable Data", order = 2)]
 public class DataUsable : ScriptableObject
 {
     [Range(0, 2)] public int FirstActionCost = 1;

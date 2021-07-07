@@ -3,6 +3,7 @@ using RainesGames.Combat.States.EnemyTurn;
 using RainesGames.Combat.States.PlayerTurn;
 using RainesGames.Common.Power;
 using RainesGames.Units.Mechs.Classes;
+using RainesGames.Units.Mechs.MechParts;
 using RainesGames.Units.Mechs.States;
 using RainesGames.Units.Selection;
 using RainesGames.Units.States;
@@ -15,7 +16,12 @@ namespace RainesGames.Units.Mechs
 {
     [RequireComponent(typeof(AbsMechClass))]
     [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(Head))]
+    [RequireComponent(typeof(LeftArm))]
+    [RequireComponent(typeof(Legs))]
     [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(RightArm))]
+    [RequireComponent(typeof(Torso))]
     [DisallowMultipleComponent]
     public sealed class MechController : AbsUnit
     {
@@ -26,11 +32,26 @@ namespace RainesGames.Units.Mechs
         private Animator _animator;
         public Animator Animator => _animator;
 
+        private Head _head;
+        public Head Head => _head;
+
+        private LeftArm _leftArm;
+        public LeftArm LeftArm => _leftArm;
+
+        private Legs _legs;
+        public Legs Legs => _legs;
+
         private AbsMechClass _mechClass;
         public AbsMechClass MechClass => _mechClass;
 
         private NavMeshAgent _navMeshAgent;
         public NavMeshAgent NavMeshAgent => _navMeshAgent;
+
+        private RightArm _rightArm;
+        public RightArm RightArm => _rightArm;
+
+        private Torso _torso;
+        public Torso Torso => _torso;
         #endregion
 
 
@@ -43,8 +64,13 @@ namespace RainesGames.Units.Mechs
             _transitionValidators = new StateTransitionValidatorMap();
 
             _animator = GetComponent<Animator>();
+            _head = GetComponent<Head>();
+            _leftArm = GetComponent<LeftArm>();
+            _legs = GetComponent<Legs>();
             _mechClass = GetComponent<AbsMechClass>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
+            _rightArm = GetComponent<RightArm>();
+            _torso = GetComponent<Torso>();
             
             _powerManager.SetPower(GetMaxPower());
         }
