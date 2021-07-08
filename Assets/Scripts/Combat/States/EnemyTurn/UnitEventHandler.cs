@@ -20,7 +20,7 @@ namespace RainesGames.Combat.States.EnemyTurn
                 return true;
 
             // TODO can't I just check if the active unit is in the noAP/move state?
-            bool playerIsTargetingUnits = activeUnit.IsEnemy() && activeUnit.HasUnitEventHandler();
+            bool playerIsTargetingUnits = activeUnit.IsEnemy() && activeUnit.GetActiveUsable() is IUnitEvents;
 
             if(!playerIsTargetingUnits)
                 return true;

@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using RainesGames.Grid;
 using RainesGames.Units.Mechs;
-using RainesGames.Units.States;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace RainesGames.Units.Usables.Abilities.Move
 {
     [DisallowMultipleComponent]
-    public class MoveAbility : AbsUsable, IAbility, IPathTargetUsable
+    public class MoveAbility : AbsUsable, IAbility, IActivatable, IDeactivatable, IPathTargetUsable
     {
         private NavMeshAgent _navMeshAgent;
         private int _pathIndex = 0;
@@ -20,12 +19,19 @@ namespace RainesGames.Units.Usables.Abilities.Move
         public DataUsable UsableData;
 
         public delegate void MoveAbilityDelegate();
+        public static event MoveAbilityDelegate OnActivate;
+        public static event MoveAbilityDelegate OnDeactivate;
         public static event MoveAbilityDelegate OnMoveEnd;
         public static event MoveAbilityDelegate OnMoveStart;
 
-        public override bool CanBeUsed()
+        public void Activate()
         {
-            return IsAffordable();
+            OnActivate?.Invoke();
+        }
+
+        public void Deactivate()
+        {
+            OnDeactivate?.Invoke();
         }
 
         public void Use(IList<int> path)
@@ -132,11 +138,6 @@ namespace RainesGames.Units.Usables.Abilities.Move
         public override int GetSecondActionCost()
         {
             return UsableData.SecondActionCost;
-        }
-
-        public override UnitState GetState()
-        {
-            return UsableData.State;
         }
 
         public override bool ShowInTray()

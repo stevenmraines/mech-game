@@ -1,23 +1,15 @@
 using System.Collections.Generic;
 using RainesGames.Grid;
-using RainesGames.Units.States;
 using TGS;
-using UnityEngine;
 
 namespace RainesGames.Units.Usables.Weapons.BasicShortSword
 {
-    [DisallowMultipleComponent]
     public class BasicShortSword : AbsUsable, IWeapon, IRangedUsable, IUnitTargetUsable
     {
         public DataRange RangeData;
         public DataUsable UsableData;
         public DataWeapon WeaponData;
 
-        public override bool CanBeUsed()
-        {
-            return IsAffordable();
-        }
-        
         public void Use(IUnit unit)
         {
 
@@ -67,11 +59,6 @@ namespace RainesGames.Units.Usables.Weapons.BasicShortSword
         public override int GetSecondActionCost()
         {
             return UsableData.SecondActionCost;
-        }
-
-        public override UnitState GetState()
-        {
-            return UsableData.State;
         }
 
         public override bool ShowInTray()

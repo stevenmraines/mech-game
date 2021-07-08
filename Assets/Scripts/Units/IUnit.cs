@@ -1,7 +1,6 @@
 using RainesGames.Grid;
 using RainesGames.Units.Position;
 using RainesGames.Units.Power;
-using RainesGames.Units.States;
 using RainesGames.Units.Usables.Abilities;
 using RainesGames.Units.Usables.Abilities.FactoryReset;
 using RainesGames.Units.Usables.Abilities.Hack;
@@ -12,7 +11,7 @@ using RainesGames.Units.Usables;
 namespace RainesGames.Units
 {
     public interface IUnit : IActionPointsManagerClient, ICellEvents, IFactoryResetClient, IHackClient,
-        IPositionManagerClient, IPowerRerouteManagerClient, IUnderclockClient, IUnitEvents, IUnitStateManagerClient
+        IPositionManagerClient, IPowerRerouteManagerClient, IUnderclockClient, IUnitEvents, IActiveUsableManagerClient
     {
         T GetAbility<T>() where T : IAbility;
         IList<IAbility> GetAbilities(bool filterShowInTray = true);

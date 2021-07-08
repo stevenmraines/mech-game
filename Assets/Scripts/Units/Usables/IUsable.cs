@@ -1,5 +1,3 @@
-using RainesGames.Units.States;
-
 namespace RainesGames.Units.Usables
 {
     public interface IUsable
@@ -9,7 +7,6 @@ namespace RainesGames.Units.Usables
         int GetFirstActionCost();
         string GetName();
         int GetSecondActionCost();
-        UnitState GetState();
         bool IsAffordable();
         bool ShowInTray();
     }

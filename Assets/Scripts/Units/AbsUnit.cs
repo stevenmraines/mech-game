@@ -1,7 +1,6 @@
 using RainesGames.Common.Power;
 using RainesGames.Units.Position;
 using RainesGames.Units.Power;
-using RainesGames.Units.States;
 using System.Collections.Generic;
 using System.Linq;
 using RainesGames.Units.Usables;
@@ -17,32 +16,32 @@ namespace RainesGames.Units
     public abstract class AbsUnit : MonoBehaviour, IUnit
     {
         protected ActionPointsManager _actionPointsManager;
+        protected ActiveUsableManager _activeUsableManager;
         protected FactoryResetStatusManager _factoryResetStatusManager;
         protected HackStatusManager _hackStatusManager;
         protected PositionManager _positionManager;
         protected PowerRerouteManager _powerManager;
-        protected UnitStateManager _stateManager;
         protected UnderclockStatusManager _underclockStatusManager;
 
         protected virtual void Awake()
         {
             _actionPointsManager = new ActionPointsManager();
+            _activeUsableManager = new ActiveUsableManager();
             _factoryResetStatusManager = new FactoryResetStatusManager();
             _hackStatusManager = new HackStatusManager();
             _positionManager = new PositionManager();
             _powerManager = new PowerRerouteManager();
-            _stateManager = new UnitStateManager();
             _underclockStatusManager = new UnderclockStatusManager();
         }
 
-        public abstract bool CanEnterState(UnitState state);
+        public abstract void ClearActiveUsable();
         public abstract void DecrementActionPoints(int points = 1);
         public abstract void DiscardPowerState();
         public abstract void FactoryReset(int duration);
         public abstract bool FirstActionSpent();
         public abstract void ForceSpendAllActionPoints();
         public abstract int GetActionPoints();
-        public abstract UnitState GetCurrentState();
+        public abstract IUsable GetActiveUsable();
         public abstract int GetFactoryResetTurnsRemaining();
         public abstract int GetHackedTurnsRemaining();
         public abstract int GetMaxPower();
@@ -52,10 +51,6 @@ namespace RainesGames.Units
         public abstract int GetStartOfTurnActionPoints();
         public abstract int GetUnderclockedTurnsRemaining();
         public abstract void Hack(int duration);
-        public abstract bool HasCellEventHandler();
-        public abstract bool HasCellEventHandler(UnitState state);
-        public abstract bool HasUnitEventHandler();
-        public abstract bool HasUnitEventHandler(UnitState state);
         public abstract void IncrementActionPoints(int points = 1);
         public abstract bool IsFactoryReset();
         public abstract bool IsHacked();
@@ -70,10 +65,10 @@ namespace RainesGames.Units
         public abstract void PlaceOnCell(int cellIndex);
         public abstract void RecordPowerState();
         public abstract void RevertPowerState();
+        public abstract void SetActiveUsable(IUsable usable);
         public abstract void SetCell(int cellIndex);
         public abstract void TransferPowerFrom(IPowerContainerInteractable container, int power = 1);
         public abstract void TransferPowerTo(IPowerContainerInteractable container, int power = 1);
-        public abstract void TransitionToState(UnitState state);
         public abstract void Underclock(int duration);
 
         // TODO Get rid of the duplication between these two methods

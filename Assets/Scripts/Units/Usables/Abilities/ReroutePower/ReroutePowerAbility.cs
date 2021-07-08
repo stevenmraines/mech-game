@@ -1,21 +1,28 @@
-﻿using RainesGames.Units.States;
-using RainesGames.Units.Usables.Abilities.CancelReroutePower;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RainesGames.Units.Usables.Abilities.ReroutePower
 {
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(CancelReroutePowerAbility))]
-    public class ReroutePowerAbility : AbsUsable, IAbility, ITargetlessUsable
+    public class ReroutePowerAbility : AbsUsable, IAbility, IActivatable, IDeactivatable, ITargetlessUsable
     {
         private Validator _validator = new Validator();
 
         public DataAbility AbilityData;
         public DataUsable UsableData;
 
+        public void Activate()
+        {
+            _unit.RecordPowerState();
+        }
+
         public override bool CanBeUsed()
         {
-            return IsAffordable() && _unit.HasAbility<CancelReroutePowerAbility>();
+            return IsAffordable();
+        }
+
+        public void Deactivate()
+        {
+            _unit.RevertPowerState();
         }
 
         public void Use()
@@ -26,6 +33,7 @@ namespace RainesGames.Units.Usables.Abilities.ReroutePower
                 DecrementActionPoints();
             }
         }
+
 
         #region ABILITY DATA METHODS
         public AudioClip GetSoundEffect()
@@ -49,11 +57,6 @@ namespace RainesGames.Units.Usables.Abilities.ReroutePower
         public override int GetSecondActionCost()
         {
             return UsableData.SecondActionCost;
-        }
-
-        public override UnitState GetState()
-        {
-            return UsableData.State;
         }
 
         public override bool ShowInTray()

@@ -2,12 +2,13 @@
 using RainesGames.Combat.States.EnemyTurn;
 using RainesGames.Combat.States.PlayerTurn;
 using RainesGames.Common.Power;
+using RainesGames.Grid;
 using RainesGames.Units.Mechs.Classes;
 using RainesGames.Units.Mechs.MechParts;
-using RainesGames.Units.Mechs.States;
 using RainesGames.Units.Selection;
-using RainesGames.Units.States;
+using RainesGames.Units.Usables;
 using RainesGames.Units.Usables.Abilities;
+using RainesGames.Units.Usables.Abilities.Move;
 using TGS;
 using UnityEngine;
 using UnityEngine.AI;
@@ -26,9 +27,6 @@ namespace RainesGames.Units.Mechs
     public sealed class MechController : AbsUnit
     {
         #region INSTANCE VARIABLES
-        private StateEventHandlersMap _stateEventHandlers;
-        private StateTransitionValidatorMap _transitionValidators;
-
         private Animator _animator;
         public Animator Animator => _animator;
 
@@ -59,9 +57,6 @@ namespace RainesGames.Units.Mechs
         protected override void Awake()
         {
             base.Awake();
-
-            _stateEventHandlers = new StateEventHandlersMap();
-            _transitionValidators = new StateTransitionValidatorMap();
 
             _animator = GetComponent<Animator>();
             _head = GetComponent<Head>();
@@ -96,9 +91,6 @@ namespace RainesGames.Units.Mechs
 
             _factoryResetStatusManager.OnActivate -= ForceSpendAllActionPoints;
             _hackStatusManager.OnActivate -= ForceSpendAllActionPoints;
-
-            _stateManager.OnEnterState -= OnEnterState;
-            _stateManager.OnExitState -= OnExitState;
         }
 
         void OnEnable()
@@ -122,9 +114,6 @@ namespace RainesGames.Units.Mechs
 
             _factoryResetStatusManager.OnActivate += ForceSpendAllActionPoints;
             _hackStatusManager.OnActivate += ForceSpendAllActionPoints;
-
-            _stateManager.OnEnterState += OnEnterState;
-            _stateManager.OnExitState += OnExitState;
         }
         #endregion
 
@@ -148,17 +137,7 @@ namespace RainesGames.Units.Mechs
 
         void OnActionPointsChange()
         {
-            _stateManager.TransitionToState(GetFallbackState());
-        }
-
-        void OnEnterState(UnitState state)
-        {
-            _stateEventHandlers.GetStateChangeHandler(state)?.OnEnterState(this);
-        }
-
-        void OnExitState(UnitState state)
-        {
-            _stateEventHandlers.GetStateChangeHandler(state)?.OnExitState(this);
+            _activeUsableManager.SetActiveUsable(GetFallbackUsable());
         }
 
         void OnEnterStateEnemyTurn()
@@ -207,47 +186,6 @@ namespace RainesGames.Units.Mechs
         {
             if(!IsFactoryReset())
                 _actionPointsManager.ResetActionPoints(GetActionPointsResetAmount());
-        }
-        #endregion
-
-        // TODO All this ability points, unit state, power, etc. manager stuff could be moved to AbsUnit
-        #region ACTION POINTS MANAGER
-        public override void DecrementActionPoints(int points = 1)
-        {
-            _actionPointsManager.Decrement(points);
-        }
-
-        public override bool FirstActionSpent()
-        {
-            return _actionPointsManager.FirstActionSpent();
-        }
-
-        public override void ForceSpendAllActionPoints()
-        {
-            _actionPointsManager.ForceSpendAllActionPoints();
-        }
-
-        public override int GetActionPoints()
-        {
-            return _actionPointsManager.GetActionPoints();
-        }
-
-        int GetActionPointsResetAmount()
-        {
-            if(IsUnderclocked())
-                return Mathf.Max(0, _mechClass.GetStartOfTurnActionPoints() - 1);  // TODO Make this and overclock stackable?
-
-            return _mechClass.GetStartOfTurnActionPoints();
-        }
-
-        public override int GetStartOfTurnActionPoints()
-        {
-            return _mechClass.GetStartOfTurnActionPoints();
-        }
-
-        public override void IncrementActionPoints(int points = 1)
-        {
-            _actionPointsManager.Increment(points);
         }
         #endregion
 
@@ -300,23 +238,65 @@ namespace RainesGames.Units.Mechs
         #endregion
 
 
+        // TODO All this ability points, unit state, power, etc. manager stuff could be moved to AbsUnit
+        #region ACTION POINTS MANAGER
+        public override void DecrementActionPoints(int points = 1)
+        {
+            _actionPointsManager.Decrement(points);
+        }
+
+        public override bool FirstActionSpent()
+        {
+            return _actionPointsManager.FirstActionSpent();
+        }
+
+        public override void ForceSpendAllActionPoints()
+        {
+            _actionPointsManager.ForceSpendAllActionPoints();
+        }
+
+        public override int GetActionPoints()
+        {
+            return _actionPointsManager.GetActionPoints();
+        }
+
+        int GetActionPointsResetAmount()
+        {
+            if(IsUnderclocked())
+                return Mathf.Max(0, _mechClass.GetStartOfTurnActionPoints() - 1);  // TODO Make this and overclock stackable?
+
+            return _mechClass.GetStartOfTurnActionPoints();
+        }
+
+        public override int GetStartOfTurnActionPoints()
+        {
+            return _mechClass.GetStartOfTurnActionPoints();
+        }
+
+        public override void IncrementActionPoints(int points = 1)
+        {
+            _actionPointsManager.Increment(points);
+        }
+        #endregion
+
+
         #region CELL EVENTS
         public override void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
         {
-            if((Object)UnitSelectionManager.ActiveUnit == this)
-                _stateEventHandlers.GetCellHandler(GetCurrentState())?.OnCellClick(sender, cellIndex, buttonIndex);
+            if((Object)UnitSelectionManager.ActiveUnit == this && GetActiveUsable() != null && GetActiveUsable() is ICellClickEvents)
+                ((ICellClickEvents)GetActiveUsable()).OnCellClick(sender, cellIndex, buttonIndex);
         }
 
         public override void OnCellEnter(TerrainGridSystem sender, int cellIndex)
         {
-            if((Object)UnitSelectionManager.ActiveUnit == this)
-                _stateEventHandlers.GetCellHandler(GetCurrentState())?.OnCellEnter(sender, cellIndex);
+            if((Object)UnitSelectionManager.ActiveUnit == this && GetActiveUsable() != null && GetActiveUsable() is ICellTransitEvents)
+                ((ICellTransitEvents)GetActiveUsable()).OnCellEnter(sender, cellIndex);
         }
 
         public override void OnCellExit(TerrainGridSystem sender, int cellIndex)
         {
-            if((Object)UnitSelectionManager.ActiveUnit == this)
-                _stateEventHandlers.GetCellHandler(GetCurrentState())?.OnCellExit(sender, cellIndex);
+            if((Object)UnitSelectionManager.ActiveUnit == this && GetActiveUsable() != null && GetActiveUsable() is ICellTransitEvents)
+                ((ICellTransitEvents)GetActiveUsable()).OnCellExit(sender, cellIndex);
         }
         #endregion
 
@@ -382,72 +362,57 @@ namespace RainesGames.Units.Mechs
         #endregion
 
 
-        #region STATE MANAGER
-        public override bool CanEnterState(UnitState state)
-        {
-            IStateTransitionValidator validator = _transitionValidators.GetValidator(state);
-            return validator == null || validator.CanEnterState(this);
-        }
-
-        public override UnitState GetCurrentState()
-        {
-            return _stateManager.GetCurrentState();
-        }
-
-        UnitState GetFallbackState()
-        {
-            bool move = CanEnterState(UnitState.MOVE);
-            bool noAP = CanEnterState(UnitState.NO_ABILITY_POINTS);
-            return move ? UnitState.MOVE : (noAP ? UnitState.NO_ABILITY_POINTS : UnitState.IDLE);
-        }
-
-        public override bool HasCellEventHandler()
-        {
-            return HasCellEventHandler(GetCurrentState());
-        }
-
-        public override bool HasCellEventHandler(UnitState state)
-        {
-            return _stateEventHandlers.GetCellHandler(state) != null;
-        }
-
-        public override bool HasUnitEventHandler()
-        {
-            return HasUnitEventHandler(GetCurrentState());
-        }
-
-        public override bool HasUnitEventHandler(UnitState state)
-        {
-            return _stateEventHandlers.GetUnitHandler(state) != null;
-        }
-
-        public override void TransitionToState(UnitState state)
-        {
-            if(!CanEnterState(state))
-                state = GetFallbackState();
-
-            _stateManager.TransitionToState(state);
-        }
-        #endregion
-
-
         #region UNIT EVENTS
+        // TODO these if statements are kind of ugly
         public override void OnUnitClick(IUnit unit, int buttonIndex)
         {
-            if((Object)UnitSelectionManager.ActiveUnit == this)
-                _stateEventHandlers.GetUnitHandler(GetCurrentState())?.OnUnitClick(unit, buttonIndex);
+            if((Object)UnitSelectionManager.ActiveUnit == this && GetActiveUsable() != null && GetActiveUsable() is IUnitClickEvents)
+                ((IUnitClickEvents)GetActiveUsable()).OnUnitClick(unit, buttonIndex);
         }
 
         public override void OnUnitEnter(IUnit unit)
         {
-            if((Object)UnitSelectionManager.ActiveUnit == this)
-                _stateEventHandlers.GetUnitHandler(GetCurrentState())?.OnUnitEnter(unit);
+            if((Object)UnitSelectionManager.ActiveUnit == this && GetActiveUsable() != null && GetActiveUsable() is IUnitTransitEvents)
+                ((IUnitTransitEvents)GetActiveUsable()).OnUnitEnter(unit);
         }
 
         public override void OnUnitExit(IUnit unit)
         {
-            if((Object)UnitSelectionManager.ActiveUnit == this)
-                _stateEventHandlers.GetUnitHandler(GetCurrentState())?.OnUnitExit(unit);
+            if((Object)UnitSelectionManager.ActiveUnit == this && GetActiveUsable() != null && GetActiveUsable() is IUnitTransitEvents)
+                ((IUnitTransitEvents)GetActiveUsable()).OnUnitExit(unit);
+        }
+        #endregion
+
+
+        #region USABLE MANAGER
+        public override void ClearActiveUsable()
+        {
+            _activeUsableManager.ClearActiveUsable();
+        }
+
+        public override IUsable GetActiveUsable()
+        {
+            return _activeUsableManager.GetActiveUsable();
+        }
+
+        IUsable GetFallbackUsable()
+        {
+            bool canMove = GetAbility<MoveAbility>()?.CanBeUsed() ?? false;
+            return canMove ? GetAbility<MoveAbility>() : null;
+        }
+
+        public override void SetActiveUsable(IUsable usable)
+        {
+            if(!usable.CanBeUsed())
+                usable = GetFallbackUsable();
+
+            if (usable == null)
+            {
+                ClearActiveUsable();
+                return;
+            }
+
+            _activeUsableManager.SetActiveUsable(usable);
         }
         #endregion
     }

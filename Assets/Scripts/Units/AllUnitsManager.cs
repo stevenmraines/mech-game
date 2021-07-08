@@ -1,9 +1,10 @@
 ﻿using RainesGames.Combat.States;
 using RainesGames.Units.Selection;
-using RainesGames.Units.States;
 using System.Collections.Generic;
 using RainesGames.Units.Usables;
 using RainesGames.Units.Usables.Abilities;
+using RainesGames.Units.Usables.Abilities.Move;
+using RainesGames.Units.Usables.Abilities.ReroutePower;
 using UnityEngine;
 
 namespace RainesGames.Units
@@ -105,10 +106,10 @@ namespace RainesGames.Units
             if(combat.CurrentState == combat.EnemyTurn && activeUnit.IsPlayer())
                 return;
 
-            bool reroutingPower = activeUnit.GetCurrentState() == UnitState.REROUTE_POWER;
+            bool reroutingPower = activeUnit.GetActiveUsable().GetType() == typeof(ReroutePowerAbility);
 
             if(!reroutingPower && Input.GetMouseButtonUp(1))
-                activeUnit.TransitionToState(UnitState.MOVE);
+                activeUnit.SetActiveUsable(activeUnit.GetAbility<MoveAbility>());
 
             IList<IAbility> abilities = UsableTraySort.GetSortedAbilities(activeUnit);
 
@@ -132,7 +133,7 @@ namespace RainesGames.Units
             for(int i = 0; i < abilities.Count; i++)
             {
                 if(!reroutingPower && intKeyCodeMap.ContainsKey(i) && Input.GetKeyUp(intKeyCodeMap[i]))
-                    activeUnit.TransitionToState(abilities[i].GetState());
+                    activeUnit.SetActiveUsable(abilities[i]);
             }
         }
     }

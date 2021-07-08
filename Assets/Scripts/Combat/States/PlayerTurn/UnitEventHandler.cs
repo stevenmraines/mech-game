@@ -19,7 +19,7 @@ namespace RainesGames.Combat.States.PlayerTurn
             if(activeUnit == null)
                 return true;
 
-            bool playerIsTargetingUnits = activeUnit.IsPlayer() && activeUnit.HasUnitEventHandler();
+            bool playerIsTargetingUnits = activeUnit.IsPlayer() && activeUnit.GetActiveUsable() is IUnitEvents;
 
             if(!playerIsTargetingUnits)
                 return true;

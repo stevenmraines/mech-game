@@ -1,7 +1,13 @@
+using RainesGames.Units.Usables.Weapons;
+
 namespace RainesGames.Units.Mechs.MechParts
 {
     public class LeftArm : AbsMechPart
     {
+        protected IWeapon _oneHandedWeapon;
+        protected IWeapon _twoHandedWeapon;
+        protected IWeapon _shoulderMountedWeapon;
+
         public DataArm ArmData;
         public DataHitPoints HitPointsData;
         public DataWeight WeightData;
@@ -12,10 +18,43 @@ namespace RainesGames.Units.Mechs.MechParts
             _hitPointsManager.SetHitPoints(HitPointsData.MaxHitPoints);
         }
 
-        public int GetWeight()
+
+        #region MISC METHODS
+        public IWeapon GetHandheldWeapon()
         {
-            return WeightData.Weight;
+            return GetTwoHandedWeapon() != null ? GetTwoHandedWeapon() : GetOneHandedWeapon();
         }
+
+        public IWeapon GetOneHandedWeapon()
+        {
+            return _oneHandedWeapon;
+        }
+
+        public IWeapon GetTwoHandedWeapon()
+        {
+            return _twoHandedWeapon;
+        }
+
+        public IWeapon GetShoulderMountedWeapon()
+        {
+            return _shoulderMountedWeapon;
+        }
+
+        public void SetOneHandedWeapon(IWeapon weapon)
+        {
+            _oneHandedWeapon = weapon;
+        }
+
+        public void SetTwoHandedWeapon(IWeapon weapon)
+        {
+            _twoHandedWeapon = weapon;
+        }
+
+        public void SetShoulderMountedWeapon(IWeapon weapon)
+        {
+            _shoulderMountedWeapon = weapon;
+        }
+        #endregion
 
 
         #region HIT POINTS MANAGER
@@ -37,6 +76,14 @@ namespace RainesGames.Units.Mechs.MechParts
         public override void TakeDamage(int hitPoints)
         {
             _hitPointsManager.TakeDamage(hitPoints);
+        }
+        #endregion
+
+
+        #region WEIGHT METHODS
+        public int GetWeight()
+        {
+            return WeightData.Weight;
         }
         #endregion
     }

@@ -1,4 +1,3 @@
-using RainesGames.Units.States;
 using UnityEngine;
 
 namespace RainesGames.Units.Usables
@@ -12,16 +11,19 @@ namespace RainesGames.Units.Usables
          */
         protected IUnit _unit;
 
-        public abstract bool CanBeUsed();
         public abstract int GetFirstActionCost();
         public abstract string GetName();
         public abstract int GetSecondActionCost();
-        public abstract UnitState GetState();
         public abstract bool ShowInTray();
-
+        
         protected virtual void Awake()
         {
             _unit = GetComponent<IUnit>();
+        }
+
+        public virtual bool CanBeUsed()
+        {
+            return IsAffordable();
         }
 
         protected virtual void DecrementActionPoints()

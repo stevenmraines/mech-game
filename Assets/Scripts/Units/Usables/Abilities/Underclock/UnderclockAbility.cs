@@ -1,5 +1,4 @@
 ﻿using RainesGames.Common.Power;
-using RainesGames.Units.States;
 using RainesGames.Units.Usables.Abilities.ReroutePower;
 using UnityEngine;
 
@@ -126,11 +125,6 @@ namespace RainesGames.Units.Usables.Abilities.Underclock
         public override int GetSecondActionCost()
         {
             return UsableData.SecondActionCost;
-        }
-
-        public override UnitState GetState()
-        {
-            return UsableData.State;
         }
 
         public override bool ShowInTray()

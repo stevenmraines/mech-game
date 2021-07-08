@@ -3,10 +3,8 @@ using RainesGames.Combat.States;
 using RainesGames.Common.Power;
 using RainesGames.Units;
 using RainesGames.Units.Selection;
-using RainesGames.Units.States;
 using RainesGames.Units.Usables;
 using RainesGames.Units.Usables.Abilities;
-using RainesGames.Units.Usables.Abilities.CancelReroutePower;
 using RainesGames.Units.Usables.Abilities.ReroutePower;
 using UnityEngine;
 
@@ -83,10 +81,10 @@ namespace RainesGames.UI
             };
 
             bool isPowered = ability is IPowerContainerInteractable;
-            bool reroutingPower = activeUnit.GetCurrentState() == UnitState.REROUTE_POWER;
-            bool canEnterState = activeUnit.CanEnterState(ability.GetState());
+            bool reroutingPower = activeUnit.GetActiveUsable().GetType() == typeof(ReroutePowerAbility);
+            bool canBeUsed = ability.CanBeUsed();
             bool canRerouteAbilityPower = reroutingPower && isPowered;
-            bool abilityIsUsable = !reroutingPower && canEnterState;
+            bool abilityIsUsable = !reroutingPower && canBeUsed;
 
             GUI.enabled = canRerouteAbilityPower || abilityIsUsable;
             
@@ -144,7 +142,7 @@ namespace RainesGames.UI
             if(GUI.tooltip + "Ability" == ability.GetType().Name)
                 GUI.Label(tooltipPosition, tooltip);
 
-            if(activeUnit.GetCurrentState() == UnitState.REROUTE_POWER)
+            if(activeUnit.GetActiveUsable().GetType() == typeof(ReroutePowerAbility))
                 DrawReroutePowerButtons(activeUnit);
 
             if(!(ability is IPowerContainerInteractable))
@@ -246,7 +244,7 @@ namespace RainesGames.UI
             content.text = "Cancel";
 
             if(GUI.Button(cancelButtonPosition, content))
-                activeUnit.GetAbility<CancelReroutePowerAbility>().Execute();
+                activeUnit.ClearActiveUsable();
         }
 
         void DrawUnitStatus()
@@ -255,14 +253,14 @@ namespace RainesGames.UI
 
             IUnit hoveredUnit = UnitSelectionManager.CurrentSelection;
             IUnit activeUnit = UnitSelectionManager.ActiveUnit;
-            IUnit unit = hoveredUnit != null ? hoveredUnit : activeUnit;
+            IUnit unit = hoveredUnit ?? activeUnit;
 
             if(unit == null)
                 return;
 
             string unitInfo = ((MonoBehaviour)unit).name + "  (" + unit.GetActionPoints() + ")";
 
-            string stateName = unit.GetCurrentState().ToString();
+            string stateName = unit.GetActiveUsable().GetType().Name;
             unitInfo += "\nState: " + stateName;
 
             if(unit.IsHacked() || unit.IsFactoryReset() || unit.IsUnderclocked())
@@ -343,7 +341,7 @@ namespace RainesGames.UI
 
         void HandleUseAbility(IUnit activeUnit, IAbility ability)
         {
-            activeUnit.TransitionToState(ability.GetState());
+            activeUnit.SetActiveUsable(ability);
         }
 
         void OnGUI()
