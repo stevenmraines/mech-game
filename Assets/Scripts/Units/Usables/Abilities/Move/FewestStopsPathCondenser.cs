@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using TGS;
 using UnityEngine;
 
-namespace RainesGames.Units.Mechs.States.Move.PathSelection
+namespace RainesGames.Units.Usables.Abilities.Move
 {
-    public class FewestStopsPathCondenser : MonoBehaviour, IUnitPathCondenser
+    public class FewestStopsPathCondenser : IUnitPathCondenser
     {
         public enum AdjacentCellConfiguration
         {

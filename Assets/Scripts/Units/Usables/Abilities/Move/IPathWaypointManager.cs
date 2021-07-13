@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace RainesGames.Units.Mechs.States.Move.PathSelection
+namespace RainesGames.Units.Usables.Abilities.Move
 {
     public interface IPathWaypointManager
     {

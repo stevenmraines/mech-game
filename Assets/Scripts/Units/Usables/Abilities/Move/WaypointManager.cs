@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using UnityEngine;
 
-namespace RainesGames.Units.Mechs.States.Move.PathSelection
+namespace RainesGames.Units.Usables.Abilities.Move
 {
-    public class WaypointManager : MonoBehaviour, IPathWaypointManager
+    public class WaypointManager : IPathWaypointManager
     {
         private IList<int> _waypoints = new List<int>();
 

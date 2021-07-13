@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using TGS;
 
-namespace RainesGames.Units.Mechs.States.Move.PathSelection
+namespace RainesGames.Units.Usables.Abilities.Move
 {
     public interface IUnitPathCondenser
     {

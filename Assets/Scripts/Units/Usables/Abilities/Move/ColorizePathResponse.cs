@@ -1,12 +1,12 @@
+using System.Collections.Generic;
 using RainesGames.Grid;
 using RainesGames.Grid.Selection;
-using System.Collections.Generic;
 using TGS;
 using UnityEngine;
 
-namespace RainesGames.Units.Mechs.States.Move.PathSelection
+namespace RainesGames.Units.Usables.Abilities.Move
 {
-    public class ColorizePathResponse : MonoBehaviour, IPathTransitEvents
+    public class ColorizePathResponse : IPathTransitEvents
     {
         void ColorizeCells(TerrainGridSystem sender, IList<int> cells, Color color)
         {

@@ -1,12 +1,11 @@
+using System.Collections.Generic;
 using RainesGames.Common;
 using RainesGames.Grid;
-using System.Collections.Generic;
 using TGS;
-using UnityEngine;
 
-namespace RainesGames.Units.Mechs.States.Move.PathSelection
+namespace RainesGames.Units.Usables.Abilities.Move
 {
-    public class JoinedWaypointsPathProvider : MonoBehaviour, IUnitPathProvider
+    public class JoinedWaypointsPathProvider : IUnitPathProvider
     {
         public IList<int> GetPath(IUnit unit, IList<int> waypoints, int cellIndex, TerrainGridSystem sender)
         {
