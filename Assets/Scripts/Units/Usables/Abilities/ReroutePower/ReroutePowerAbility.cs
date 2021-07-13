@@ -59,6 +59,11 @@ namespace RainesGames.Units.Usables.Abilities.ReroutePower
             return UsableData.SecondActionCost;
         }
 
+        public override bool NeedsLOS()
+        {
+            return UsableData.NeedsLOS;
+        }
+
         public override bool ShowInTray()
         {
             return UsableData.ShowInTray;

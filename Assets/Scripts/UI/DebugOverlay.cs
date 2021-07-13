@@ -34,7 +34,7 @@ namespace RainesGames.UI
             );
         }
 
-        void DrawAbilities()
+        void DrawUsables()
         {
             GUI.skin = null;
 
@@ -43,22 +43,22 @@ namespace RainesGames.UI
             if(activeUnit == null)
                 return;
 
-            IList<IAbility> abilities = UsableTraySort.GetSortedAbilities(activeUnit);
+            IList<IUsable> usables = activeUnit.GetTrayUsables();
 
-            if(abilities.Count == 0)
+            if(usables.Count == 0)
                 return;
 
-            for(int i = 0; i < abilities.Count; i++)
-                DrawAbilityButton(i, abilities, activeUnit);
+            for(int i = 0; i < usables.Count; i++)
+                DrawUsableButton(i, usables, activeUnit);
 
             DrawBattery(activeUnit);
         }
 
-        void DrawAbilityButton(int i, IList<IAbility> abilities, IUnit activeUnit)
+        void DrawUsableButton(int i, IList<IUsable> usables, IUnit activeUnit)
         {
-            IAbility ability = abilities[i];
+            IUsable usable = usables[i];
 
-            int buttonX = GetAbilityButtonX(i, abilities.Count);
+            int buttonX = GetUsableButtonX(i, usables.Count);
             int buttonY = Screen.height - 110;
             int buttonWidth = 50;
             int buttonHeight = buttonWidth;
@@ -71,63 +71,62 @@ namespace RainesGames.UI
                 height = buttonHeight
             };
 
-            string abilityName = ability.GetType().Name;
-            string abilityNameTrimmed = abilityName.Substring(0, abilityName.Length - 7);
+            string usableName = usable.GetType().Name;
 
             GUIContent content = new GUIContent()
             {
                 text = i + 1 < 10 ? (i + 1).ToString() : (i + 1 > 10 ? "" : "0"),
-                tooltip = abilityNameTrimmed
+                tooltip = usableName
             };
 
-            bool isPowered = ability is IPowerContainerInteractable;
-            bool reroutingPower = activeUnit.GetActiveUsable().GetType() == typeof(ReroutePowerAbility);
-            bool canBeUsed = ability.CanBeUsed();
-            bool canRerouteAbilityPower = reroutingPower && isPowered;
-            bool abilityIsUsable = !reroutingPower && canBeUsed;
+            bool isPowered = usable is IPowerContainerInteractable;
+            bool reroutingPower = activeUnit.GetActiveUsable()?.GetType() == typeof(ReroutePowerAbility);
+            bool canBeUsed = usable.CanBeUsed();
+            bool canRerouteUsablePower = reroutingPower && isPowered;
+            bool usableCanBeUsed = !reroutingPower && canBeUsed;
 
-            GUI.enabled = canRerouteAbilityPower || abilityIsUsable;
+            GUI.enabled = canRerouteUsablePower || usableCanBeUsed;
             
             if(GUI.Button(buttonPosition, content))
             {
-                if(canRerouteAbilityPower)
+                if(canRerouteUsablePower)
                 {
-                    HandlePowerReroute(activeUnit, ability);
+                    HandlePowerReroute(activeUnit, usable);
                 }
                 
-                if(abilityIsUsable)
+                if(usableCanBeUsed)
                 {
-                    HandleUseAbility(activeUnit, ability);
+                    HandleUseUsable(activeUnit, usable);
                 }
             }
 
             GUI.enabled = true;
 
             int tooltipHeightIncrement = 20;
-            int tooltipWidth = 90;
+            int tooltipWidth = 120;
             int tooltipHeight = tooltipHeightIncrement;
             int tooltipX = buttonX + (buttonWidth / 2) - (tooltipWidth / 2);
             int tooltipY = buttonY - tooltipHeight;
             string tooltip = GUI.tooltip;
 
-            if(ability is IFiniteUseManagerClient)
+            if(usable is IFiniteUseManagerClient)
             {
-                IFiniteUseManagerClient finiteUseAbility = ((IFiniteUseManagerClient)ability);
+                IFiniteUseManagerClient finiteUseUsable = ((IFiniteUseManagerClient)usable);
 
                 tooltipHeight += tooltipHeightIncrement;
                 tooltipY -= tooltipHeightIncrement;
-                tooltip += "\nUses: " + finiteUseAbility.GetUsesRemaining();
+                tooltip += "\nUses: " + finiteUseUsable.GetUsesRemaining();
             }
 
-            if(ability is ICooldownManagerClient)
+            if(usable is ICooldownManagerClient)
             {
-                ICooldownManagerClient cooldownAbility = ((ICooldownManagerClient)ability);
+                ICooldownManagerClient cooldownUsable = ((ICooldownManagerClient)usable);
 
-                if(cooldownAbility.NeedsCooldown())
+                if(cooldownUsable.NeedsCooldown())
                 {
                     tooltipHeight += tooltipHeightIncrement;
                     tooltipY -= tooltipHeightIncrement;
-                    tooltip += "\nCooldown: " + cooldownAbility.GetCooldown();
+                    tooltip += "\nCooldown: " + cooldownUsable.GetCooldown();
                 }
             }
 
@@ -139,32 +138,36 @@ namespace RainesGames.UI
                 height = tooltipHeight
             };
 
-            if(GUI.tooltip + "Ability" == ability.GetType().Name)
+            if(GUI.tooltip == usableName)
                 GUI.Label(tooltipPosition, tooltip);
 
-            if(activeUnit.GetActiveUsable().GetType() == typeof(ReroutePowerAbility))
-                DrawReroutePowerButtons(activeUnit);
+            if (activeUnit.GetActiveUsable()?.GetType() == typeof(ReroutePowerAbility))
+            {
+                // height inc * 3 = one for regular tooltip, two for cooldown, three for finite use
+                int offset = buttonY - tooltipHeightIncrement * 3;
+                DrawReroutePowerButtons(activeUnit, offset);
+            }
 
-            if(!(ability is IPowerContainerInteractable))
+            if(!(usable is IPowerContainerInteractable))
                 return;
 
-            DrawAbilityPower(ability, buttonPosition);
+            DrawUsablePower(usable, buttonPosition);
         }
 
-        void DrawAbilityPower(IAbility ability, Rect buttonPosition)
+        void DrawUsablePower(IUsable usable, Rect buttonPosition)
         {
-            int power = GetAbilityPower(ability);
-            int maxPower = GetAbilityMaxPower(ability);
+            int power = GetUsablePower(usable);
+            int maxPower = GetUsableMaxPower(usable);
             int powerBarWidth = 12;
             int powerBarHeight = powerBarWidth;
             int gutterHeight = 5;
 
             for(int j = 1; j <= maxPower; j++)
             {
-                float abilityButtonYOffset = buttonPosition.y + buttonPosition.height;
+                float usableButtonYOffset = buttonPosition.y + buttonPosition.height;
                 int previousPowerBarsOffset = (j - 1) * powerBarHeight;
                 int gutters = (j - 1) * gutterHeight;
-                int y = (int)abilityButtonYOffset + previousPowerBarsOffset + gutters;
+                int y = (int)usableButtonYOffset + previousPowerBarsOffset + gutters;
 
                 Rect powerBarPosition = new Rect()
                 {
@@ -213,17 +216,15 @@ namespace RainesGames.UI
             }
         }
 
-        void DrawReroutePowerButtons(IUnit activeUnit)
+        void DrawReroutePowerButtons(IUnit activeUnit, int offsetFromBottom)
         {
             int gutter = 10;
+            int width = 100;
+            int height = 50;
+            int x = Screen.width / 2 - width - gutter / 2;
+            int y = offsetFromBottom - height - gutter;
 
-            Rect confirmButtonPosition = new Rect()
-            {
-                x = Screen.width / 2 - 100 - gutter / 2,
-                y = Screen.height - 190,
-                width = 100,
-                height = 50
-            };
+            Rect confirmButtonPosition = new Rect(x, y, width, height);
 
             GUIContent content = new GUIContent()
             {
@@ -231,7 +232,7 @@ namespace RainesGames.UI
             };
 
             if(GUI.Button(confirmButtonPosition, content))
-                activeUnit.GetAbility<ReroutePowerAbility>().Use();
+                activeUnit.GetUsable<ReroutePowerAbility>().Use();
 
             Rect cancelButtonPosition = new Rect()
             {
@@ -244,7 +245,7 @@ namespace RainesGames.UI
             content.text = "Cancel";
 
             if(GUI.Button(cancelButtonPosition, content))
-                activeUnit.ClearActiveUsable();
+                activeUnit.SetFallbackUsable();
         }
 
         void DrawUnitStatus()
@@ -260,7 +261,7 @@ namespace RainesGames.UI
 
             string unitInfo = ((MonoBehaviour)unit).name + "  (" + unit.GetActionPoints() + ")";
 
-            string stateName = unit.GetActiveUsable().GetType().Name;
+            string stateName = unit.GetActiveUsable()?.GetType().Name;
             unitInfo += "\nState: " + stateName;
 
             if(unit.IsHacked() || unit.IsFactoryReset() || unit.IsUnderclocked())
@@ -288,7 +289,7 @@ namespace RainesGames.UI
             GUI.Label(labelPosition, unitInfo);
         }
 
-        int GetAbilityButtonX(int i, int numberOfAbilities)
+        int GetUsableButtonX(int i, int numberOfAbilities)
         {
             int center = Screen.width / 2;
             int alreadyDrawnButtonsWidth = i * 50;
@@ -300,48 +301,48 @@ namespace RainesGames.UI
             return (xPositionInTray + center) - (buttonTrayWidth / 2);
         }
 
-        int GetAbilityMaxPower(IAbility ability)
+        int GetUsableMaxPower(IUsable usable)
         {
-            if(!(ability is IPowerContainerInteractable))
+            if(!(usable is IPowerContainerInteractable))
                 return 0;
 
-            return ((IPowerContainerInteractable)ability).GetMaxPower();
+            return ((IPowerContainerInteractable)usable).GetMaxPower();
         }
         
-        int GetAbilityPower(IAbility ability)
+        int GetUsablePower(IUsable usable)
         {
-            if(!(ability is IPowerContainerInteractable))
+            if(!(usable is IPowerContainerInteractable))
                 return 0;
 
-            return ((IPowerContainerInteractable)ability).GetPower();
+            return ((IPowerContainerInteractable)usable).GetPower();
         }
 
-        int GetAbilityMinPower(IAbility ability)
+        int GetUsableMinPower(IUsable usable)
         {
-            if(!(ability is IPoweredItem))
+            if(!(usable is IPoweredItem))
                 return 0;
 
-            return ((IPoweredItem)ability).GetMinPower();
+            return ((IPoweredItem)usable).GetMinPower();
         }
 
-        void HandlePowerReroute(IUnit activeUnit, IAbility ability)
+        void HandlePowerReroute(IUnit activeUnit, IUsable usable)
         {
-            int power = Mathf.Max(1, GetAbilityMinPower(ability));
+            int power = Mathf.Max(1, GetUsableMinPower(usable));
 
             if(Input.GetMouseButtonUp(0))
             {
-                activeUnit.TransferPowerTo(((IPowerContainerInteractable)ability), power);
+                activeUnit.TransferPowerTo(((IPowerContainerInteractable)usable), power);
             }
 
             if(Input.GetMouseButtonUp(1))
             {
-                activeUnit.TransferPowerFrom(((IPowerContainerInteractable)ability), power);
+                activeUnit.TransferPowerFrom(((IPowerContainerInteractable)usable), power);
             }
         }
 
-        void HandleUseAbility(IUnit activeUnit, IAbility ability)
+        void HandleUseUsable(IUnit activeUnit, IUsable usable)
         {
-            activeUnit.SetActiveUsable(ability);
+            activeUnit.SetActiveUsable(usable);
         }
 
         void OnGUI()
@@ -353,7 +354,7 @@ namespace RainesGames.UI
                 || _combatStateManager.CurrentState == _combatStateManager.EnemyPlacement)
                 return;
 
-            DrawAbilities();
+            DrawUsables();
         }
     }
 }

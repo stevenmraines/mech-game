@@ -55,7 +55,7 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
         {
             OnUnitCellExit(unit, cellIndex, sender);
 
-            unit.GetAbility<MoveAbility>().Use(GetMovePath(unit, cellIndex, sender));
+            unit.GetUsable<MoveAbility>().Use(GetMovePath(unit, cellIndex, sender));
 
             _waypointManager.ClearWaypoints();
         }

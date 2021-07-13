@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace RainesGames.Units.Usables
 {
-    [RequireComponent(typeof(AbsUnit))]
     public abstract class AbsUsable : MonoBehaviour, IUsable
     {
         /*
@@ -14,6 +13,7 @@ namespace RainesGames.Units.Usables
         public abstract int GetFirstActionCost();
         public abstract string GetName();
         public abstract int GetSecondActionCost();
+        public abstract bool NeedsLOS();
         public abstract bool ShowInTray();
         
         protected virtual void Awake()
@@ -39,6 +39,11 @@ namespace RainesGames.Units.Usables
         public virtual bool IsAffordable()
         {
             return _unit.GetActionPoints() >= GetActionCost();
+        }
+        
+        protected bool ShouldHandleEvent(IUnit activeUnit)
+        {
+            return _unit == activeUnit && this == (Object)activeUnit.GetActiveUsable();
         }
     }
 }

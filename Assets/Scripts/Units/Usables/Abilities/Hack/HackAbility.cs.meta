@@ -3,7 +3,13 @@ guid: 455b3c8bce384bb48a8e327f3afa9ea4
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - AbilityData: {fileID: 11400000, guid: 638e649c04e1dcd49ba0c5c6463542ec, type: 2}
+  - CooldownData: {fileID: 11400000, guid: e8f9419f59d38784b8eff9e7202ccbcb, type: 2}
+  - FiniteUseData: {fileID: 11400000, guid: 76bfa4ee7c44bca4db718d6146044535, type: 2}
+  - PowerData: {fileID: 11400000, guid: 516a40508130b524f99840901368fdb8, type: 2}
+  - StatusData: {fileID: 11400000, guid: d6f6c86cc87f80f45aed62a5d115fa3f, type: 2}
+  - UsableData: {fileID: 11400000, guid: d40b649c32fc5f44b87f50fdff860f94, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

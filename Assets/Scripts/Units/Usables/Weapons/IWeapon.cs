@@ -4,6 +4,5 @@ namespace RainesGames.Units.Usables.Weapons
     {
         float GetAccuracy();
         MountType GetMountType();
-        string GetWeaponName();
     }
 }

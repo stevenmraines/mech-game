@@ -3,7 +3,11 @@ guid: f6115cdd527faf340a97603e5c330539
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - AbilityData: {fileID: 11400000, guid: 626bd6763592baf4d9258931f81ec020, type: 2}
+  - CooldownData: {fileID: 11400000, guid: 88bca7000e6a38c468883b4f7f43b660, type: 2}
+  - PowerData: {fileID: 11400000, guid: 309d39c3d8cbaf94388cd05956d08406, type: 2}
+  - UsableData: {fileID: 11400000, guid: 39ba11f108e454d49a3b2570a27127e7, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

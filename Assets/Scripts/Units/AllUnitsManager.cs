@@ -100,20 +100,23 @@ namespace RainesGames.Units
 
             CombatStateManager combat = FindObjectOfType<CombatStateManager>();
 
+            if (combat.CurrentState != combat.PlayerTurn && combat.CurrentState != combat.EnemyTurn)
+                return;
+
             if(combat.CurrentState == combat.PlayerTurn && activeUnit.IsEnemy())
                 return;
 
             if(combat.CurrentState == combat.EnemyTurn && activeUnit.IsPlayer())
                 return;
 
-            bool reroutingPower = activeUnit.GetActiveUsable().GetType() == typeof(ReroutePowerAbility);
+            bool reroutingPower = activeUnit.GetActiveUsable()?.GetType() == typeof(ReroutePowerAbility);
 
             if(!reroutingPower && Input.GetMouseButtonUp(1))
-                activeUnit.SetActiveUsable(activeUnit.GetAbility<MoveAbility>());
+                activeUnit.SetActiveUsable(activeUnit.GetUsable<MoveAbility>());
 
-            IList<IAbility> abilities = UsableTraySort.GetSortedAbilities(activeUnit);
+            IList<IUsable> usables = activeUnit.GetTrayUsables();
 
-            if(abilities.Count == 0)
+            if(usables.Count == 0)
                 return;
 
             Dictionary<int, KeyCode> intKeyCodeMap = new Dictionary<int, KeyCode>()
@@ -130,10 +133,10 @@ namespace RainesGames.Units
                 { 9, KeyCode.Alpha0 }
             };
 
-            for(int i = 0; i < abilities.Count; i++)
+            for(int i = 0; i < usables.Count; i++)
             {
                 if(!reroutingPower && intKeyCodeMap.ContainsKey(i) && Input.GetKeyUp(intKeyCodeMap[i]))
-                    activeUnit.SetActiveUsable(abilities[i]);
+                    activeUnit.SetActiveUsable(usables[i]);
             }
         }
     }

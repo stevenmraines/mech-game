@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using RainesGames.Grid;
+using RainesGames.Units.Mechs.MechParts;
 using TGS;
 
 namespace RainesGames.Units.Usables.Weapons.BasicShortSword
 {
-    public class BasicShortSword : AbsUsable, IWeapon, IRangedUsable, IUnitTargetUsable
+    public class BasicShortSword : AbsWeapon, IRangedUsable
     {
         public DataRange RangeData;
         public DataUsable UsableData;
-        public DataWeapon WeaponData;
 
-        public void Use(IUnit unit)
+        public void Use(IUnit unit, IList<IMechPart> mechParts)
         {
 
         }
@@ -27,20 +27,9 @@ namespace RainesGames.Units.Usables.Weapons.BasicShortSword
             return RangeData.MinRange;
         }
 
-        public bool HasLOS(IUnit targetUnit)
-        {
-            return true;
-        }
-
         public bool InRange(Cell targetCell)
         {
-            IList<int> path = GridWrapper.FindPath(_unit.GetPosition().index, targetCell.index, true);
-            return path.Count > GetMaxRange() || path.Count < GetMinRange();
-        }
-
-        public bool NeedsLOS()
-        {
-            return RangeData.NeedsLOS;
+            return GridWrapper.PathIsWithinRange(_unit.GetPosition().index, targetCell.index, GetMinRange(), GetMaxRange(), true);
         }
         #endregion
 
@@ -61,6 +50,11 @@ namespace RainesGames.Units.Usables.Weapons.BasicShortSword
             return UsableData.SecondActionCost;
         }
 
+        public override bool NeedsLOS()
+        {
+            return UsableData.NeedsLOS;
+        }
+
         public override bool ShowInTray()
         {
             return UsableData.ShowInTray;
@@ -69,19 +63,14 @@ namespace RainesGames.Units.Usables.Weapons.BasicShortSword
 
 
         #region WEAPON DATA METHODS
-        public float GetAccuracy()
+        public override float GetAccuracy()
         {
             return WeaponData.Accuracy;
         }
 
-        public MountType GetMountType()
+        public override MountType GetMountType()
         {
             return WeaponData.MountType;
-        }
-
-        public string GetWeaponName()
-        {
-            return WeaponData.WeaponName;
         }
         #endregion
     }

@@ -17,92 +17,11 @@ namespace RainesGames.Grid
         private static TerrainGridSystem _terrainGridSystem;
         public static TerrainGridSystem TerrainGridSystem => _terrainGridSystem;
 
+
+        #region MONOBEHAVIOUR METHODS
         void Awake()
         {
             _terrainGridSystem = GetComponent<TerrainGridSystem>();
-        }
-
-        public static void BlockCell(int cellIndex)
-        {
-            BlockCell(GetCell(cellIndex));
-        }
-
-        // TODO Get rid of all these overloaded methods that exist only so I can just pass the cell object instead of the index
-        public static void BlockCell(Cell cell)
-        {
-            _terrainGridSystem.CellSetCanCross(cell.index, false);
-        }
-
-        public static void DisableCellHighlight()
-        {
-            ShowCellHighlight(false);
-        }
-        
-        public static void DisableTerritories()
-        {
-            ShowTerritories(false);
-        }
-
-        public static void EnableCellHighlight()
-        {
-            ShowCellHighlight(true);
-        }
-        
-        public static void EnableTerritories()
-        {
-            ShowTerritories(true);
-        }
-
-        public static IList<int> FindPath(int startCellIndex, int endCellIndex, bool unblockStartCell = false)
-        {
-            return FindPath(GetCell(startCellIndex), GetCell(endCellIndex), unblockStartCell);
-        }
-
-        /**
-         * Return a path between two cells, optionally temporarily unblocking the
-         * starting cell to allow paths which begin at some unit's current position.
-         */
-        public static IList<int> FindPath(Cell startCell, Cell endCell, bool unblockStartCell = false)
-        {
-            if(unblockStartCell)
-                UnblockCell(startCell);
-
-            IList<int> path = _terrainGridSystem.FindPath(startCell.index, endCell.index);
-
-            if(unblockStartCell)
-                BlockCell(startCell);
-
-            return path;
-        }
-
-        public static Cell GetCell(int index)
-        {
-            return _terrainGridSystem.cells[index];
-        }
-
-        public static GameObject GetCellGameObject(Cell cell)
-        {
-            return _terrainGridSystem.CellGetGameObject(cell.index);
-        }
-
-        public static Vector3 GetCellPosition(int cellIndex)
-        {
-            return _terrainGridSystem.CellGetPosition(cellIndex);
-        }
-
-        public static Vector3 GetCellPosition(Cell cell)
-        {
-            return GetCellPosition(cell.index);
-        }
-
-        public static bool IsBlocked(int cellIndex)
-        {
-            return IsBlocked(GetCell(cellIndex));
-        }
-
-        public static bool IsBlocked(Cell cell)
-        {
-            return !cell.canCross;
         }
 
         void OnDisable()
@@ -126,7 +45,10 @@ namespace RainesGames.Grid
             UnitSelectionManager.OnUnitEnter += OnUnitEnter;
             UnitSelectionManager.OnUnitExit += OnUnitExit;
         }
+        #endregion
 
+
+        #region MISC METHODS
         void OnEnterPlacementState()
         {
             EnableCellHighlight();
@@ -148,8 +70,57 @@ namespace RainesGames.Grid
         {
             EnableCellHighlight();
         }
+        #endregion
 
-        public static void SetColor(int cellIndex, Color color)
+
+        #region CELL METHODS
+        public static void BlockCell(int cellIndex)
+        {
+            BlockCell(GetCell(cellIndex));
+        }
+
+        // TODO Get rid of all these overloaded methods that exist only so I can just pass the cell object instead of the index
+        public static void BlockCell(Cell cell)
+        {
+            _terrainGridSystem.CellSetCanCross(cell.index, false);
+        }
+
+        public static void DisableCellHighlight()
+        {
+            ShowCellHighlight(false);
+        }
+
+        public static void EnableCellHighlight()
+        {
+            ShowCellHighlight(true);
+        }
+
+        public static Cell GetCell(int index)
+        {
+            return _terrainGridSystem.cells[index];
+        }
+
+        public static Vector3 GetCellPosition(int cellIndex)
+        {
+            return _terrainGridSystem.CellGetPosition(cellIndex);
+        }
+
+        public static Vector3 GetCellPosition(Cell cell)
+        {
+            return GetCellPosition(cell.index);
+        }
+
+        public static bool IsBlocked(int cellIndex)
+        {
+            return IsBlocked(GetCell(cellIndex));
+        }
+
+        public static bool IsBlocked(Cell cell)
+        {
+            return !cell.canCross;
+        }
+
+        public static void SetCellColor(int cellIndex, Color color)
         {
             _terrainGridSystem.CellSetColor(cellIndex, color);
         }
@@ -157,12 +128,6 @@ namespace RainesGames.Grid
         static void ShowCellHighlight(bool showCellHighlight)
         {
             _terrainGridSystem.highlightMode = showCellHighlight ? HIGHLIGHT_MODE.Cells : HIGHLIGHT_MODE.None;
-        }
-        
-        static void ShowTerritories(bool showTerritories)
-        {
-            _terrainGridSystem.showTerritories = showTerritories;
-            _terrainGridSystem.colorizeTerritories = showTerritories;
         }
 
         public static void UnblockCell(int cellIndex)
@@ -174,5 +139,56 @@ namespace RainesGames.Grid
         {
             _terrainGridSystem.CellSetCanCross(cell.index, true);
         }
+        #endregion
+
+
+        #region PATH METHODS
+        public static IList<int> FindPath(int startCellIndex, int endCellIndex, bool unblockStartCell = false)
+        {
+            return FindPath(GetCell(startCellIndex), GetCell(endCellIndex), unblockStartCell);
+        }
+
+        /**
+         * Return a path between two cells, optionally temporarily unblocking the
+         * starting cell to allow paths which begin at some unit's current position.
+         */
+        public static IList<int> FindPath(Cell startCell, Cell endCell, bool unblockStartCell = false)
+        {
+            if(unblockStartCell)
+                UnblockCell(startCell);
+
+            IList<int> path = _terrainGridSystem.FindPath(startCell.index, endCell.index);
+
+            if(unblockStartCell)
+                BlockCell(startCell);
+
+            return path;
+        }
+
+        public static bool PathIsWithinRange(int startCellIndex, int endCellIndex, int minRange, int maxRange, bool unblockStartCell = false)
+        {
+            IList<int> path = FindPath(startCellIndex, endCellIndex, unblockStartCell);
+            return path.Count <= maxRange && path.Count >= minRange;
+        }
+        #endregion
+
+
+        #region TERRITORY METHODS
+        public static void DisableTerritories()
+        {
+            ShowTerritories(false);
+        }
+        
+        public static void EnableTerritories()
+        {
+            ShowTerritories(true);
+        }
+
+        static void ShowTerritories(bool showTerritories)
+        {
+            _terrainGridSystem.showTerritories = showTerritories;
+            _terrainGridSystem.colorizeTerritories = showTerritories;
+        }
+        #endregion
     }
 }

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6ddbd3f82ec24e345bf60763d231fc13
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _handheldWeapon: {instanceID: 0}
+  - _shoulderMountedWeapon: {instanceID: 0}
+  - ArmData: {fileID: 11400000, guid: aa2c20e2b47f1cb4da9238fb78cc5291, type: 2}
+  - HitPointsData: {fileID: 11400000, guid: 54403ae2b07285343b7a238825422f67, type: 2}
+  - WeightData: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

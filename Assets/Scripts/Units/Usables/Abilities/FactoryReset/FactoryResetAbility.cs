@@ -1,12 +1,11 @@
-﻿using RainesGames.Common.Power;
-using RainesGames.Units.Usables.Abilities.ReroutePower;
+﻿using RainesGames.Combat.States;
+using RainesGames.Common.Power;
 using UnityEngine;
 
 namespace RainesGames.Units.Usables.Abilities.FactoryReset
 {
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(ReroutePowerAbility))]
-    public class FactoryResetAbility : AbsUsable, IAbility, ICooldownManagerClient, IFiniteUseManagerClient,
+    public class FactoryResetAbility : AbsUsable, IAbility, IActiveUnitEvents, ICooldownManagerClient, IFiniteUseManagerClient,
         IPowerManagerClient, IStatusAbility, IUnitTargetUsable
     {
         private CooldownManager _cooldownManager = new CooldownManager();
@@ -20,12 +19,6 @@ namespace RainesGames.Units.Usables.Abilities.FactoryReset
         public DataPoweredAbility PowerData;
         public DataStatusAbility StatusData;
         public DataUsable UsableData;
-
-        protected override void Awake()
-        {
-            base.Awake();
-            SetUsesRemaining();
-        }
 
         public override bool CanBeUsed()
         {
@@ -42,6 +35,29 @@ namespace RainesGames.Units.Usables.Abilities.FactoryReset
             ResetCooldown();
             DecrementUsesRemaining();
         }
+
+
+        #region MONOBEHAVIOUR METHODS
+        protected override void Awake()
+        {
+            base.Awake();
+            SetUsesRemaining();
+        }
+
+        void OnDisable()
+        {
+            UnitEventRouter.OnUnitClickReroute -= OnActiveUnitClick;
+            UnitEventRouter.OnUnitEnterReroute -= OnActiveUnitEnter;
+            UnitEventRouter.OnUnitExitReroute -= OnActiveUnitExit;
+        }
+
+        void OnEnable()
+        {
+            UnitEventRouter.OnUnitClickReroute += OnActiveUnitClick;
+            UnitEventRouter.OnUnitEnterReroute += OnActiveUnitEnter;
+            UnitEventRouter.OnUnitExitReroute += OnActiveUnitExit;
+        }
+        #endregion
 
 
         #region ABILITY DATA METHODS
@@ -144,6 +160,29 @@ namespace RainesGames.Units.Usables.Abilities.FactoryReset
         #endregion
 
 
+        #region UNIT METHODS
+        public void OnActiveUnitClick(IUnit activeUnit, IUnit targetUnit, int buttonIndex)
+        {
+            if(!ShouldHandleEvent(activeUnit) || buttonIndex != 0)
+                return;
+
+            Use(targetUnit);
+        }
+
+        public void OnActiveUnitEnter(IUnit activeUnit, IUnit targetUnit)
+        {
+            if(_unit != activeUnit)
+                return;
+        }
+
+        public void OnActiveUnitExit(IUnit activeUnit, IUnit targetUnit)
+        {
+            if(_unit != activeUnit)
+                return;
+        }
+        #endregion
+
+
         #region USABLE DATA METHODS
         public override int GetFirstActionCost()
         {
@@ -158,6 +197,11 @@ namespace RainesGames.Units.Usables.Abilities.FactoryReset
         public override int GetSecondActionCost()
         {
             return UsableData.SecondActionCost;
+        }
+
+        public override bool NeedsLOS()
+        {
+            return UsableData.NeedsLOS;
         }
 
         public override bool ShowInTray()

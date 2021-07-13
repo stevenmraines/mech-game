@@ -11,7 +11,7 @@ namespace RainesGames.Units.Mechs.States.Move.PathSelection
         void ColorizeCells(TerrainGridSystem sender, IList<int> cells, Color color)
         {
             foreach(int cellIndex in cells)
-                GridWrapper.SetColor(cellIndex, color);
+                GridWrapper.SetCellColor(cellIndex, color);
         }
 
         public void OnPathEnter(TerrainGridSystem sender, IList<int> waypoints, IList<int> path)

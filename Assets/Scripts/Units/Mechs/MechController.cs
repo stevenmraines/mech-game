@@ -1,34 +1,29 @@
-﻿using RainesGames.Combat.States;
+﻿using System.Collections.Generic;
 using RainesGames.Combat.States.EnemyTurn;
 using RainesGames.Combat.States.PlayerTurn;
 using RainesGames.Common.Power;
-using RainesGames.Grid;
 using RainesGames.Units.Mechs.Classes;
 using RainesGames.Units.Mechs.MechParts;
-using RainesGames.Units.Selection;
 using RainesGames.Units.Usables;
 using RainesGames.Units.Usables.Abilities;
 using RainesGames.Units.Usables.Abilities.Move;
+using RainesGames.Units.Usables.Weapons;
 using TGS;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace RainesGames.Units.Mechs
 {
-    [RequireComponent(typeof(AbsMechClass))]
     [RequireComponent(typeof(Animator))]
-    [RequireComponent(typeof(Head))]
-    [RequireComponent(typeof(LeftArm))]
-    [RequireComponent(typeof(Legs))]
     [RequireComponent(typeof(NavMeshAgent))]
-    [RequireComponent(typeof(RightArm))]
-    [RequireComponent(typeof(Torso))]
     [DisallowMultipleComponent]
     public sealed class MechController : AbsUnit
     {
         #region INSTANCE VARIABLES
         private Animator _animator;
         public Animator Animator => _animator;
+
+        private IClassAbilitySet _classAbilitySet;
 
         private Head _head;
         public Head Head => _head;
@@ -38,6 +33,8 @@ namespace RainesGames.Units.Mechs
 
         private Legs _legs;
         public Legs Legs => _legs;
+
+        private IAbilitySet _mechAbilitySet;
 
         private AbsMechClass _mechClass;
         public AbsMechClass MechClass => _mechClass;
@@ -59,9 +56,11 @@ namespace RainesGames.Units.Mechs
             base.Awake();
 
             _animator = GetComponent<Animator>();
+            _classAbilitySet = GetComponent<IClassAbilitySet>();
             _head = GetComponent<Head>();
             _leftArm = GetComponent<LeftArm>();
             _legs = GetComponent<Legs>();
+            _mechAbilitySet = GetComponent<MechAbilitySet>();
             _mechClass = GetComponent<AbsMechClass>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _rightArm = GetComponent<RightArm>();
@@ -76,13 +75,6 @@ namespace RainesGames.Units.Mechs
             EnemyTurnState.OnExitState -= OnExitStateEnemyTurn;
             PlayerTurnState.OnEnterState -= OnEnterStatePlayerTurn;
             PlayerTurnState.OnExitState -= OnExitStatePlayerTurn;
-
-            CellEventRouter.OnCellClickReroute -= OnCellClick;
-            CellEventRouter.OnCellEnterReroute -= OnCellEnter;
-            CellEventRouter.OnCellExitReroute -= OnCellExit;
-            UnitEventRouter.OnUnitClickReroute -= OnUnitClick;
-            UnitEventRouter.OnUnitEnterReroute -= OnUnitEnter;
-            UnitEventRouter.OnUnitExitReroute -= OnUnitExit;
 
             _actionPointsManager.OnDecrement -= OnActionPointsChange;
             _actionPointsManager.OnForceSpendAll -= OnActionPointsChange;
@@ -100,13 +92,6 @@ namespace RainesGames.Units.Mechs
             PlayerTurnState.OnEnterState += OnEnterStatePlayerTurn;
             PlayerTurnState.OnExitState += OnExitStatePlayerTurn;
 
-            CellEventRouter.OnCellClickReroute += OnCellClick;
-            CellEventRouter.OnCellEnterReroute += OnCellEnter;
-            CellEventRouter.OnCellExitReroute += OnCellExit;
-            UnitEventRouter.OnUnitClickReroute += OnUnitClick;
-            UnitEventRouter.OnUnitEnterReroute += OnUnitEnter;
-            UnitEventRouter.OnUnitExitReroute += OnUnitExit;
-
             _actionPointsManager.OnDecrement += OnActionPointsChange;
             _actionPointsManager.OnForceSpendAll += OnActionPointsChange;
             _actionPointsManager.OnIncrement += OnActionPointsChange;
@@ -118,12 +103,7 @@ namespace RainesGames.Units.Mechs
         #endregion
 
 
-        #region MISC
-        public override int GetMovement()
-        {
-            return MechClass.GetBaseMovement();
-        }
-
+        #region MISC METHODS
         /*
          * This should respond to both decrement AND increment events,
          * because if a unit is in the noAP state and another unit uses
@@ -133,6 +113,20 @@ namespace RainesGames.Units.Mechs
         {
             foreach(IAbility ability in GetCooldownAbilities())
                 ((ICooldownManagerClient)ability).Cooldown();
+        }
+
+        public override int GetMovement()
+        {
+            return MechClass.GetBaseMovement();
+        }
+
+        public override IList<IUsable> GetTrayUsables()
+        {
+            List<IUsable> usables = new List<IUsable>(GetWeaponsAsUsables());
+            usables.AddRange(_classAbilitySet.GetAbilities());
+            usables.AddRange(_mechAbilitySet.GetAbilities());
+
+            return FilterNonTrayUsables(usables);
         }
 
         void OnActionPointsChange()
@@ -280,23 +274,35 @@ namespace RainesGames.Units.Mechs
         #endregion
 
 
-        #region CELL EVENTS
-        public override void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
+        #region MECH PART METHODS
+        public IList<IWeapon> GetWeapons()
         {
-            if((Object)UnitSelectionManager.ActiveUnit == this && GetActiveUsable() != null && GetActiveUsable() is ICellClickEvents)
-                ((ICellClickEvents)GetActiveUsable()).OnCellClick(sender, cellIndex, buttonIndex);
+            IList<IWeapon> weapons = new List<IWeapon>();
+            
+            if(_leftArm.GetHandheldWeapon() != null)
+                weapons.Add(_leftArm.GetHandheldWeapon());
+
+            if(_rightArm.GetHandheldWeapon() != null)
+                weapons.Add(_rightArm.GetHandheldWeapon());
+
+            if(_leftArm.GetShoulderMountedWeapon() != null)
+                weapons.Add(_leftArm.GetShoulderMountedWeapon());
+
+            if(_rightArm.GetShoulderMountedWeapon() != null)
+                weapons.Add(_rightArm.GetShoulderMountedWeapon());
+
+            return weapons;
         }
 
-        public override void OnCellEnter(TerrainGridSystem sender, int cellIndex)
+        // TODO There must be a way to cast an IList of one interface to another
+        public IList<IUsable> GetWeaponsAsUsables()
         {
-            if((Object)UnitSelectionManager.ActiveUnit == this && GetActiveUsable() != null && GetActiveUsable() is ICellTransitEvents)
-                ((ICellTransitEvents)GetActiveUsable()).OnCellEnter(sender, cellIndex);
-        }
+            IList<IUsable> usables = new List<IUsable>();
 
-        public override void OnCellExit(TerrainGridSystem sender, int cellIndex)
-        {
-            if((Object)UnitSelectionManager.ActiveUnit == this && GetActiveUsable() != null && GetActiveUsable() is ICellTransitEvents)
-                ((ICellTransitEvents)GetActiveUsable()).OnCellExit(sender, cellIndex);
+            foreach (IWeapon weapon in GetWeapons())
+                usables.Add((IUsable)weapon);
+
+            return usables;
         }
         #endregion
 
@@ -362,28 +368,6 @@ namespace RainesGames.Units.Mechs
         #endregion
 
 
-        #region UNIT EVENTS
-        // TODO these if statements are kind of ugly
-        public override void OnUnitClick(IUnit unit, int buttonIndex)
-        {
-            if((Object)UnitSelectionManager.ActiveUnit == this && GetActiveUsable() != null && GetActiveUsable() is IUnitClickEvents)
-                ((IUnitClickEvents)GetActiveUsable()).OnUnitClick(unit, buttonIndex);
-        }
-
-        public override void OnUnitEnter(IUnit unit)
-        {
-            if((Object)UnitSelectionManager.ActiveUnit == this && GetActiveUsable() != null && GetActiveUsable() is IUnitTransitEvents)
-                ((IUnitTransitEvents)GetActiveUsable()).OnUnitEnter(unit);
-        }
-
-        public override void OnUnitExit(IUnit unit)
-        {
-            if((Object)UnitSelectionManager.ActiveUnit == this && GetActiveUsable() != null && GetActiveUsable() is IUnitTransitEvents)
-                ((IUnitTransitEvents)GetActiveUsable()).OnUnitExit(unit);
-        }
-        #endregion
-
-
         #region USABLE MANAGER
         public override void ClearActiveUsable()
         {
@@ -397,8 +381,8 @@ namespace RainesGames.Units.Mechs
 
         IUsable GetFallbackUsable()
         {
-            bool canMove = GetAbility<MoveAbility>()?.CanBeUsed() ?? false;
-            return canMove ? GetAbility<MoveAbility>() : null;
+            bool canMove = GetUsable<MoveAbility>()?.CanBeUsed() ?? false;
+            return canMove ? GetUsable<MoveAbility>() : null;
         }
 
         public override void SetActiveUsable(IUsable usable)
@@ -406,13 +390,18 @@ namespace RainesGames.Units.Mechs
             if(!usable.CanBeUsed())
                 usable = GetFallbackUsable();
 
-            if (usable == null)
+            if(usable == null)
             {
                 ClearActiveUsable();
                 return;
             }
 
             _activeUsableManager.SetActiveUsable(usable);
+        }
+        
+        public override void SetFallbackUsable()
+        {
+            SetActiveUsable(GetFallbackUsable());
         }
         #endregion
     }

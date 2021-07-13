@@ -8,6 +8,7 @@ namespace RainesGames.Units.Usables
         string GetName();
         int GetSecondActionCost();
         bool IsAffordable();
+        bool NeedsLOS();
         bool ShowInTray();
     }
 }

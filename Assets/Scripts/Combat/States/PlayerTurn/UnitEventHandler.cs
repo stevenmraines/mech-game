@@ -19,7 +19,7 @@ namespace RainesGames.Combat.States.PlayerTurn
             if(activeUnit == null)
                 return true;
 
-            bool playerIsTargetingUnits = activeUnit.IsPlayer() && activeUnit.GetActiveUsable() is IUnitEvents;
+            bool playerIsTargetingUnits = activeUnit.IsPlayer() && activeUnit.GetActiveUsable() is IActiveUnitEvents;
 
             if(!playerIsTargetingUnits)
                 return true;
@@ -35,7 +35,7 @@ namespace RainesGames.Combat.States.PlayerTurn
                 return;
             }
 
-            _state.Manager.UnitEventRouter.RerouteUnitClick(unit, buttonIndex);
+            _state.Manager.UnitEventRouter.RerouteUnitClick(UnitSelectionManager.ActiveUnit, unit, buttonIndex);
         }
 
         public void OnUnitEnter(IUnit unit)
@@ -43,7 +43,7 @@ namespace RainesGames.Combat.States.PlayerTurn
             if(UnitSelectionManager.ActiveUnit == null)
                 return;
 
-            _state.Manager.UnitEventRouter.RerouteUnitMouseEnter(unit);
+            _state.Manager.UnitEventRouter.RerouteUnitMouseEnter(UnitSelectionManager.ActiveUnit, unit);
         }
 
         public void OnUnitExit(IUnit unit)
@@ -51,7 +51,7 @@ namespace RainesGames.Combat.States.PlayerTurn
             if(UnitSelectionManager.ActiveUnit == null)
                 return;
 
-            _state.Manager.UnitEventRouter.RerouteUnitMouseExit(unit);
+            _state.Manager.UnitEventRouter.RerouteUnitMouseExit(UnitSelectionManager.ActiveUnit, unit);
         }
     }
 }

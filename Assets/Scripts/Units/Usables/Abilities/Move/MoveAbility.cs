@@ -1,14 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using RainesGames.Combat.States;
 using RainesGames.Grid;
 using RainesGames.Units.Mechs;
+using TGS;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace RainesGames.Units.Usables.Abilities.Move
 {
     [DisallowMultipleComponent]
-    public class MoveAbility : AbsUsable, IAbility, IActivatable, IDeactivatable, IPathTargetUsable
+    public class MoveAbility : AbsUsable, IAbility, IActivatable, IActiveCellEvents, IDeactivatable, IPathTargetUsable
     {
         private NavMeshAgent _navMeshAgent;
         private int _pathIndex = 0;
@@ -44,10 +46,48 @@ namespace RainesGames.Units.Usables.Abilities.Move
         }
 
 
+        #region MONOBEHAVIOUR METHODS
+        void OnDisable()
+        {
+            CellEventRouter.OnCellClickReroute -= OnActiveCellClick;
+            CellEventRouter.OnCellEnterReroute -= OnActiveCellEnter;
+            CellEventRouter.OnCellExitReroute -= OnActiveCellExit;
+        }
+
+        void OnEnable()
+        {
+            CellEventRouter.OnCellClickReroute += OnActiveCellClick;
+            CellEventRouter.OnCellEnterReroute += OnActiveCellEnter;
+            CellEventRouter.OnCellExitReroute += OnActiveCellExit;
+        }
+        #endregion
+
+
         #region ABILITY DATA METHODS
         public AudioClip GetSoundEffect()
         {
             return AbilityData.SoundEffect;
+        }
+        #endregion
+
+
+        #region CELL EVENTS
+        public void OnActiveCellClick(IUnit activeUnit, int cellIndex, TerrainGridSystem sender, int buttonIndex)
+        {
+            if(_unit != activeUnit)
+                return;
+        }
+
+        public void OnActiveCellEnter(IUnit activeUnit, int cellIndex, TerrainGridSystem sender)
+        {
+            if(_unit != activeUnit)
+                return;
+        }
+
+        public void OnActiveCellExit(IUnit activeUnit, int cellIndex, TerrainGridSystem sender)
+        {
+            if(_unit != activeUnit)
+                return;
         }
         #endregion
 
@@ -138,6 +178,11 @@ namespace RainesGames.Units.Usables.Abilities.Move
         public override int GetSecondActionCost()
         {
             return UsableData.SecondActionCost;
+        }
+
+        public override bool NeedsLOS()
+        {
+            return UsableData.NeedsLOS;
         }
 
         public override bool ShowInTray()

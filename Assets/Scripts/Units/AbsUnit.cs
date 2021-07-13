@@ -49,6 +49,7 @@ namespace RainesGames.Units
         public abstract Cell GetPosition();
         public abstract int GetPower();
         public abstract int GetStartOfTurnActionPoints();
+        public abstract IList<IUsable> GetTrayUsables();
         public abstract int GetUnderclockedTurnsRemaining();
         public abstract void Hack(int duration);
         public abstract void IncrementActionPoints(int points = 1);
@@ -56,67 +57,30 @@ namespace RainesGames.Units
         public abstract bool IsHacked();
         public abstract bool IsPlaced();
         public abstract bool IsUnderclocked();
-        public abstract void OnCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex);
-        public abstract void OnCellEnter(TerrainGridSystem sender, int cellIndex);
-        public abstract void OnCellExit(TerrainGridSystem sender, int cellIndex);
-        public abstract void OnUnitClick(IUnit unit, int buttonIndex);
-        public abstract void OnUnitEnter(IUnit unit);
-        public abstract void OnUnitExit(IUnit unit);
         public abstract void PlaceOnCell(int cellIndex);
         public abstract void RecordPowerState();
         public abstract void RevertPowerState();
         public abstract void SetActiveUsable(IUsable usable);
+        public abstract void SetFallbackUsable();
         public abstract void SetCell(int cellIndex);
         public abstract void TransferPowerFrom(IPowerContainerInteractable container, int power = 1);
         public abstract void TransferPowerTo(IPowerContainerInteractable container, int power = 1);
         public abstract void Underclock(int duration);
 
-        // TODO Get rid of the duplication between these two methods
-        protected IList<IAbility> FilterShowInTrayAbilities(IList<IAbility> abilities)
+        protected IList<IUsable> FilterNonTrayUsables(IList<IUsable> usables)
         {
-            if(abilities.Count == 0)
-                return new List<IAbility>();
-
-            IList<IAbility> filteredAbilities = new List<IAbility>();
-
-            foreach(IAbility ability in abilities)
+            for(int i = usables.Count - 1; i >= 0; i--)
             {
-                if(ability.ShowInTray())
-                    filteredAbilities.Add(ability);
+                if(!usables[i].ShowInTray())
+                    usables.RemoveAt(i);
             }
 
-            return filteredAbilities;
+            return usables;
         }
 
-        protected IList<IUsable> FilterShowInTrayUsables(IList<IUsable> usables)
+        public IList<IAbility> GetAbilities()
         {
-            if(usables.Count == 0)
-                return new List<IUsable>();
-
-            IList<IUsable> filteredUsables = new List<IUsable>();
-
-            foreach(IUsable usable in usables)
-            {
-                if(usable.ShowInTray())
-                    filteredUsables.Add(usable);
-            }
-
-            return filteredUsables;
-        }
-
-        public IList<IAbility> GetAbilities(bool filterShowInTray = true)
-        {
-            IList<IAbility> abilities = gameObject.GetComponents<IAbility>();
-
-            if(!filterShowInTray)
-                return abilities;
-
-            return FilterShowInTrayAbilities(abilities);
-        }
-
-        public T GetAbility<T>() where T : IAbility
-        {
-            return GetComponent<T>();
+            return gameObject.GetComponents<IAbility>();
         }
 
         public IList<IAbility> GetCooldownAbilities()
@@ -131,19 +95,9 @@ namespace RainesGames.Units
             return abilities.Where(ability => ability is IPowerManagerClient).ToArray();
         }
 
-        public IList<IUsable> GetUsables(bool filterShowInTray = true)
+        public T GetUsable<T>() where T : IUsable
         {
-            IList<IUsable> usables = gameObject.GetComponents<IUsable>();
-
-            if(!filterShowInTray)
-                return usables;
-
-            return FilterShowInTrayUsables(usables);
-        }
-
-        public bool HasAbility<T>() where T : IAbility
-        {
-            return GetAbility<T>() != null;
+            return GetComponent<T>();
         }
 
         public bool HasEnemyTag()
@@ -159,6 +113,11 @@ namespace RainesGames.Units
         public bool HasTag(string tag)
         {
             return gameObject.CompareTag(tag);
+        }
+
+        public bool HasUsable<T>() where T : IUsable
+        {
+            return GetUsable<T>() != null;
         }
 
         public bool IsEnemy()

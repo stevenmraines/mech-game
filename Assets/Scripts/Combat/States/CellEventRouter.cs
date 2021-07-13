@@ -1,6 +1,7 @@
 ﻿using RainesGames.Common.States;
 using RainesGames.Grid;
 using RainesGames.Grid.Selection;
+using RainesGames.Units;
 using TGS;
 
 namespace RainesGames.Combat.States
@@ -8,13 +9,13 @@ namespace RainesGames.Combat.States
     public class CellEventRouter : IStateEventRouter, ICellEvents
     {
         private CombatStateManager _manager;
-
-        public delegate void CellClickDelegate(TerrainGridSystem sender, int cellIndex, int buttonIndex);
+        
+        public delegate void CellClickDelegate(IUnit activeUnit, int cellIndex, TerrainGridSystem sender, int buttonIndex);
         public static event CellClickDelegate OnCellClickReroute;
 
-        public delegate void CellMouseTransitDelegate(TerrainGridSystem sender, int cellIndex);
-        public static event CellMouseTransitDelegate OnCellEnterReroute;
-        public static event CellMouseTransitDelegate OnCellExitReroute;
+        public delegate void CellTransitDelegate(IUnit activeUnit, int cellIndex, TerrainGridSystem sender);
+        public static event CellTransitDelegate OnCellEnterReroute;
+        public static event CellTransitDelegate OnCellExitReroute;
 
         public CellEventRouter(CombatStateManager manager)
         {
@@ -50,19 +51,19 @@ namespace RainesGames.Combat.States
             GridWrapper.TerrainGridSystem.OnCellExit += OnCellExit;
         }
 
-        public void RerouteCellClick(TerrainGridSystem sender, int cellIndex, int buttonIndex)
+        public void RerouteCellClick(IUnit activeUnit, int cellIndex, TerrainGridSystem sender, int buttonIndex)
         {
-            OnCellClickReroute?.Invoke(sender, cellIndex, buttonIndex);
+            OnCellClickReroute?.Invoke(activeUnit, cellIndex, sender, buttonIndex);
         }
 
-        public void RerouteCellEnter(TerrainGridSystem sender, int cellIndex)
+        public void RerouteCellEnter(IUnit activeUnit, int cellIndex, TerrainGridSystem sender)
         {
-            OnCellEnterReroute?.Invoke(sender, cellIndex);
+            OnCellEnterReroute?.Invoke(activeUnit, cellIndex, sender);
         }
 
-        public void RerouteCellExit(TerrainGridSystem sender, int cellIndex)
+        public void RerouteCellExit(IUnit activeUnit, int cellIndex, TerrainGridSystem sender)
         {
-            OnCellExitReroute?.Invoke(sender, cellIndex);
+            OnCellExitReroute?.Invoke(activeUnit, cellIndex, sender);
         }
     }
 }

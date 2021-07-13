@@ -2,8 +2,7 @@ namespace RainesGames.Units.Usables.Weapons
 {
     public enum MountType
     {
-        LEFT_SHOULDER,
-        RIGHT_SHOULDER,
+        SHOULDER_MOUNTED,
         SINGLE_HANDED,
         TWO_HANDED
     }

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 09167e7523e60704ea4b51dbbd225dbd
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - HitPointsData: {fileID: 11400000, guid: f8441c79d98d49f438f81f4b41e047cc, type: 2}
+  - LegsData: {instanceID: 0}
+  - WeightData: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

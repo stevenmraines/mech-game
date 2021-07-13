@@ -1,12 +1,12 @@
 using RainesGames.Units.Usables.Weapons;
+using UnityEngine;
 
 namespace RainesGames.Units.Mechs.MechParts
 {
     public class LeftArm : AbsMechPart
     {
-        protected IWeapon _oneHandedWeapon;
-        protected IWeapon _twoHandedWeapon;
-        protected IWeapon _shoulderMountedWeapon;
+        [SerializeField] public AbsWeapon _handheldWeapon;
+        [SerializeField] public AbsWeapon _shoulderMountedWeapon;
 
         public DataArm ArmData;
         public DataHitPoints HitPointsData;
@@ -20,39 +20,40 @@ namespace RainesGames.Units.Mechs.MechParts
 
 
         #region MISC METHODS
-        public IWeapon GetHandheldWeapon()
+        public AbsWeapon GetHandheldWeapon()
         {
-            return GetTwoHandedWeapon() != null ? GetTwoHandedWeapon() : GetOneHandedWeapon();
+            return _handheldWeapon;
         }
 
-        public IWeapon GetOneHandedWeapon()
-        {
-            return _oneHandedWeapon;
-        }
-
-        public IWeapon GetTwoHandedWeapon()
-        {
-            return _twoHandedWeapon;
-        }
-
-        public IWeapon GetShoulderMountedWeapon()
+        public AbsWeapon GetShoulderMountedWeapon()
         {
             return _shoulderMountedWeapon;
         }
 
-        public void SetOneHandedWeapon(IWeapon weapon)
+        public void SetHandheldWeapon(AbsWeapon weapon)
         {
-            _oneHandedWeapon = weapon;
+            if(weapon.GetMountType() != MountType.SINGLE_HANDED && weapon.GetMountType() != MountType.TWO_HANDED)
+                return;
+
+            gameObject.AddComponent(weapon.GetType());
+            _handheldWeapon = weapon;
         }
 
-        public void SetTwoHandedWeapon(IWeapon weapon)
+        public void SetShoulderMountedWeapon(AbsWeapon weapon)
         {
-            _twoHandedWeapon = weapon;
-        }
+            if(!HasShoulderMount() || weapon.GetMountType() != MountType.SHOULDER_MOUNTED)
+                return;
 
-        public void SetShoulderMountedWeapon(IWeapon weapon)
-        {
+            gameObject.AddComponent(weapon.GetType());
             _shoulderMountedWeapon = weapon;
+        }
+        #endregion
+
+
+        #region ARM METHODS
+        public virtual bool HasShoulderMount()
+        {
+            return ArmData.HasLeftShoulderMount;
         }
         #endregion
 

@@ -6,8 +6,6 @@ namespace RainesGames.Units.Usables
     {
         int GetMaxRange();
         int GetMinRange();
-        bool HasLOS(IUnit targetUnit);
         bool InRange(Cell targetCell);
-        bool NeedsLOS();
     }
 }

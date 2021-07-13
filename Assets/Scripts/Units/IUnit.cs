@@ -10,18 +10,18 @@ using RainesGames.Units.Usables;
 
 namespace RainesGames.Units
 {
-    public interface IUnit : IActionPointsManagerClient, ICellEvents, IFactoryResetClient, IHackClient,
-        IPositionManagerClient, IPowerRerouteManagerClient, IUnderclockClient, IUnitEvents, IActiveUsableManagerClient
+    public interface IUnit : IActionPointsManagerClient, IFactoryResetClient, IHackClient,
+        IPositionManagerClient, IPowerRerouteManagerClient, IUnderclockClient, IActiveUsableManagerClient
     {
-        T GetAbility<T>() where T : IAbility;
-        IList<IAbility> GetAbilities(bool filterShowInTray = true);
+        IList<IAbility> GetAbilities();
         IList<IAbility> GetCooldownAbilities();
         IList<IAbility> GetPoweredAbilities();
-        IList<IUsable> GetUsables(bool filterShowInTray = true);
-        bool HasAbility<T>() where T : IAbility;
+        IList<IUsable> GetTrayUsables();
+        T GetUsable<T>() where T : IUsable;
         bool HasEnemyTag();
         bool HasPlayerTag();
         bool HasTag(string tag);
+        bool HasUsable<T>() where T : IUsable;
         bool IsEnemy();
         bool IsPlayer();
         bool SameTagAs(IUnit unit);

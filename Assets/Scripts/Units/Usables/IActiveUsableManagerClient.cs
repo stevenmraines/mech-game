@@ -5,5 +5,6 @@ namespace RainesGames.Units.Usables
         void ClearActiveUsable();
         IUsable GetActiveUsable();
         void SetActiveUsable(IUsable usable);
+        void SetFallbackUsable();
     }
 }

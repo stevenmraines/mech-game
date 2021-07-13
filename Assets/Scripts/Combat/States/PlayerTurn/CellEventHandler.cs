@@ -23,7 +23,7 @@ namespace RainesGames.Combat.States.PlayerTurn
             if(NoValidUnitSelected())
                 return;
 
-            _state.Manager.CellEventRouter.RerouteCellClick(sender, cellIndex, buttonIndex);
+            _state.Manager.CellEventRouter.RerouteCellClick(UnitSelectionManager.ActiveUnit, cellIndex, sender, buttonIndex);
         }
 
         public void OnCellEnter(TerrainGridSystem sender, int cellIndex)
@@ -31,7 +31,7 @@ namespace RainesGames.Combat.States.PlayerTurn
             if(NoValidUnitSelected())
                 return;
 
-            _state.Manager.CellEventRouter.RerouteCellEnter(sender, cellIndex);
+            _state.Manager.CellEventRouter.RerouteCellEnter(UnitSelectionManager.ActiveUnit, cellIndex, sender);
         }
 
         public void OnCellExit(TerrainGridSystem sender, int cellIndex)
@@ -39,7 +39,7 @@ namespace RainesGames.Combat.States.PlayerTurn
             if(NoValidUnitSelected())
                 return;
 
-            _state.Manager.CellEventRouter.RerouteCellExit(sender, cellIndex);
+            _state.Manager.CellEventRouter.RerouteCellExit(UnitSelectionManager.ActiveUnit, cellIndex, sender);
         }
     }
 }

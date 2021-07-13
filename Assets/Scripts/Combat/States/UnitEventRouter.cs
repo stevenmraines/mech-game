@@ -8,12 +8,12 @@ namespace RainesGames.Combat.States
     {
         private CombatStateManager _manager;
 
-        public delegate void UnitClickDelegate(IUnit unit, int buttonIndex);
+        public delegate void UnitClickDelegate(IUnit activeUnit, IUnit targetUnit, int buttonIndex);
         public static event UnitClickDelegate OnUnitClickReroute;
 
-        public delegate void UnitMouseTransitEventsDelegate(IUnit unit);
-        public static event UnitMouseTransitEventsDelegate OnUnitEnterReroute;
-        public static event UnitMouseTransitEventsDelegate OnUnitExitReroute;
+        public delegate void UnitTransitEventsDelegate(IUnit activeUnit, IUnit targetUnit);
+        public static event UnitTransitEventsDelegate OnUnitEnterReroute;
+        public static event UnitTransitEventsDelegate OnUnitExitReroute;
 
         public UnitEventRouter(CombatStateManager manager)
         {
@@ -49,19 +49,19 @@ namespace RainesGames.Combat.States
             UnitSelectionManager.OnUnitExit += OnUnitExit;
         }
 
-        public void RerouteUnitClick(IUnit unit, int buttonIndex)
+        public void RerouteUnitClick(IUnit activeUnit, IUnit targetUnit, int buttonIndex)
         {
-            OnUnitClickReroute?.Invoke(unit, buttonIndex);
+            OnUnitClickReroute?.Invoke(activeUnit, targetUnit, buttonIndex);
         }
         
-        public void RerouteUnitMouseEnter(IUnit unit)
+        public void RerouteUnitMouseEnter(IUnit activeUnit, IUnit targetUnit)
         {
-            OnUnitEnterReroute?.Invoke(unit);
+            OnUnitEnterReroute?.Invoke(activeUnit, targetUnit);
         }
         
-        public void RerouteUnitMouseExit(IUnit unit)
+        public void RerouteUnitMouseExit(IUnit activeUnit, IUnit targetUnit)
         {
-            OnUnitExitReroute?.Invoke(unit);
+            OnUnitExitReroute?.Invoke(activeUnit, targetUnit);
         }
     }
 }
