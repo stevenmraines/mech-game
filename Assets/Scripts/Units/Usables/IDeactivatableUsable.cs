@@ -1,6 +1,6 @@
 namespace RainesGames.Units.Usables
 {
-    public interface IDeactivatable
+    public interface IDeactivatableUsable
     {
         void Deactivate();
     }

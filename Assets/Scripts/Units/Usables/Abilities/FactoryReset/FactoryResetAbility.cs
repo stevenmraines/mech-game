@@ -11,7 +11,7 @@ namespace RainesGames.Units.Usables.Abilities.FactoryReset
         private CooldownManager _cooldownManager = new CooldownManager();
         private FiniteUseManager _finiteUseManager = new FiniteUseManager();
         private PowerManager _powerManager = new PowerManager();
-        private Validator _validator = new Validator();
+        private IUnitTargetUsableValidator _validator = new EnemyUnitTargetValidator();
 
         public DataAbility AbilityData;
         public DataCooldownAbility CooldownData;
@@ -20,14 +20,20 @@ namespace RainesGames.Units.Usables.Abilities.FactoryReset
         public DataStatusAbility StatusData;
         public DataUsable UsableData;
 
+        #region MISC METHODS
         public override bool CanBeUsed()
         {
             return IsAffordable() && IsPowered() && HasMoreUses() && !NeedsCooldown();
         }
 
+        public bool IsValid(IUnit activeUnit, IUnit targetUnit)
+        {
+            return _validator.IsValid(activeUnit, targetUnit);
+        }
+
         public void Use(IUnit targetUnit)
         {
-            if(!_validator.IsValidTarget(_unit, targetUnit))
+            if(!IsValid(_unit, targetUnit))
                 return;
 
             targetUnit.FactoryReset(GetDuration());
@@ -35,6 +41,7 @@ namespace RainesGames.Units.Usables.Abilities.FactoryReset
             ResetCooldown();
             DecrementUsesRemaining();
         }
+        #endregion
 
 
         #region MONOBEHAVIOUR METHODS

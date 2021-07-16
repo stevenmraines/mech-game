@@ -1,8 +1,8 @@
 ﻿namespace RainesGames.Units.Usables.Abilities.ReroutePower
 {
-    public class Validator : ITargetlessUsableValidator
+    public class ReroutePowerValidator : ITargetlessUsableValidator
     {
-        public bool IsValidTarget(IUnit parentUnit)
+        public bool IsValid(IUnit activeUnit)
         {
             // TODO How to validate this?
             return true;

@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace RainesGames.Units.Usables.Abilities.Move
 {
-    public class Validator : IPathTargetUsableValidator
+    public class MoveValidator : IPathTargetUsableValidator
     {
-        public bool IsValidTarget(IUnit parentUnit, IList<int> path)
+        public bool IsValid(IUnit activeUnit, IList<int> targetPath)
         {
-            if(path.Count == 0)
+            if(targetPath.Count == 0)
             {
                 Debug.Log("Cannot find path to target cell");
                 return false;
             }
 
-            if(((MechController)parentUnit).GetMovement() < path.Count)
+            if(((MechController)activeUnit).GetMovement() < targetPath.Count)
             {
                 Debug.Log("Cannot move that far");
                 return false;

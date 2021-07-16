@@ -6,8 +6,8 @@ namespace RainesGames.Units.Usables
 
         void Activate(IUsable usable)
         {
-            if(usable != null && usable is IActivatable)
-                ((IActivatable)usable).Activate();
+            if(usable != null && usable is IActivatableUsable)
+                ((IActivatableUsable)usable).Activate();
         }
 
         public void ClearActiveUsable()
@@ -18,8 +18,8 @@ namespace RainesGames.Units.Usables
 
         void Deactivate(IUsable usable)
         {
-            if(usable != null && usable is IDeactivatable)
-                ((IDeactivatable)usable).Deactivate();
+            if(usable != null && usable is IDeactivatableUsable)
+                ((IDeactivatableUsable)usable).Deactivate();
         }
 
         public IUsable GetActiveUsable()

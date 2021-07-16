@@ -11,7 +11,7 @@ namespace RainesGames.Units.Usables.Abilities.Hack
         private CooldownManager _cooldownManager = new CooldownManager();
         private FiniteUseManager _finiteUseManager = new FiniteUseManager();
         private PowerManager _powerManager = new PowerManager();
-        private Validator _validator = new Validator();
+        private IUnitTargetUsableValidator _validator = new HackValidator();
 
         public DataAbility AbilityData;
         public DataCooldownAbility CooldownData;
@@ -27,7 +27,7 @@ namespace RainesGames.Units.Usables.Abilities.Hack
 
         public void Use(IUnit targetUnit)
         {
-            if(!_validator.IsValidTarget(_unit, targetUnit))
+            if(!_validator.IsValid(_unit, targetUnit))
                 return;
 
             targetUnit.Hack(GetDuration());
@@ -171,13 +171,13 @@ namespace RainesGames.Units.Usables.Abilities.Hack
 
         public void OnActiveUnitEnter(IUnit activeUnit, IUnit targetUnit)
         {
-            if(_unit != activeUnit)
+            if(!ShouldHandleEvent(activeUnit))
                 return;
         }
 
         public void OnActiveUnitExit(IUnit activeUnit, IUnit targetUnit)
         {
-            if(_unit != activeUnit)
+            if(!ShouldHandleEvent(activeUnit))
                 return;
         }
         #endregion

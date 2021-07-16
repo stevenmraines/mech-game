@@ -4,6 +4,6 @@ namespace RainesGames.Units.Usables
 {
     public interface IPathTargetUsableValidator
     {
-        bool IsValidTarget(IUnit parentUnit, IList<int> path);
+        bool IsValid(IUnit activeUnit, IList<int> targetPath);
     }
 }

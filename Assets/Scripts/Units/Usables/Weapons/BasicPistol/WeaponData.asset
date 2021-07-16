@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e1597f417a67714d829a333e6bed667, type: 3}
   m_Name: WeaponData
   m_EditorClassIdentifier: 
+  MountType: 1
   Accuracy: 1
-  MountType: 2
-  WeaponName: 
+  BallisticDamage: 5
+  EnergyDamage: 0
+  EMPDamage: 0

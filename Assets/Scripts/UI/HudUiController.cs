@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RainesGames.UI.TargetingPanel;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace RainesGames.UI
@@ -8,6 +9,7 @@ namespace RainesGames.UI
         [SerializeField] private Text _battleStartMessage;
         [SerializeField] private Text _playerLostMessage;
         [SerializeField] private Text _playerWonMessage;
+        [SerializeField] private TargetingPanelController _targetingPanel;
 
         public void DisableBattleStartMessage()
         {
@@ -37,6 +39,11 @@ namespace RainesGames.UI
         public void EnablePlayerWonMessage()
         {
             _playerWonMessage.gameObject.SetActive(true);
+        }
+
+        public TargetingPanelController GetTargetingPanel()
+        {
+            return _targetingPanel;
         }
     }
 }

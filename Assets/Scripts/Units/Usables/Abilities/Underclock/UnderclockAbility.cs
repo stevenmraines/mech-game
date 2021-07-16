@@ -10,7 +10,7 @@ namespace RainesGames.Units.Usables.Abilities.Underclock
     {
         private CooldownManager _cooldownManager = new CooldownManager();
         private PowerManager _powerManager = new PowerManager();
-        private Validator _validator = new Validator();
+        private IUnitTargetUsableValidator _validator = new EnemyUnitTargetValidator();
 
         public DataAbility AbilityData;
         public DataCooldownAbility CooldownData;
@@ -18,20 +18,27 @@ namespace RainesGames.Units.Usables.Abilities.Underclock
         public DataStatusAbility StatusData;
         public DataUsable UsableData;
 
+        #region MISC METHODS
         public override bool CanBeUsed()
         {
             return IsAffordable() && IsPowered() && !NeedsCooldown();
         }
 
+        public bool IsValid(IUnit activeUnit, IUnit targetUnit)
+        {
+            return _validator.IsValid(activeUnit, targetUnit);
+        }
+
         public void Use(IUnit targetUnit)
         {
-            if(_validator.IsValidTarget(_unit, targetUnit))
+            if(IsValid(_unit, targetUnit))
             {
                 targetUnit.Underclock(GetDuration());
                 DecrementActionPoints();
                 ResetCooldown();
             }
         }
+        #endregion
 
 
         #region MONOBEHAVIOUR METHODS

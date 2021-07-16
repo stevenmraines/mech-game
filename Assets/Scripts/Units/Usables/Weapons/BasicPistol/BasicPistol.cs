@@ -1,18 +1,82 @@
+using RainesGames.Combat.States;
 using RainesGames.Grid;
+using RainesGames.UI;
+using RainesGames.UI.TargetingPanel;
 using RainesGames.Units.Mechs.MechParts;
 using TGS;
 
 namespace RainesGames.Units.Usables.Weapons.BasicPistol
 {
-    public class BasicPistol : AbsWeapon, IRangedUsable
+    public class BasicPistol : AbsWeapon, IActiveUnitEvents, IDeactivatableUsable, IMechPartButtonClient, IMechPartTargetUsable, IRangedUsable
     {
+        private IMechPartTargetUsableValidator _mechPartValidator = new EnemyMechPartTargetValidator();
+        private TargetingPanelController _targetingPanel;
+        private IUnit _targetUnit;
+        private IUnitTargetUsableValidator _unitValidator = new EnemyUnitTargetValidator();
+
         public DataRange RangeData;
         public DataUsable UsableData;
 
-        public void Use(IUnit unit, IMechPart mechPart)
-        {
 
+        #region MONOBEHAVIOUR METHODS
+        void Start()
+        {
+            _targetingPanel = FindObjectOfType<HudUiController>()?.GetTargetingPanel();
         }
+
+        void OnDisable()
+        {
+            HeadButtonController.OnButtonClickReroute -= OnMechPartClick;
+            LeftArmButtonController.OnButtonClickReroute -= OnMechPartClick;
+            LegsButtonController.OnButtonClickReroute -= OnMechPartClick;
+            RightArmButtonController.OnButtonClickReroute -= OnMechPartClick;
+            TorsoButtonController.OnButtonClickReroute -= OnMechPartClick;
+
+            UnitEventRouter.OnUnitClickReroute -= OnActiveUnitClick;
+            UnitEventRouter.OnUnitEnterReroute -= OnActiveUnitEnter;
+            UnitEventRouter.OnUnitExitReroute -= OnActiveUnitExit;
+        }
+
+        void OnEnable()
+        {
+            HeadButtonController.OnButtonClickReroute += OnMechPartClick;
+            LeftArmButtonController.OnButtonClickReroute += OnMechPartClick;
+            LegsButtonController.OnButtonClickReroute += OnMechPartClick;
+            RightArmButtonController.OnButtonClickReroute += OnMechPartClick;
+            TorsoButtonController.OnButtonClickReroute += OnMechPartClick;
+
+            UnitEventRouter.OnUnitClickReroute += OnActiveUnitClick;
+            UnitEventRouter.OnUnitEnterReroute += OnActiveUnitEnter;
+            UnitEventRouter.OnUnitExitReroute += OnActiveUnitExit;
+        }
+        #endregion
+
+
+        #region MISC METHODS
+        public void Deactivate()
+        {
+            _targetingPanel.Hide();
+        }
+
+        public bool IsValid(IUnit activeUnit, IUnit targetUnit)
+        {
+            return _unitValidator.IsValid(activeUnit, targetUnit);
+        }
+
+        public bool IsValid(IUnit activeUnit, IUnit targetUnit, IMechPart mechPart)
+        {
+            return _mechPartValidator.IsValid(activeUnit, targetUnit, mechPart);
+        }
+
+        public void Use(IUnit activeUnit, IUnit targetUnit, IMechPart mechPart)
+        {
+            if(IsValid(activeUnit, targetUnit, mechPart))
+            {
+                mechPart.TakeDamage(GetBallisticDamage());
+                DecrementActionPoints();
+            }
+        }
+        #endregion
 
 
         #region RANGED USABLE METHODS
@@ -29,6 +93,43 @@ namespace RainesGames.Units.Usables.Weapons.BasicPistol
         public bool InRange(Cell targetCell)
         {
             return GridWrapper.PathIsWithinRange(_unit.GetPosition().index, targetCell.index, GetMinRange(), GetMaxRange(), true);
+        }
+        #endregion
+
+
+        #region UNIT/MECH PART METHODS
+        public void OnActiveUnitClick(IUnit activeUnit, IUnit targetUnit, int buttonIndex)
+        {
+            if(!ShouldHandleEvent(activeUnit) || buttonIndex != 0)
+                return;
+            
+            if(!IsValid(activeUnit, targetUnit))
+                return;
+
+            _targetUnit = targetUnit;
+            _targetingPanel.SetUnits(activeUnit, _targetUnit);
+            _targetingPanel.Show();
+        }
+
+        public void OnActiveUnitEnter(IUnit activeUnit, IUnit targetUnit)
+        {
+            if(!ShouldHandleEvent(activeUnit))
+                return;
+        }
+
+        public void OnActiveUnitExit(IUnit activeUnit, IUnit targetUnit)
+        {
+            if(!ShouldHandleEvent(activeUnit))
+                return;
+        }
+
+        public void OnMechPartClick(IUnit activeUnit, IUnit targetUnit, IMechPart mechpart)
+        {
+            if(!ShouldHandleEvent(activeUnit))
+                return;
+
+            // TODO This is kind of redundant now
+            Use(activeUnit, targetUnit, mechpart);
         }
         #endregion
 
@@ -65,6 +166,21 @@ namespace RainesGames.Units.Usables.Weapons.BasicPistol
         public override float GetAccuracy()
         {
             return WeaponData.Accuracy;
+        }
+
+        public override int GetBallisticDamage()
+        {
+            return WeaponData.BallisticDamage;
+        }
+
+        public override int GetEMPDamage()
+        {
+            return WeaponData.EMPDamage;
+        }
+
+        public override int GetEnergyDamage()
+        {
+            return WeaponData.EnergyDamage;
         }
 
         public override MountType GetMountType()

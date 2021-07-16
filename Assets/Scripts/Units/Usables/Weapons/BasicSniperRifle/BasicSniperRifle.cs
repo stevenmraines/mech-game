@@ -67,6 +67,21 @@ namespace RainesGames.Units.Usables.Weapons.BasicSniperRifle
             return WeaponData.Accuracy;
         }
 
+        public override int GetBallisticDamage()
+        {
+            return WeaponData.BallisticDamage;
+        }
+
+        public override int GetEMPDamage()
+        {
+            return WeaponData.EMPDamage;
+        }
+
+        public override int GetEnergyDamage()
+        {
+            return WeaponData.EnergyDamage;
+        }
+
         public override MountType GetMountType()
         {
             return WeaponData.MountType;

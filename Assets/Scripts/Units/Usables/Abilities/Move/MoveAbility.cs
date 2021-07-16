@@ -11,7 +11,7 @@ using UnityEngine.AI;
 namespace RainesGames.Units.Usables.Abilities.Move
 {
     [DisallowMultipleComponent]
-    public class MoveAbility : AbsUsable, IAbility, IActiveCellEvents, IDeactivatable, IPathTargetUsable
+    public class MoveAbility : AbsUsable, IAbility, IActiveCellEvents, IDeactivatableUsable, IPathTargetUsable
     {
         private bool _moving = false;
         private NavMeshAgent _navMeshAgent;
@@ -19,8 +19,9 @@ namespace RainesGames.Units.Usables.Abilities.Move
         private int _pathIndex = 0;
         private IUnitPathProvider _pathProvider;
         private IPathTransitEvents _pathTransitResponse;
+        private IList<int> _previousPath = new List<int>();
         private int _runningHash = Animator.StringToHash("Running");
-        private Validator _validator = new Validator();
+        private IPathTargetUsableValidator _validator = new MoveValidator();
         private IPathWaypointManager _waypointManager;
 
         public DataAbility AbilityData;
@@ -61,7 +62,7 @@ namespace RainesGames.Units.Usables.Abilities.Move
         #region MISC METHODS
         public void Deactivate()
         {
-            // Unpaint cells
+            _pathTransitResponse.OnPathExit(GridWrapper.TerrainGridSystem, new List<int>(), _previousPath);
         }
 
         void DisableUserInteraction()
@@ -125,7 +126,7 @@ namespace RainesGames.Units.Usables.Abilities.Move
 
         public void Use(IList<int> path)
         {
-            if(_validator.IsValidTarget(_unit, path))
+            if(_validator.IsValid(_unit, path))
             {
                 ResetPathIndex();
                 StartCoroutine(Move(path));
@@ -181,6 +182,8 @@ namespace RainesGames.Units.Usables.Abilities.Move
 
             if(PathIsTooLong(activeUnit, drawPath))
                 return;
+
+            _previousPath = drawPath;
 
             _pathTransitResponse.OnPathEnter(
                 sender,

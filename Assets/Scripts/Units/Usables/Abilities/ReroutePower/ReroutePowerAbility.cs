@@ -3,9 +3,9 @@
 namespace RainesGames.Units.Usables.Abilities.ReroutePower
 {
     [DisallowMultipleComponent]
-    public class ReroutePowerAbility : AbsUsable, IAbility, IActivatable, IDeactivatable, ITargetlessUsable
+    public class ReroutePowerAbility : AbsUsable, IAbility, IActivatableUsable, IDeactivatableUsable, ITargetlessUsable
     {
-        private Validator _validator = new Validator();
+        private ITargetlessUsableValidator _validator = new ReroutePowerValidator();
 
         public DataAbility AbilityData;
         public DataUsable UsableData;
@@ -27,7 +27,7 @@ namespace RainesGames.Units.Usables.Abilities.ReroutePower
 
         public void Use()
         {
-            if(_validator.IsValidTarget(_unit))
+            if(_validator.IsValid(_unit))
             {
                 _unit.DiscardPowerState();
                 DecrementActionPoints();

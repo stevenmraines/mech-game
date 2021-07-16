@@ -2,6 +2,6 @@
 {
     public interface ITargetlessUsableValidator
     {
-        bool IsValidTarget(IUnit parentUnit);
+        bool IsValid(IUnit activeUnit);
     }
 }

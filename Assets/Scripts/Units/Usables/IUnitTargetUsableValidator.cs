@@ -2,6 +2,6 @@
 {
     public interface IUnitTargetUsableValidator
     {
-        bool IsValidTarget(IUnit parentUnit, IUnit targetUnit);
+        bool IsValid(IUnit activeUnit, IUnit targetUnit);
     }
 }

@@ -4,6 +4,6 @@ namespace RainesGames.Units.Usables
 {
     public interface IPathTargetUsable
     {
-        void Use(IList<int> path);
+        void Use(IList<int> targetPath);
     }
 }

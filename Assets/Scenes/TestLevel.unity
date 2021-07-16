@@ -692,7 +692,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &371744862
 RectTransform:
   m_ObjectHideFlags: 0
@@ -705,10 +705,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 944496152}
-  - {fileID: 1422008040}
   - {fileID: 1906514524}
-  - {fileID: 2011760436}
   - {fileID: 1830218642}
+  - {fileID: 2011760436}
+  - {fileID: 1422008040}
   m_Father: {fileID: 879556723}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -767,11 +767,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce0b98a0663a378419cf348c7cb40015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _headButton: {fileID: 944496153}
-  _leftArmButton: {fileID: 1906514525}
-  _legsButton: {fileID: 1830218643}
-  _rightArmButton: {fileID: 2011760437}
-  _torsoButton: {fileID: 1422008041}
+  _headButton: {fileID: 944496156}
+  _leftArmButton: {fileID: 1906514528}
+  _legsButton: {fileID: 1830218646}
+  _rightArmButton: {fileID: 2011760440}
+  _torsoButton: {fileID: 1422008044}
 --- !u!1001 &475835728
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -961,7 +961,7 @@ Transform:
   - {fileID: 1457190319}
   - {fileID: 359762539}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &713732170
 GameObject:
@@ -1133,7 +1133,7 @@ Transform:
   m_Children:
   - {fileID: 18945871}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 35, y: 45, z: 0}
 --- !u!1 &848265454
 GameObject:
@@ -1293,7 +1293,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &879556723
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1387,6 +1387,7 @@ GameObject:
   - component: {fileID: 944496155}
   - component: {fileID: 944496154}
   - component: {fileID: 944496153}
+  - component: {fileID: 944496156}
   m_Layer: 5
   m_Name: Head Button
   m_TagString: Untagged
@@ -1457,7 +1458,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 944496154}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 944496156}
+        m_TargetAssemblyTypeName: RainesGames.UI.TargetingPanel.HeadButtonController,
+          Assembly-CSharp
+        m_MethodName: OnButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &944496154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1496,6 +1510,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 944496151}
   m_CullTransparentMesh: 1
+--- !u!114 &944496156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944496151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7776519cc43c82343953223977c45ed5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 944496153}
 --- !u!1 &1137809819
 GameObject:
   m_ObjectHideFlags: 0
@@ -2030,6 +2057,7 @@ MonoBehaviour:
   _battleStartMessage: {fileID: 1149135751}
   _playerLostMessage: {fileID: 119761368}
   _playerWonMessage: {fileID: 1525271540}
+  _targetingPanel: {fileID: 371744865}
 --- !u!1001 &1414763995
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2172,6 +2200,7 @@ GameObject:
   - component: {fileID: 1422008043}
   - component: {fileID: 1422008042}
   - component: {fileID: 1422008041}
+  - component: {fileID: 1422008044}
   m_Layer: 5
   m_Name: Torso Button
   m_TagString: Untagged
@@ -2192,7 +2221,7 @@ RectTransform:
   m_Children:
   - {fileID: 291219837}
   m_Father: {fileID: 371744862}
-  m_RootOrder: 1
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2242,7 +2271,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1422008042}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1422008044}
+        m_TargetAssemblyTypeName: RainesGames.UI.TargetingPanel.TorsoButtonController,
+          Assembly-CSharp
+        m_MethodName: OnButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1422008042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2281,6 +2323,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1422008039}
   m_CullTransparentMesh: 1
+--- !u!114 &1422008044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422008039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72a9a9b58efe45e4dbff6f633601efce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 1422008041}
 --- !u!1 &1454290894
 GameObject:
   m_ObjectHideFlags: 0
@@ -2356,7 +2411,7 @@ Transform:
   m_Children:
   - {fileID: 1171090885}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1457190315
 GameObject:
@@ -2627,7 +2682,7 @@ Transform:
   - {fileID: 1818430139}
   - {fileID: 281698830}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1818430137
 GameObject:
@@ -2775,6 +2830,7 @@ GameObject:
   - component: {fileID: 1830218645}
   - component: {fileID: 1830218644}
   - component: {fileID: 1830218643}
+  - component: {fileID: 1830218646}
   m_Layer: 5
   m_Name: Legs Button
   m_TagString: Untagged
@@ -2795,7 +2851,7 @@ RectTransform:
   m_Children:
   - {fileID: 1137809820}
   m_Father: {fileID: 371744862}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2845,7 +2901,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1830218644}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1830218646}
+        m_TargetAssemblyTypeName: RainesGames.UI.TargetingPanel.LegsButtonController,
+          Assembly-CSharp
+        m_MethodName: OnButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1830218644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2884,6 +2953,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1830218641}
   m_CullTransparentMesh: 1
+--- !u!114 &1830218646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830218641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 582ecba680277e949b235de996565da0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 1830218643}
 --- !u!1 &1857756617
 GameObject:
   m_ObjectHideFlags: 0
@@ -3023,6 +3105,7 @@ GameObject:
   - component: {fileID: 1906514527}
   - component: {fileID: 1906514526}
   - component: {fileID: 1906514525}
+  - component: {fileID: 1906514528}
   m_Layer: 5
   m_Name: Left Arm Button
   m_TagString: Untagged
@@ -3043,7 +3126,7 @@ RectTransform:
   m_Children:
   - {fileID: 713732171}
   m_Father: {fileID: 371744862}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3093,7 +3176,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1906514526}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1906514528}
+        m_TargetAssemblyTypeName: RainesGames.UI.TargetingPanel.LeftArmButtonController,
+          Assembly-CSharp
+        m_MethodName: OnButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1906514526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3132,6 +3228,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1906514523}
   m_CullTransparentMesh: 1
+--- !u!114 &1906514528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1906514523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4096914490243df40b82f5a718647d57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 1906514525}
 --- !u!1 &2011760435
 GameObject:
   m_ObjectHideFlags: 0
@@ -3144,6 +3253,7 @@ GameObject:
   - component: {fileID: 2011760439}
   - component: {fileID: 2011760438}
   - component: {fileID: 2011760437}
+  - component: {fileID: 2011760440}
   m_Layer: 5
   m_Name: Right Arm Button
   m_TagString: Untagged
@@ -3214,7 +3324,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2011760438}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2011760440}
+        m_TargetAssemblyTypeName: RainesGames.UI.TargetingPanel.RightArmButtonController,
+          Assembly-CSharp
+        m_MethodName: OnButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2011760438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3253,6 +3376,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2011760435}
   m_CullTransparentMesh: 1
+--- !u!114 &2011760440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011760435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d598b8f00beeeb428c2b2cc9d205d66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 2011760437}
 --- !u!1 &2020093387
 GameObject:
   m_ObjectHideFlags: 0
@@ -3344,5 +3480,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}

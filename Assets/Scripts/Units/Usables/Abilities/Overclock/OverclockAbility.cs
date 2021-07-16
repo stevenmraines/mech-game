@@ -10,21 +10,27 @@ namespace RainesGames.Units.Usables.Abilities.Overclock
     {
         private CooldownManager _cooldownManager = new CooldownManager();
         private PowerManager _powerManager = new PowerManager();
-        private Validator _validator = new Validator();
+        private IUnitTargetUsableValidator _validator = new PlayerUnitTargetValidator();
 
         public DataAbility AbilityData;
         public DataCooldownAbility CooldownData;
         public DataPoweredAbility PowerData;
         public DataUsable UsableData;
 
+        #region MISC METHODS
         public override bool CanBeUsed()
         {
             return IsAffordable() && IsPowered() && !NeedsCooldown();
         }
 
+        public bool IsValid(IUnit activeUnit, IUnit targetUnit)
+        {
+            return _validator.IsValid(activeUnit, targetUnit);
+        }
+
         public void Use(IUnit targetUnit)
         {
-            if(_validator.IsValidTarget(_unit, targetUnit))
+            if(IsValid(_unit, targetUnit))
             {
                 targetUnit.IncrementActionPoints();
 
@@ -38,6 +44,7 @@ namespace RainesGames.Units.Usables.Abilities.Overclock
                     GlobalSoundEffectManager.Play(GetSoundEffect());
             }
         }
+        #endregion
 
 
         #region MONOBEHAVIOUR METHODS

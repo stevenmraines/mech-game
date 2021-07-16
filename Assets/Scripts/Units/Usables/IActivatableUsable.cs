@@ -1,6 +1,6 @@
 namespace RainesGames.Units.Usables
 {
-    public interface IActivatable
+    public interface IActivatableUsable
     {
         void Activate();
     }
