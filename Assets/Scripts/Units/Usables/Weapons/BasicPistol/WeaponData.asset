@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WeaponData
   m_EditorClassIdentifier: 
   MountType: 1
-  Accuracy: 1
+  Accuracy: 0.7
   BallisticDamage: 5
   EnergyDamage: 0
   EMPDamage: 0

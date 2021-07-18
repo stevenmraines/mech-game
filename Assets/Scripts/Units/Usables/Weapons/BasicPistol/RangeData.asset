@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: RangeData
   m_EditorClassIdentifier: 
   MinRange: 0
-  MaxRange: 10
+  MaxRange: 8

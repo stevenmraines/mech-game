@@ -4,6 +4,7 @@ using RainesGames.UI;
 using RainesGames.UI.TargetingPanel;
 using RainesGames.Units.Mechs.MechParts;
 using TGS;
+using UnityEngine;
 
 namespace RainesGames.Units.Usables.Weapons.BasicPistol
 {
@@ -81,11 +82,18 @@ namespace RainesGames.Units.Usables.Weapons.BasicPistol
 
         public void Use(IUnit activeUnit, IUnit targetUnit, IMechPart mechPart)
         {
-            if(IsValid(activeUnit, targetUnit, mechPart))
-            {
+            if(!IsValid(activeUnit, targetUnit, mechPart))
+                return;
+            
+            bool successfulHit = WeaponRNG.SuccessfulHit(targetUnit, mechPart, this);
+
+            if(successfulHit)
                 mechPart.TakeDamage(GetBallisticDamage());
-                DecrementActionPoints();
-            }
+
+            if(!successfulHit)
+                Debug.Log("Miss!");
+
+            DecrementActionPoints();
         }
         #endregion
 
@@ -93,7 +101,7 @@ namespace RainesGames.Units.Usables.Weapons.BasicPistol
         #region RANGED USABLE METHODS
         public IList<int> GetCellsInRange()
         {
-            return _rangeCellProvider.GetCellsInRange(_unit, this);
+            return _rangeCellProvider.GetCellsInRange(_unit.GetPosition(), this);
         }
 
         public int GetMaxRange()

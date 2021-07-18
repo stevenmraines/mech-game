@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using TGS;
 
 namespace RainesGames.Units.Usables.Weapons
 {
     public interface IWeaponRangeCellProvider
     {
-        IList<int> GetCellsInRange(IUnit activeUnit, IRangedUsable rangedWeapon);
+        IList<int> GetCellsInRange(Cell center, IRangedUsable rangedWeapon);
     }
 }

@@ -1,4 +1,3 @@
-using RainesGames.Grid;
 using RainesGames.Units.Mechs.MechParts;
 using System.Collections.Generic;
 using TGS;
@@ -21,7 +20,7 @@ namespace RainesGames.Units.Usables.Weapons.BasicSniperRifle
         #region RANGED USABLE METHODS
         public IList<int> GetCellsInRange()
         {
-            return _rangeCellProvider.GetCellsInRange(_unit, this);
+            return _rangeCellProvider.GetCellsInRange(_unit.GetPosition(), this);
         }
 
         public int GetMaxRange()
