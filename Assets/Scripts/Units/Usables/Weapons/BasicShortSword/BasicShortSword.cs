@@ -7,6 +7,8 @@ namespace RainesGames.Units.Usables.Weapons.BasicShortSword
 {
     public class BasicShortSword : AbsWeapon, IRangedUsable
     {
+        private IWeaponRangeCellProvider _rangeCellProvider = new CircularWeaponRangeCellProvider();
+
         public DataRange RangeData;
         public DataUsable UsableData;
 
@@ -17,6 +19,11 @@ namespace RainesGames.Units.Usables.Weapons.BasicShortSword
 
 
         #region RANGED USABLE METHODS
+        public IList<int> GetCellsInRange()
+        {
+            return _rangeCellProvider.GetCellsInRange(_unit, this);
+        }
+
         public int GetMaxRange()
         {
             return RangeData.MaxRange;
@@ -29,7 +36,7 @@ namespace RainesGames.Units.Usables.Weapons.BasicShortSword
 
         public bool InRange(Cell targetCell)
         {
-            return GridWrapper.PathIsWithinRange(_unit.GetPosition().index, targetCell.index, GetMinRange(), GetMaxRange(), true);
+            return GetCellsInRange().Contains(targetCell.index);
         }
         #endregion
 

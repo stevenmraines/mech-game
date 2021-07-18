@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 976a901f582855440bfc3513e9506295, type: 3}
   m_Name: RangeData
   m_EditorClassIdentifier: 
+  MinRange: 0
   MaxRange: 10
-  MinRange: 1
-  NeedsLOS: 1

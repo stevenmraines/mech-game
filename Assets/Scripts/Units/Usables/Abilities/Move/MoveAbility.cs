@@ -63,6 +63,7 @@ namespace RainesGames.Units.Usables.Abilities.Move
         public void Deactivate()
         {
             _pathTransitResponse.OnPathExit(GridWrapper.TerrainGridSystem, new List<int>(), _previousPath);
+            _waypointManager.ClearWaypoints();
         }
 
         void DisableUserInteraction()

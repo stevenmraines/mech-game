@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using RainesGames.Combat.States;
-using RainesGames.Grid;
 using RainesGames.UI;
 using RainesGames.UI.TargetingPanel;
 using RainesGames.Units.Mechs.MechParts;
@@ -7,9 +7,14 @@ using TGS;
 
 namespace RainesGames.Units.Usables.Weapons.BasicPistol
 {
-    public class BasicPistol : AbsWeapon, IActiveUnitEvents, IDeactivatableUsable, IMechPartButtonClient, IMechPartTargetUsable, IRangedUsable
+    public class BasicPistol : AbsWeapon, IActivatableUsable, IActiveUnitEvents, IDeactivatableUsable,
+        IMechPartButtonClient, IMechPartTargetUsable, IRangedUsable
     {
+        private IWeaponActivationResponse _activationResponse = new DrawRangeActivationResponse();
+        private IWeaponDeactivationResponse _deactivationResponse = new DrawRangeActivationResponse();
         private IMechPartTargetUsableValidator _mechPartValidator = new EnemyMechPartTargetValidator();
+        private IWeaponRangeCellProvider _rangeCellProvider = new CircularWeaponRangeCellProvider();
+        private IUnitTargetRangedUsableValidator _rangeValidator = new EnemyUnitTargetRangedValidator();
         private TargetingPanelController _targetingPanel;
         private IUnit _targetUnit;
         private IUnitTargetUsableValidator _unitValidator = new EnemyUnitTargetValidator();
@@ -53,14 +58,20 @@ namespace RainesGames.Units.Usables.Weapons.BasicPistol
 
 
         #region MISC METHODS
+        public void Activate()
+        {
+            _activationResponse.OnActivate(_unit, this);
+        }
+
         public void Deactivate()
         {
             _targetingPanel.Hide();
+            _deactivationResponse.OnDeactivate(_unit, this);
         }
 
         public bool IsValid(IUnit activeUnit, IUnit targetUnit)
         {
-            return _unitValidator.IsValid(activeUnit, targetUnit);
+            return _unitValidator.IsValid(activeUnit, targetUnit) && _rangeValidator.IsValid(activeUnit, targetUnit, this);
         }
 
         public bool IsValid(IUnit activeUnit, IUnit targetUnit, IMechPart mechPart)
@@ -80,6 +91,11 @@ namespace RainesGames.Units.Usables.Weapons.BasicPistol
 
 
         #region RANGED USABLE METHODS
+        public IList<int> GetCellsInRange()
+        {
+            return _rangeCellProvider.GetCellsInRange(_unit, this);
+        }
+
         public int GetMaxRange()
         {
             return RangeData.MaxRange;
@@ -92,7 +108,7 @@ namespace RainesGames.Units.Usables.Weapons.BasicPistol
 
         public bool InRange(Cell targetCell)
         {
-            return GridWrapper.PathIsWithinRange(_unit.GetPosition().index, targetCell.index, GetMinRange(), GetMaxRange(), true);
+            return GetCellsInRange().Contains(targetCell.index);
         }
         #endregion
 

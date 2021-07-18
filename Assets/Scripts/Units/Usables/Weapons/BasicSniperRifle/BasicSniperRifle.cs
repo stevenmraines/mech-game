@@ -1,11 +1,14 @@
 using RainesGames.Grid;
 using RainesGames.Units.Mechs.MechParts;
+using System.Collections.Generic;
 using TGS;
 
 namespace RainesGames.Units.Usables.Weapons.BasicSniperRifle
 {
     public class BasicSniperRifle : AbsWeapon, IRangedUsable
     {
+        private IWeaponRangeCellProvider _rangeCellProvider = new CircularWeaponRangeCellProvider();
+
         public DataRange RangeData;
         public DataUsable UsableData;
 
@@ -16,6 +19,11 @@ namespace RainesGames.Units.Usables.Weapons.BasicSniperRifle
 
 
         #region RANGED USABLE METHODS
+        public IList<int> GetCellsInRange()
+        {
+            return _rangeCellProvider.GetCellsInRange(_unit, this);
+        }
+
         public int GetMaxRange()
         {
             return RangeData.MaxRange;
@@ -28,7 +36,7 @@ namespace RainesGames.Units.Usables.Weapons.BasicSniperRifle
 
         public bool InRange(Cell targetCell)
         {
-            return GridWrapper.PathIsWithinRange(_unit.GetPosition().index, targetCell.index, GetMinRange(), GetMaxRange(), true);
+            return GetCellsInRange().Contains(targetCell.index);
         }
         #endregion
 
