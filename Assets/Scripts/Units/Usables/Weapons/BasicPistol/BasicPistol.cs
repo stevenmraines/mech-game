@@ -85,12 +85,12 @@ namespace RainesGames.Units.Usables.Weapons.BasicPistol
             if(!IsValid(activeUnit, targetUnit, mechPart))
                 return;
             
-            bool successfulHit = WeaponRNG.SuccessfulHit(targetUnit, mechPart, this);
+            bool hitSuccessful = WeaponRNG.HitSuccessful(targetUnit, mechPart, this);
 
-            if(successfulHit)
+            if(hitSuccessful)
                 mechPart.TakeDamage(GetBallisticDamage());
 
-            if(!successfulHit)
+            if(!hitSuccessful)
                 Debug.Log("Miss!");
 
             DecrementActionPoints();

@@ -5,7 +5,7 @@ namespace RainesGames.Units.Usables.Weapons
 {
     public class WeaponRNG
     {
-        public static bool SuccessfulHit(IUnit targetUnit, IMechPart mechPart, IWeapon weapon)
+        public static bool HitSuccessful(IUnit targetUnit, IMechPart mechPart, IWeapon weapon)
         {
             float accuracy = weapon.GetAccuracy();
             float test = Random.value;
