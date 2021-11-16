@@ -6,6 +6,7 @@ using RainesGames.Units.Selection;
 using RainesGames.Units.Usables;
 using RainesGames.Units.Usables.Abilities;
 using RainesGames.Units.Usables.Abilities.ReroutePower;
+using RainesGames.Units.Usables.Weapons;
 using UnityEngine;
 
 namespace RainesGames.UI
@@ -15,6 +16,64 @@ namespace RainesGames.UI
         [SerializeField] private CombatStateManager _combatStateManager;
         [SerializeField] private GUISkin _centeredLabel;
         [SerializeField] private GUISkin _medTextLabel;
+
+        void DrawAmmo()
+        {
+            IUnit activeUnit = UnitSelectionManager.ActiveUnit;
+
+            if(activeUnit == null)
+                return;
+
+            IUsable activeUsable = activeUnit.GetActiveUsable();
+
+            if(activeUsable == null || !(activeUsable is IAmmoWeapon))
+                return;
+
+            IAmmoWeapon weapon = ((IAmmoWeapon)activeUsable);
+
+            string weaponName = activeUsable.GetName();
+            int shotsPerClip = weapon.GetShotsPerClip();
+            int clipsRemaining = weapon.GetClipsRemaining();
+            int shotsRemaining = weapon.GetShotsRemaining();
+
+            GUI.skin = _medTextLabel;
+
+            int height = 30;
+            int width = 150;
+            int x = 20;
+            int y = Screen.height - 100;
+
+            GUI.Label(
+                new Rect(x, y, width, height),
+                weaponName + $" ({clipsRemaining})"
+            );
+
+            int buttonWidth = 50;
+            height = buttonWidth;
+            width = buttonWidth;
+            y += 30;
+
+            GUIContent content = new GUIContent()
+            {
+                text = "",
+                tooltip = ""
+            };
+
+            for(int i = 1; i <= shotsPerClip; i++)
+            {
+                if(i > shotsRemaining)
+                    GUI.enabled = false;
+
+                GUI.Button(
+                    new Rect(x, y, width, height),
+                    content
+                );
+
+                x += buttonWidth;
+            }
+
+            GUI.enabled = true;
+        }
 
         void DrawCombatState()
         {
@@ -355,6 +414,7 @@ namespace RainesGames.UI
                 return;
 
             DrawUsables();
+            DrawAmmo();
         }
     }
 }

@@ -8,10 +8,11 @@ using UnityEngine;
 
 namespace RainesGames.Units.Usables.Weapons.BasicPistol
 {
-    public class BasicPistol : AbsWeapon, IActivatableUsable, IActiveUnitEvents, IDeactivatableUsable,
+    public class BasicPistol : AbsWeapon, IActivatableUsable, IActiveUnitEvents, IAmmoWeapon, IDeactivatableUsable,
         IMechPartButtonClient, IMechPartTargetUsable, IRangedUsable
     {
         private IWeaponActivationResponse _activationResponse = new DrawRangeActivationResponse();
+        private AmmoManager _ammoManager;
         private IWeaponDeactivationResponse _deactivationResponse = new DrawRangeActivationResponse();
         private IMechPartTargetUsableValidator _mechPartValidator = new EnemyMechPartTargetValidator();
         private IWeaponRangeCellProvider _rangeCellProvider = new CircularWeaponRangeCellProvider();
@@ -20,6 +21,7 @@ namespace RainesGames.Units.Usables.Weapons.BasicPistol
         private IUnit _targetUnit;
         private IUnitTargetUsableValidator _unitValidator = new EnemyUnitTargetValidator();
 
+        public DataAmmo AmmoData;
         public DataRange RangeData;
         public DataUsable UsableData;
 
@@ -27,6 +29,7 @@ namespace RainesGames.Units.Usables.Weapons.BasicPistol
         #region MONOBEHAVIOUR METHODS
         void Start()
         {
+            _ammoManager = new AmmoManager(GetNumberOfClips(), GetShotsPerClip());
             _targetingPanel = FindObjectOfType<HudUiController>()?.GetTargetingPanel();
         }
 
@@ -94,6 +97,38 @@ namespace RainesGames.Units.Usables.Weapons.BasicPistol
                 Debug.Log("Miss!");
 
             DecrementActionPoints();
+            _ammoManager.Decrement();
+        }
+        #endregion
+
+
+        #region AMMO DATA METHODS
+        public int GetClipsRemaining()
+        {
+            return _ammoManager.GetClipsRemaining();
+        }
+
+        public int GetNumberOfClips()
+        {
+            return AmmoData.NumberOfClips;
+        }
+
+        public int GetShotsRemaining()
+        {
+            return _ammoManager.GetShotsRemaining();
+        }
+
+        public int GetShotsPerClip()
+        {
+            return AmmoData.ShotsPerClip;
+        }
+
+        public void Reload()
+        {
+            if(_ammoManager.GetShotsRemaining() >= GetShotsPerClip())
+                return;
+
+            _ammoManager.Reload(GetShotsPerClip());
         }
         #endregion
 

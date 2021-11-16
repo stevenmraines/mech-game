@@ -4,9 +4,10 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
+  - WeaponData: {fileID: 11400000, guid: 09aef891ca0b5cc4a99b0e43b462860f, type: 2}
+  - AmmoData: {fileID: 11400000, guid: f1a749e1fcce43a41b62ccad2fcb136f, type: 2}
   - RangeData: {fileID: 11400000, guid: 8f3ac326199509b4584a34f9003f751b, type: 2}
   - UsableData: {fileID: 11400000, guid: 30a78a0952537bd42b4c3103dd18539d, type: 2}
-  - WeaponData: {fileID: 11400000, guid: 09aef891ca0b5cc4a99b0e43b462860f, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
