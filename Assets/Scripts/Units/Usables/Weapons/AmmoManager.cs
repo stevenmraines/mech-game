@@ -13,7 +13,7 @@ namespace RainesGames.Units.Usables.Weapons
             _shotsRemaining = shotsRemaining;
         }
 
-        public void Decrement(int shotsSpent = 1)
+        public void DecrementShotsRemaining(int shotsSpent = 1)
         {
             _shotsRemaining = Mathf.Max(0, _shotsRemaining - shotsSpent);
         }

@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c545f7220726193419b46751c0c7487e, type: 3}
-  m_Name: AmmoData
+  m_Script: {fileID: 11500000, guid: 96c3d0529a60cb949a4cd4e01565d7f3, type: 3}
+  m_Name: AbilityData
   m_EditorClassIdentifier: 
-  NumberOfClips: 1
-  ShotsPerClip: 5
+  SoundEffect: {fileID: 0}

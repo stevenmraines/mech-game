@@ -97,12 +97,17 @@ namespace RainesGames.Units.Usables.Weapons.BasicPistol
                 Debug.Log("Miss!");
 
             DecrementActionPoints();
-            _ammoManager.Decrement();
+            _ammoManager.DecrementShotsRemaining();
         }
         #endregion
 
 
         #region AMMO DATA METHODS
+        public bool CanReload()
+        {
+            return GetShotsRemaining() < GetShotsPerClip() && GetClipsRemaining() != 0;
+        }
+
         public int GetClipsRemaining()
         {
             return _ammoManager.GetClipsRemaining();
@@ -121,6 +126,11 @@ namespace RainesGames.Units.Usables.Weapons.BasicPistol
         public int GetShotsPerClip()
         {
             return AmmoData.ShotsPerClip;
+        }
+
+        public bool NeedsReload()
+        {
+            return GetShotsRemaining() == 0;
         }
 
         public void Reload()
@@ -194,6 +204,11 @@ namespace RainesGames.Units.Usables.Weapons.BasicPistol
 
 
         #region USABLE DATA METHODS
+        public override bool CanBeUsed()
+        {
+            return base.CanBeUsed() && !NeedsReload();
+        }
+
         public override int GetFirstActionCost()
         {
             return UsableData.FirstActionCost;

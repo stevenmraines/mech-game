@@ -5,6 +5,7 @@ using RainesGames.Units;
 using RainesGames.Units.Selection;
 using RainesGames.Units.Usables;
 using RainesGames.Units.Usables.Abilities;
+using RainesGames.Units.Usables.Abilities.ReloadRightHandWeapon;
 using RainesGames.Units.Usables.Abilities.ReroutePower;
 using RainesGames.Units.Usables.Weapons;
 using UnityEngine;
@@ -91,6 +92,27 @@ namespace RainesGames.UI
                 new Rect(x, y, width, height),
                 _combatStateManager.CurrentState.StateName
             );
+        }
+
+        void DrawConfirmUseButtons(IUnit activeUnit, int offsetFromBottom)
+        {
+            //int gutter = 10;
+            int width = 100;
+            int height = 50;
+            //int x = Screen.width / 2 - width - gutter / 2;
+            int x = Screen.width / 2 - width / 2;
+            //int y = offsetFromBottom - height - gutter;
+            int y = offsetFromBottom - height;
+
+            Rect confirmButtonPosition = new Rect(x, y, width, height);
+
+            GUIContent content = new GUIContent()
+            {
+                text = "Reload"
+            };
+
+            if(GUI.Button(confirmButtonPosition, content))
+                activeUnit.GetUsable<ReloadRightHandWeaponAbility>().Use();
         }
 
         void DrawUsables()
@@ -200,11 +222,17 @@ namespace RainesGames.UI
             if(GUI.tooltip == usableName)
                 GUI.Label(tooltipPosition, tooltip);
 
-            if (activeUnit.GetActiveUsable()?.GetType() == typeof(ReroutePowerAbility))
+            if(activeUnit.GetActiveUsable()?.GetType() == typeof(ReroutePowerAbility))
             {
                 // height inc * 3 = one for regular tooltip, two for cooldown, three for finite use
                 int offset = buttonY - tooltipHeightIncrement * 3;
                 DrawReroutePowerButtons(activeUnit, offset);
+            }
+
+            if(activeUnit.GetActiveUsable()?.GetType() == typeof(ReloadRightHandWeaponAbility))
+            {
+                int offset = buttonY - tooltipHeightIncrement * 3;
+                DrawConfirmUseButtons(activeUnit, offset);
             }
 
             if(!(usable is IPowerContainerInteractable))
