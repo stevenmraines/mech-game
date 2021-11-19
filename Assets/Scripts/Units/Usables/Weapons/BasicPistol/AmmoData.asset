@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c545f7220726193419b46751c0c7487e, type: 3}
   m_Name: AmmoData
   m_EditorClassIdentifier: 
-  NumberOfClips: 1
+  NumberOfClips: -1
   ShotsPerClip: 5
